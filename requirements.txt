@@ -1,1 +1,6 @@
-streamlit
+joblib==1.4.2
+matplotlib==3.8.3
+numpy==2.2.3
+pandas==2.2.3
+streamlit==1.42.2
+xgboost==2.1.4
