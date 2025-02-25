@@ -98,7 +98,7 @@ if uploaded_file is not None:
 
                 st.download_button(
                 label="💾 Télécharger les résultats",
-                data=df_results.to_excel(index=True).encode('utf-8'),
+                data=df_results.to_excel().encode('utf-8'),
                 file_name="predictions.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                mime="test/xlsx"
                 )
