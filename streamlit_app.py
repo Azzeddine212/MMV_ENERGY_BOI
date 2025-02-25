@@ -36,18 +36,13 @@ def process_boiry_data(df_boiry):
     return df_boiry
 
 # Fonction pour prédire
-def process_and_predict(input_data, df_lim, model_path, scaler_path, target_column):
+def process_and_predict(input_data, model_path, scaler_path, target_column):
     model = joblib.load(model_path)
     with open(scaler_path, "rb") as f:
         scaler = pickle.load(f)
     
     data_test = process_boiry_data(input_data)
-    data_test = data_test[df_lim.columns.intersection(data_test.columns)]
-    
-    for col in data_test.columns:
-        if col in df_lim.columns:
-            data_test = data_test[(data_test[col] >= df_lim.loc['min', col]) & (data_test[col] <= df_lim.loc['max', col])]
-    
+
     if target_column not in data_test.columns:
         st.error(f"La colonne cible '{target_column}' est absente après filtrage.")
         return None, None
