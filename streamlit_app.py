@@ -36,18 +36,13 @@ def process_boiry_data(df_boiry):
     return df_boiry
 
 # Fonction pour prédire
-def process_and_predict(input_data, df_lim, model_path, scaler_path, target_column):
+def process_and_predict(input_data, model_path, scaler_path, target_column):
     model = joblib.load(model_path)
     with open(scaler_path, "rb") as f:
         scaler = pickle.load(f)
     
     data_test = process_boiry_data(input_data)
-    data_test = data_test[df_lim.columns.intersection(data_test.columns)]
-    
-    for col in data_test.columns:
-        if col in df_lim.columns:
-            data_test = data_test[(data_test[col] >= df_lim.loc['min', col]) & (data_test[col] <= df_lim.loc['max', col])]
-    
+
     if target_column not in data_test.columns:
         st.error(f"La colonne cible '{target_column}' est absente après filtrage.")
         return None, None
@@ -60,7 +55,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     
     return df_test, variables
 
-st.title("🔍 Prédiction de la Consommation d'Énergie")
+st.title("🔍 Prédiction et Analyse des Données")
 
 uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
 
@@ -72,22 +67,13 @@ if uploaded_file is not None:
     model_path = "xgb_model_cb22-23-24_10_param.joblib"
     scaler_path = "scaler_cb22-23-24_10_param.pkl"
     target_column = "Conso NRJ Usine (kwh/tcossette)"
-    
-    df_lim = pd.DataFrame({
-        "Tonnage": [500, 900], "Température": [-2, 50],
-        "Richesse cossettes - BOI & ART (g%g)": [14, 20], "Débit JC1": [650, 1250],
-        "Pression VE": [2, 3.4], "JAE - Brix poids (g%g)": [11, 20],
-        "Sirop sortie évapo-Brix poids (g%g)": [60, 80], "Débit sucre": [40, 136],
-        "Débit vapeur_tot": [140, 200], "Temp fumée_moy": [80, 174],
-        "Conso NRJ Usine (kwh/tcossette)": [125, 205]
-    }, index=["min", "max"])
 
     df_results = None
-    variables = process_boiry_data(data_boiry)  # Toujours extraire les variables pour affichage
+    variables = process_boiry_data(data_boiry)  # Extraction des variables pour affichage
 
     if st.button("🚀 Lancer la prédiction"):
         with st.spinner("📊 Calcul en cours..."):
-            df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
+            df_results, variables = process_and_predict(data_boiry, model_path, scaler_path, target_column)
             if df_results is not None:
                 st.success("✅ Prédictions terminées !")
                 st.dataframe(df_results.head())
@@ -95,7 +81,7 @@ if uploaded_file is not None:
                 # Graphique des prédictions
                 fig, ax = plt.subplots(figsize=(10, 5))
                 ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
-                ax.set_title("Prédiction CB24")
+                ax.set_title("📉 Prédiction de la Consommation d'Énergie")
                 ax.set_xlabel("Index")
                 ax.set_ylabel("Conso NRJ (kWh/tcossette)")
                 ax.legend()
@@ -110,16 +96,28 @@ if uploaded_file is not None:
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 )
 
-    # Sélection d'une colonne et d'une couleur
+    # Affichage des tendances des variables
+    st.subheader("📊 Tendances des Variables")
     numeric_columns = variables.select_dtypes(include=["number"]).columns
-    if len(numeric_columns) > 0:
-        selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
-        selected_color = st.color_picker("🎨 Choisissez une couleur pour la courbe :", "#FF0000")
 
-        fig, ax = plt.subplots(figsize=(10, 5))
-        ax.plot(variables.index, variables[selected_column], color=selected_color, alpha=0.6)
-        ax.set_title(f"Tendance de {selected_column}")
-        ax.set_xlabel("Index")
-        ax.set_ylabel(selected_column)
-        ax.grid(True)
+    if len(numeric_columns) > 0:
+        num_cols = 2  # Nombre de colonnes pour l'affichage
+        num_vars = len(numeric_columns)
+        rows = (num_vars // num_cols) + (num_vars % num_cols > 0)
+
+        fig, axes = plt.subplots(rows, num_cols, figsize=(12, 4 * rows))
+        axes = axes.flatten()  # Convertir en tableau 1D pour itération facile
+
+        for idx, col in enumerate(numeric_columns):
+            axes[idx].plot(variables.index, variables[col], label=col, alpha=0.7)
+            axes[idx].set_title(f"Tendance : {col}")
+            axes[idx].set_xlabel("Index")
+            axes[idx].set_ylabel(col)
+            axes[idx].grid(True)
+            axes[idx].legend()
+
+        # Supprimer les axes vides si le nombre de variables est impair
+        for idx in range(num_vars, len(axes)):
+            fig.delaxes(axes[idx])
+
         st.pyplot(fig)
