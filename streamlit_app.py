@@ -11,6 +11,15 @@ import io
 import warnings
 warnings.filterwarnings("ignore")
 
+# Convert the DataFrame to an Excel file in memory
+def convert_df_to_excel(df):
+    """Convert DataFrame to Excel format for downloading."""
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=True, sheet_name='Predictions')
+    output.seek(0)  # Reset the pointer to the beginning of the buffer
+    return output.read()
+
 def process_boiry_data(df_boiry):
     """Traitement des données"""
     def moyenne_pondérée(valeur_1, valeur_2, poid_1, poid_2):
@@ -96,15 +105,6 @@ if uploaded_file is not None:
                 ax.legend()
                 ax.grid(True)
                 st.pyplot(fig)
-
-                # Convert the DataFrame to an Excel file in memory
-                def convert_df_to_excel(df):
-                    """Convert DataFrame to Excel format for downloading."""
-                    output = io.BytesIO()
-                    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-                        df.to_excel(writer, index=True, sheet_name='Predictions')
-                    output.seek(0)  # Reset the pointer to the beginning of the buffer
-                    return output.read()
                 
                 # Download button for Excel
                 st.download_button(
