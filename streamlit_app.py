@@ -98,7 +98,6 @@ if uploaded_file is not None:
                 ax.legend()
                 ax.grid(True)
                 st.pyplot(fig)
-
     
                 # Bouton de téléchargement
                 st.download_button(
@@ -108,13 +107,15 @@ if uploaded_file is not None:
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 )
 
+    
     # Sélection d'une colonne et d'une couleur
     numeric_columns = variables.select_dtypes(include=["number"]).columns
     if len(numeric_columns) > 0:
         selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
         selected_color = st.color_picker("🎨 Choisissez une couleur pour la courbe :", "#FF0000")
 
-        if st.button("📈 Afficher la tendance"):
+        if st.button("📈 Afficher la tendance"):    
+            df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)      
             fig, ax = plt.subplots(figsize=(10, 5))
             ax.plot(variables.index, variables[selected_column], color=selected_color, alpha=0.6)
             ax.set_title(f"Tendance de {selected_column}")
