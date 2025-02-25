@@ -4,11 +4,19 @@ import numpy as np
 import joblib
 import pickle
 import matplotlib.pyplot as plt
+import io
 from xgboost import XGBRegressor
 
 # Désactiver les avertissements
 import warnings
 warnings.filterwarnings("ignore")
+
+def convert_df_to_excel(df):
+    """Convert DataFrame to Excel format for downloading."""
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=True, sheet_name='Predictions')
+    return output.getvalue()
 
 def process_boiry_data(df_boiry):
     """Traitement des données"""
