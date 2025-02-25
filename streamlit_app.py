@@ -106,6 +106,28 @@ if uploaded_file is not None:
                 ax.grid(True)
                 st.pyplot(fig)
                 
+                # Aplatir l'array des axes pour un accès facile
+                fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
+                
+                # Si axes est une seule ligne (cas où il y a une seule colonne), le rendre un tableau
+                if len(variables.columns) == 1:
+                    axes = [axes]
+                
+                # Tracer chaque colonne sur un subplot distinct
+                for i, col in enumerate(variables.columns):
+                    axes[i].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
+                    axes[i].set_title(col)  # Ajouter le titre de la colonne
+                    axes[i].set_xlabel("Date")
+                    axes[i].set_ylabel(col)
+                    axes[i].legend()
+                    axes[i].grid(True)
+                
+                # Ajuster l'affichage des subplots pour éviter le chevauchement
+                plt.tight_layout()
+                
+                # Afficher la figure dans Streamlit
+                st.pyplot(fig)
+                
                 # Download button for Excel
                 st.download_button(
                     label="💾 Télécharger les résultats",
