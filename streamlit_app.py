@@ -106,8 +106,8 @@ if uploaded_file is not None:
                 upper_limit = mean + 3 * std_dev
                 lower_limit = mean - 3 * std_dev
     
-                ax.axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit}")
-                ax.axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit}")
+                ax.axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
+                ax.axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
                 ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
                 ax.set_title("Prédiction CB24")
                 ax.set_xlabel("Date")
@@ -137,8 +137,8 @@ if uploaded_file is not None:
                         lower_limit = mean - 3 * std_dev
             
                         axes[idx].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
-                        axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit}")
-                        axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit}")
+                        axes[idx].axhline(upper_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
+                        axes[idx].axhline(lower_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
                         axes[idx].set_title(f"Tendance : {col}")
                         axes[idx].set_xlabel("Index")
                         axes[idx].set_ylabel(col)
