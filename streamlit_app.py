@@ -137,8 +137,8 @@ if uploaded_file is not None:
                     #axes[i].legend()
                     #axes[i].grid(True)
                 
-                plt.tight_layout()
-                st.pyplot(fig)
+                #plt.tight_layout()
+                #st.pyplot(fig)
                 
                 # Download button for Excel
                 st.download_button(
