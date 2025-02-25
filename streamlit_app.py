@@ -4,19 +4,11 @@ import numpy as np
 import joblib
 import pickle
 import matplotlib.pyplot as plt
-import io
 from xgboost import XGBRegressor
 
 # Désactiver les avertissements
 import warnings
 warnings.filterwarnings("ignore")
-
-def convert_df_to_excel(df):
-    """Convert DataFrame to Excel format for downloading."""
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=True, sheet_name='Predictions')
-    return output.getvalue()
 
 def process_boiry_data(df_boiry):
     """Traitement des données"""
@@ -73,7 +65,7 @@ uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=
 if uploaded_file is not None:
     data_boiry = pd.read_excel(uploaded_file)
     st.success("✅ Fichier chargé avec succès !")
-    st.dataframe(data_boiry)
+    st.dataframe(data_boiry.head())
     
     model_path = "xgb_model_cb22-23-24_10_param.joblib"
     scaler_path = "scaler_cb22-23-24_10_param.pkl"
@@ -93,7 +85,7 @@ if uploaded_file is not None:
             df_results = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
             if df_results is not None:
                 st.success("✅ Prédictions terminées !")
-                st.dataframe(df_results)
+                st.dataframe(df_results.head())
                 
                 fig, ax = plt.subplots(figsize=(10, 5))
                 ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
@@ -105,8 +97,8 @@ if uploaded_file is not None:
                 st.pyplot(fig)
 
                 st.download_button(
-                    label="💾 Télécharger les résultats",
-                    data=convert_df_to_excel(df_results),
-                    file_name="predictions.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                label="💾 Télécharger les résultats",
+                data=df_results.to_excel(index=True, engine='xlsxwriter').encode('utf-8'),
+                file_name="predictions.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 )
