@@ -50,7 +50,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     
     if target_column not in data_test.columns:
         st.error(f"La colonne cible '{target_column}' est absente après filtrage.")
-        return None
+        return None, None
     
     variables = data_test.drop(columns=[target_column])
     X_scaled = scaler.transform(variables)
@@ -88,40 +88,38 @@ if uploaded_file is not None:
             if df_results is not None:
                 st.success("✅ Prédictions terminées !")
                 st.dataframe(df_results.head())
+
+                # Sélection des variables pour affichage
+                numeric_columns = variables.select_dtypes(include=["number"]).columns
+                selected_columns = st.multiselect("📌 Sélectionnez les variables à afficher :", numeric_columns)
                 
-                # Graphique des prédictions
-                fig, ax = plt.subplots(figsize=(10, 5))
-                ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
-                ax.set_title("Prédiction CB24")
-                ax.set_xlabel("Date")
-                ax.set_ylabel("Conso NRJ (kWh/tcossette)")
-                ax.legend()
-                ax.grid(True)
-                st.pyplot(fig)
-    
-    
-    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)    
-    # Bouton de téléchargement
-    st.download_button(
-        label="💾 Télécharger les résultats",
-        data=convert_df_to_excel(df_results),
-        file_name="predictions.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
+                # Création d'un dictionnaire de couleurs pour chaque variable
+                colors = {}
+                for col in selected_columns:
+                    colors[col] = st.color_picker(f"🎨 Choisissez une couleur pour {col} :", "#0000FF")
 
-    # Sélection d'une colonne et d'une couleur
-      
-    numeric_columns = variables.select_dtypes(include=["number"]).columns
-    if len(numeric_columns) > 0:
-        selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
-        selected_color = st.color_picker("🎨 Choisissez une couleur pour la courbe :", "#FF0000")
+                # Affichage du graphique
+                if selected_columns:
+                    fig, ax = plt.subplots(figsize=(10, 5))
+                    
+                    # Tracé des tendances sélectionnées
+                    for col in selected_columns:
+                        ax.plot(variables.index, variables[col], color=colors[col], label=col, alpha=0.6)
 
-        if st.button("📈 Afficher la tendance"):    
-            
-            fig, ax = plt.subplots(figsize=(10, 5))
-            ax.plot(variables.index, variables[selected_column], color=selected_color, alpha=0.6)
-            ax.set_title(f"Tendance de {selected_column}")
-            ax.set_xlabel("Date")
-            ax.set_ylabel(selected_column)
-            ax.grid(True)
-            st.pyplot(fig)
+                    # Tracé de la prédiction en rouge
+                    ax.plot(df_results.index, df_results["Prédictions"], color="red", label="Prédiction CB24", alpha=0.8, linewidth=2)
+                    
+                    ax.set_title("Évolution des variables sélectionnées et de la prédiction CB24")
+                    ax.set_xlabel("Date")
+                    ax.set_ylabel("Valeurs")
+                    ax.legend()
+                    ax.grid(True)
+                    st.pyplot(fig)
+
+                # Bouton de téléchargement
+                st.download_button(
+                    label="💾 Télécharger les résultats",
+                    data=convert_df_to_excel(df_results),
+                    file_name="predictions.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
