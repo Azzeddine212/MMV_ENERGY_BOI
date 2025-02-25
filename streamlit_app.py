@@ -11,17 +11,29 @@ import io
 import warnings
 warnings.filterwarnings("ignore")
 
-# === Ajouter une image en fond d'écran avec CSS ===
-page_bg_img = """
-<style>
-    body {
-        background-image: url("https://www.istockphoto.com/fr/photo/usine-de-traitement-gm172209605-3223113?searchscope=image%2Cfilm");
-        background-size: cover;
-        background-attachment: fixed;
-    }
-</style>
-"""
-st.markdown(page_bg_img, unsafe_allow_html=True)
+from PIL import Image
+import base64
+
+# Ajouter l'image en arrière-plan via CSS
+def add_bg_from_local(image_file):
+    with open(image_file, "rb") as image:
+        encoded_image = base64.b64encode(image.read()).decode()
+        st.markdown(
+            f"""
+            <style>
+            .stApp  {{
+                background-image: url("data:image/png;base64,{encoded_image}");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }}
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+
+# Vérification avec une image locale
+add_bg_from_local('interface.jpg')
 
 # Convert the DataFrame to an Excel file in memory
 def convert_df_to_excel(df):
