@@ -148,6 +148,30 @@ if uploaded_file is not None:
                 ax.legend()
                 ax.grid(True)
                 st.pyplot(fig)
+                def categoriser_conso(valeur):
+                    """Catégorise la consommation énergétique en Faible, Moyen ou Élevé."""
+                    if valeur < 145:
+                        return "Faible"
+                    elif 145 <= valeur <= 185:
+                        return "Moyen"
+                    else:
+                        return "Élevé"
+                # Appliquer la fonction de catégorisation
+                df_results["Niveau de consommation"] = df_results["Prédictions"].apply(categoriser_conso)
+                
+                # Afficher la répartition des niveaux
+                st.write("### Répartition des niveaux de consommation :")
+                st.write(df_results["Niveau de consommation"].value_counts())
+                
+                # Afficher un graphique en camembert
+                fig_pie, ax_pie = plt.subplots()
+                df_results["Niveau de consommation"].value_counts().plot(
+                    kind="pie", autopct="%1.1f%%", colors=["green", "orange", "red"], ax=ax_pie
+                )
+                ax_pie.set_ylabel("")
+                ax_pie.set_title("Répartition des niveaux de consommation")
+                st.pyplot(fig_pie)
+
                 
                 # Plotting each variable
                 fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
