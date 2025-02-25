@@ -16,3 +16,4 @@ statsmodels==0.14.1
 Pillow==10.2.0
 xlrd==2.0.1        # Pour lire les fichiers Excel (.xls)
 openpyxl==3.1.2    # Pour lire et écrire des fichiers Excel (.xlsx)
+xlsxwriter==3.0.2
