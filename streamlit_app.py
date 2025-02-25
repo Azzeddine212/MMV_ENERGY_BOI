@@ -109,18 +109,18 @@ if uploaded_file is not None:
                 ax.grid(True)
                 st.pyplot(fig)
 
-
-                # Sélection d'une colonne pour analyse
-                numeric_columns = variables.select_dtypes(include=["number"]).columns
-                selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
-                fig, ax = plt.subplots(figsize=(10, 5))
-                ax.plot(variables.index, variables[selected_column], color="red", label='Prédiction CB24', alpha=0.6)
-                ax.set_title(selected_column)
-                ax.set_xlabel("Date")
-                ax.set_ylabel(selected_column)
-                ax.legend()
-                ax.grid(True)
-                st.pyplot(fig)
+                if st.button("Evaluation des tendances des variables"):
+                    # Sélection d'une colonne pour analyse
+                    numeric_columns = variables.select_dtypes(include=["number"]).columns
+                    selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
+                    fig, ax = plt.subplots(figsize=(10, 5))
+                    ax.plot(variables.index, variables[selected_column], color="red", label='Prédiction CB24', alpha=0.6)
+                    ax.set_title(selected_column)
+                    ax.set_xlabel("Date")
+                    ax.set_ylabel(selected_column)
+                    ax.legend()
+                    ax.grid(True)
+                    st.pyplot(fig)
 
                 # Plotting each variable
                 #fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
