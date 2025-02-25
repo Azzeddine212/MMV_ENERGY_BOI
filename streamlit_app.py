@@ -5,6 +5,7 @@ import joblib
 import pickle
 import matplotlib.pyplot as plt
 from xgboost import XGBRegressor
+import io
 
 # Désactiver les avertissements
 import warnings
@@ -96,9 +97,19 @@ if uploaded_file is not None:
                 ax.grid(True)
                 st.pyplot(fig)
 
+                # Convert the DataFrame to an Excel file in memory
+                def convert_df_to_excel(df):
+                    """Convert DataFrame to Excel format for downloading."""
+                    output = io.BytesIO()
+                    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+                        df.to_excel(writer, index=True, sheet_name='Predictions')
+                    output.seek(0)  # Reset the pointer to the beginning of the buffer
+                    return output.read()
+                
+                # Download button for Excel
                 st.download_button(
-                label="💾 Télécharger les résultats",
-                data=df_results.to_excel().encode('utf-8'),
-                file_name="predictions.xlsx",
-                mime="test/xlsx"
+                    label="💾 Télécharger les résultats",
+                    data=convert_df_to_excel(df_results),  # Convert the DataFrame to Excel bytes
+                    file_name="predictions.xlsx",  # File name with .xlsx extension
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  # MIME type for Excel
                 )
