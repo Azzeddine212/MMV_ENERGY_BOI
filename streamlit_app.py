@@ -99,6 +99,8 @@ if uploaded_file is not None:
                 ax.grid(True)
                 st.pyplot(fig)
     
+    
+    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)    
     # Bouton de téléchargement
     st.download_button(
         label="💾 Télécharger les résultats",
@@ -107,9 +109,8 @@ if uploaded_file is not None:
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
-
     # Sélection d'une colonne et d'une couleur
-    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)      
+      
     numeric_columns = variables.select_dtypes(include=["number"]).columns
     if len(numeric_columns) > 0:
         selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
