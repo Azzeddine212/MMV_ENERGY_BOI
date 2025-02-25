@@ -62,4 +62,64 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
 
 st.title("🔍 Prédiction de la Consommation d'Énergie")
 
-uploaded_file = st.file
+uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
+
+if uploaded_file is not None:
+    data_boiry = pd.read_excel(uploaded_file)
+    st.success("✅ Fichier chargé avec succès !")
+    st.dataframe(data_boiry.head())
+    
+    model_path = "xgb_model_cb22-23-24_10_param.joblib"
+    scaler_path = "scaler_cb22-23-24_10_param.pkl"
+    target_column = "Conso NRJ Usine (kwh/tcossette)"
+    
+    df_lim = pd.DataFrame({
+        "Tonnage": [500, 900], "Température": [-2, 50],
+        "Richesse cossettes - BOI & ART (g%g)": [14, 20], "Débit JC1": [650, 1250],
+        "Pression VE": [2, 3.4], "JAE - Brix poids (g%g)": [11, 20],
+        "Sirop sortie évapo-Brix poids (g%g)": [60, 80], "Débit sucre": [40, 136],
+        "Débit vapeur_tot": [140, 200], "Temp fumée_moy": [80, 174],
+        "Conso NRJ Usine (kwh/tcossette)": [125, 205]
+    }, index=["min", "max"])
+
+    df_results = None
+    variables = process_boiry_data(data_boiry)  # Toujours extraire les variables pour affichage
+
+    if st.button("🚀 Lancer la prédiction"):
+        with st.spinner("📊 Calcul en cours..."):
+            df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
+            if df_results is not None:
+                st.success("✅ Prédictions terminées !")
+                st.dataframe(df_results.head())
+
+                # Graphique des prédictions
+                fig, ax = plt.subplots(figsize=(10, 5))
+                ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
+                ax.set_title("Prédiction CB24")
+                ax.set_xlabel("Index")
+                ax.set_ylabel("Conso NRJ (kWh/tcossette)")
+                ax.legend()
+                ax.grid(True)
+                st.pyplot(fig)
+
+                # Bouton de téléchargement
+                st.download_button(
+                    label="💾 Télécharger les résultats",
+                    data=convert_df_to_excel(df_results),
+                    file_name="predictions.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+
+    # Sélection d'une colonne et d'une couleur
+    numeric_columns = variables.select_dtypes(include=["number"]).columns
+    if len(numeric_columns) > 0:
+        selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
+        selected_color = st.color_picker("🎨 Choisissez une couleur pour la courbe :", "#FF0000")
+
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.plot(variables.index, variables[selected_column], color=selected_color, alpha=0.6)
+        ax.set_title(f"Tendance de {selected_column}")
+        ax.set_xlabel("Index")
+        ax.set_ylabel(selected_column)
+        ax.grid(True)
+        st.pyplot(fig)
