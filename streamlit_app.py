@@ -152,7 +152,7 @@ else:
                 #st.pyplot(fig)
                 
                 # Download button for Excel
-                st.download_button(
+            st.download_button(
                     label="💾 Télécharger les résultats",
                     data=convert_df_to_excel(df_results),  # Convert the DataFrame to Excel bytes
                     file_name="predictions.xlsx",  # File name with .xlsx extension
