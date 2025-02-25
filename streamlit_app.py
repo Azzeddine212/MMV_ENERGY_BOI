@@ -109,7 +109,7 @@ if uploaded_file is not None:
                 ax.grid(True)
                 st.pyplot(fig)
 
-                if st.button("Evaluation des tendances des variables"):
+                st.button("Evaluation des tendances des variables"):
                     # Sélection d'une colonne pour analyse
                     numeric_columns = variables.select_dtypes(include=["number"]).columns
                     selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
