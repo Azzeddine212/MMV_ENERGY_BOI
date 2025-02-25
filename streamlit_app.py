@@ -117,7 +117,7 @@ if uploaded_file is not None:
                     st.subheader("📊 Tendances des Variables")
                     #axes = [axes]
                     num_cols = 2  # Nombre de graphes par ligne
-                    num_vars = len(numeric_columns)
+                    num_vars = len(variables.columns)
                     rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Nombre total de lignes nécessaires
                     fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
                     axes = axes.flatten()  # Convertir en tableau 1D pour itération facile
