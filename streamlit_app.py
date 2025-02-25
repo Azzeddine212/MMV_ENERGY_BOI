@@ -109,18 +109,29 @@ if uploaded_file is not None:
                 ax.grid(True)
                 st.pyplot(fig)
 
-                st.button("Evaluation des tendances des variables"):
-                    # Sélection d'une colonne pour analyse
-                    numeric_columns = variables.select_dtypes(include=["number"]).columns
+                # Vérification des colonnes numériques disponibles
+                numeric_columns = variables.select_dtypes(include=["number"]).columns
+                
+                if len(numeric_columns) > 0:
                     selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
-                    fig, ax = plt.subplots(figsize=(10, 5))
-                    ax.plot(variables.index, variables[selected_column], color="red", label='Prédiction CB24', alpha=0.6)
-                    ax.set_title(selected_column)
-                    ax.set_xlabel("Date")
-                    ax.set_ylabel(selected_column)
-                    ax.legend()
-                    ax.grid(True)
-                    st.pyplot(fig)
+                
+                    # Sélecteur de couleur pour la courbe
+                    selected_color = st.color_picker("🎨 Choisissez une couleur pour la courbe :", "#FF0000")  # Rouge par défaut
+                
+                    # Bouton pour lancer l'affichage
+                    if st.button("🚀 Évaluation des tendances des variables"):
+                        fig, ax = plt.subplots(figsize=(10, 5))
+                        ax.plot(variables.index, variables[selected_column], color=selected_color, label='Prédiction CB24', alpha=0.6)
+                        ax.set_title(f"Tendance de {selected_column}")
+                        ax.set_xlabel("Date")
+                        ax.set_ylabel(selected_column)
+                        ax.legend()
+                        ax.grid(True)
+                
+                        # Affichage du graphique
+                        st.pyplot(fig)
+else:
+    st.warning("⚠️ Aucune colonne numérique disponible dans les données.")
 
                 # Plotting each variable
                 #fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
