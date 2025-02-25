@@ -15,7 +15,7 @@ warnings.filterwarnings("ignore")
 page_bg_img = """
 <style>
     body {
-        background-image: url("https://source.unsplash.com/random/1600x900/?technology,nature");
+        background-image: url("https://www.istockphoto.com/fr/photo/usine-de-traitement-gm172209605-3223113?searchscope=image%2Cfilm");
         background-size: cover;
         background-attachment: fixed;
     }
