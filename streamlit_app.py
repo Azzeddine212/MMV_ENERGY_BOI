@@ -73,7 +73,7 @@ if uploaded_file is not None:
 
     if st.button("🚀 Lancer la prédiction"):
         with st.spinner("📊 Calcul en cours..."):
-            df_results, variables = process_and_predict(data_boiry, model_path, scaler_path, target_column)
+            #df_results, variables = process_and_predict(data_boiry, model_path, scaler_path, target_column)
             if df_results is not None:
                 st.success("✅ Prédictions terminées !")
                 st.dataframe(df_results.head())
