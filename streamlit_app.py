@@ -114,8 +114,14 @@ if uploaded_file is not None:
                 
                 # If there is only one column, axes will be a single object, not an array
                 if len(variables.columns) == 1:
-                    axes = [axes]
-                
+                    st.subheader("📊 Tendances des Variables")
+                    #axes = [axes]
+                    num_cols = 2  # Nombre de graphes par ligne
+                    num_vars = len(numeric_columns)
+                    rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Nombre total de lignes nécessaires
+                    fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
+                    axes = axes.flatten()  # Convertir en tableau 1D pour itération facile
+                    
                 for i, col in enumerate(variables.columns):
                     axes[i].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
                     axes[i].set_title(col)
