@@ -11,6 +11,18 @@ import io
 import warnings
 warnings.filterwarnings("ignore")
 
+# === Ajouter une image en fond d'écran avec CSS ===
+page_bg_img = """
+<style>
+    body {
+        background-image: url("https://source.unsplash.com/random/1600x900/?technology,nature");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
+"""
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
 # Convert the DataFrame to an Excel file in memory
 def convert_df_to_excel(df):
     """Convert DataFrame to Excel format for downloading."""
