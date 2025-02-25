@@ -66,7 +66,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     df_pred = pd.DataFrame(predictions, columns=["Prédictions"], index=variables.index)
     df_test = pd.concat([variables, df_pred], axis=1)
     
-    return df_test
+    return df_test, variables
 
 st.title("🔍 Prédiction de la Consommation d'Énergie")
 
