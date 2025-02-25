@@ -113,7 +113,7 @@ if uploaded_file is not None:
                 fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
                 
                 # If there is only one column, axes will be a single object, not an array
-                if len(variables.columns) == 1:
+                if len(variables.columns) > 0:
                     st.subheader("📊 Tendances des Variables")
                     #axes = [axes]
                     num_cols = 2  # Nombre de graphes par ligne
@@ -124,7 +124,7 @@ if uploaded_file is not None:
                     
                 for i, col in enumerate(variables.columns):
                     axes[i].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
-                    axes[i].set_title(col)
+                    axes[i].set_title(f"Tendance : {col}")
                     axes[i].set_xlabel("Date")
                     axes[i].set_ylabel(col)
                     axes[i].legend()
