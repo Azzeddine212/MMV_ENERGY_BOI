@@ -65,7 +65,7 @@ uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=
 if uploaded_file is not None:
     data_boiry = pd.read_excel(uploaded_file)
     st.success("✅ Fichier chargé avec succès !")
-    st.dataframe(data_boiry.head())
+    st.dataframe(data_boiry())
     
     model_path = "xgb_model_cb22-23-24_10_param.joblib"
     scaler_path = "scaler_cb22-23-24_10_param.pkl"
@@ -85,7 +85,7 @@ if uploaded_file is not None:
             df_results = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
             if df_results is not None:
                 st.success("✅ Prédictions terminées !")
-                st.dataframe(df_results.head())
+                st.dataframe(df_results)
                 
                 fig, ax = plt.subplots(figsize=(10, 5))
                 ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
