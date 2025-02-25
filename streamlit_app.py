@@ -124,12 +124,12 @@ if uploaded_file is not None:
                     axes = axes.flatten()  # Convertir en tableau 1D pour une boucle facile
             
                     for idx, col in enumerate(variables.columns):
-                        mean = df_results[col].mean()
-                        std_dev = df_results[col].std()
+                        mean = variables[col].mean()
+                        std_dev = variables[col].std()
                         upper_limit = mean + 3 * std_dev
                         lower_limit = mean - 3 * std_dev
             
-                        axes[idx].plot(df_results.index, data[col], color="blue", alpha=0.6, label=col)
+                        axes[idx].plot(df_results.index, variables[col], color="blue", alpha=0.6, label=col)
                         axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label="Mean + 3σ")
                         axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label="Mean - 3σ")
                         axes[idx].set_title(f"Tendance : {col}")
