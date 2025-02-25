@@ -96,9 +96,9 @@ if uploaded_file is not None:
                 ax.grid(True)
                 st.pyplot(fig)
 
-st.download_button(
-    label="💾 Télécharger les résultats",
-    data=convert_df_to_excel(df_results),
-    file_name="predictions.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-)
+                st.download_button(
+                    label="💾 Télécharger les résultats",
+                    data=convert_df_to_excel(df_results),
+                    file_name="predictions.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
