@@ -91,6 +91,10 @@ if uploaded_file is not None:
         "Débit vapeur_tot": [140, 200], "Temp fumée_moy": [80, 174],
         "Conso NRJ Usine (kwh/tcossette)": [125, 205]
     }, index=["min", "max"])
+
+    # Sélection d'une colonne pour analyse
+    numeric_columns = df.select_dtypes(include=["number"]).columns
+    selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
     
     if st.button("🚀 Lancer la prédiction"):
         with st.spinner("📊 Calcul en cours..."):
