@@ -91,10 +91,6 @@ if uploaded_file is not None:
         "Débit vapeur_tot": [140, 200], "Temp fumée_moy": [80, 174],
         "Conso NRJ Usine (kwh/tcossette)": [125, 205]
     }, index=["min", "max"])
-
-    # Sélection d'une colonne pour analyse
-    numeric_columns = data_boiry.select_dtypes(include=["number"]).columns
-    selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
     
     if st.button("🚀 Lancer la prédiction"):
         with st.spinner("📊 Calcul en cours..."):
@@ -112,21 +108,34 @@ if uploaded_file is not None:
                 ax.legend()
                 ax.grid(True)
                 st.pyplot(fig)
-                
+
+
+                # Sélection d'une colonne pour analyse
+                numeric_columns = variables.select_dtypes(include=["number"]).columns
+                selected_column = st.selectbox("📌 Sélectionnez une colonne numérique :", numeric_columns)
+                fig, ax = plt.subplots(figsize=(10, 5))
+                ax.plot(variables.index, variables[selected_column], color="red", label='Prédiction CB24', alpha=0.6)
+                ax.set_title(selected_column)
+                ax.set_xlabel("Date")
+                ax.set_ylabel(selected_column)
+                ax.legend()
+                ax.grid(True)
+                st.pyplot(fig)
+
                 # Plotting each variable
-                fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
+                #fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
                 
                 # If there is only one column, axes will be a single object, not an array
-                if len(variables.columns) == 1:
-                    axes = [axes]
+                #if len(variables.columns) == 1:
+                    #axes = [axes]
                 
-                for i, col in enumerate(variables.columns):
-                    axes[i].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
-                    axes[i].set_title(col)
-                    axes[i].set_xlabel("Date")
-                    axes[i].set_ylabel(col)
-                    axes[i].legend()
-                    axes[i].grid(True)
+                #for i, col in enumerate(variables.columns):
+                    #axes[i].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
+                    #axes[i].set_title(col)
+                    #axes[i].set_xlabel("Date")
+                    #axes[i].set_ylabel(col)
+                    #axes[i].legend()
+                    #axes[i].grid(True)
                 
                 plt.tight_layout()
                 st.pyplot(fig)
