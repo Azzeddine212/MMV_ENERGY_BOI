@@ -53,6 +53,15 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
             if valeurs_hors_min > 0 or valeurs_hors_max > 0:
                 valeurs_hors_limites[col] = (valeurs_hors_min, valeurs_hors_max)
     
+    # Affichage des valeurs hors limites
+    if valeurs_hors_limites:
+        st.warning("⚠️ Certaines valeurs sont hors des limites définies par le modèle :")
+        for col, (hors_min, hors_max) in valeurs_hors_limites.items():
+            st.write(f"- **{col}** : {hors_min} valeurs < min, {hors_max} valeurs > max")
+            st.write(f"  🟢 Intervalle autorisé : **[{df_lim.loc['min', col]} - {df_lim.loc['max', col]}]**")
+    else:
+        st.success("✅ Toutes les valeurs sont dans les intervalles min/max définis par le modèle.")
+
     # Filtering the data within the limits
     for col in data_test.columns:
         if col in df_lim.columns:
