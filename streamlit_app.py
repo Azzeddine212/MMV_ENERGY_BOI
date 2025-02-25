@@ -44,6 +44,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     data_test = process_boiry_data(input_data)
     data_test = data_test[df_lim.columns.intersection(data_test.columns)]
     
+    # Identifying out-of-bound values
     valeurs_hors_limites = {}
     for col in data_test.columns:
         if col in df_lim.columns:
@@ -52,6 +53,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
             if valeurs_hors_min > 0 or valeurs_hors_max > 0:
                 valeurs_hors_limites[col] = (valeurs_hors_min, valeurs_hors_max)
     
+    # Filtering the data within the limits
     for col in data_test.columns:
         if col in df_lim.columns:
             data_test = data_test[(data_test[col] >= df_lim.loc['min', col]) & (data_test[col] <= df_lim.loc['max', col])]
@@ -92,11 +94,12 @@ if uploaded_file is not None:
     
     if st.button("🚀 Lancer la prédiction"):
         with st.spinner("📊 Calcul en cours..."):
-            df_results = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
+            df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
             if df_results is not None:
                 st.success("✅ Prédictions terminées !")
                 st.dataframe(df_results.head())
                 
+                # Plotting the predictions
                 fig, ax = plt.subplots(figsize=(10, 5))
                 ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
                 ax.set_title("Prédiction CB24")
@@ -106,26 +109,22 @@ if uploaded_file is not None:
                 ax.grid(True)
                 st.pyplot(fig)
                 
-                # Aplatir l'array des axes pour un accès facile
+                # Plotting each variable
                 fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
                 
-                # Si axes est une seule ligne (cas où il y a une seule colonne), le rendre un tableau
+                # If there is only one column, axes will be a single object, not an array
                 if len(variables.columns) == 1:
                     axes = [axes]
                 
-                # Tracer chaque colonne sur un subplot distinct
                 for i, col in enumerate(variables.columns):
                     axes[i].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
-                    axes[i].set_title(col)  # Ajouter le titre de la colonne
+                    axes[i].set_title(col)
                     axes[i].set_xlabel("Date")
                     axes[i].set_ylabel(col)
                     axes[i].legend()
                     axes[i].grid(True)
                 
-                # Ajuster l'affichage des subplots pour éviter le chevauchement
                 plt.tight_layout()
-                
-                # Afficher la figure dans Streamlit
                 st.pyplot(fig)
                 
                 # Download button for Excel
