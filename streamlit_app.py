@@ -114,24 +114,36 @@ if uploaded_file is not None:
                 
                 # If there is only one column, axes will be a single object, not an array
                 if len(variables.columns) > 0:
-                    st.subheader("📊 Tendances des Variables")
-                    #axes = [axes]
+                    st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
+            
                     num_cols = 2  # Nombre de graphes par ligne
                     num_vars = len(variables.columns)
-                    rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Nombre total de lignes nécessaires
-                    fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
-                    axes = axes.flatten()  # Convertir en tableau 1D pour itération facile
+                    rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Calcul du nombre de lignes
                     
-                for i, col in enumerate(variables.columns):
-                    axes[i].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
-                    axes[i].set_title(f"Tendance : {col}")
-                    axes[i].set_xlabel("Date")
-                    axes[i].set_ylabel(col)
-                    axes[i].legend()
-                    axes[i].grid(True)
-                
-                plt.tight_layout()
-                st.pyplot(fig)
+                    fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
+                    axes = axes.flatten()  # Convertir en tableau 1D pour une boucle facile
+            
+                    for idx, col in enumerate(variables.columns):
+                        mean = df_results[col].mean()
+                        std_dev = df_results[col].std()
+                        upper_limit = mean + 3 * std_dev
+                        lower_limit = mean - 3 * std_dev
+            
+                        axes[idx].plot(df_results.index, data[col], color="blue", alpha=0.6, label=col)
+                        axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label="Mean + 3σ")
+                        axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label="Mean - 3σ")
+                        axes[idx].set_title(f"Tendance : {col}")
+                        axes[idx].set_xlabel("Index")
+                        axes[idx].set_ylabel(col)
+                        axes[idx].legend()
+                        axes[idx].grid(True)
+            
+                    # Supprimer les axes vides si le nombre de variables est impair
+                    for idx in range(num_vars, len(axes)):
+                        fig.delaxes(axes[idx])
+
+                    plt.tight_layout()
+                    st.pyplot(fig)
                 
                 # Download button for Excel
                 st.download_button(
