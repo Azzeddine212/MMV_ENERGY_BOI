@@ -5,6 +5,7 @@ import joblib
 import pickle
 import matplotlib.pyplot as plt
 from xgboost import XGBRegressor
+import seaborn as sns
 import io
 
 # Désactiver les avertissements
