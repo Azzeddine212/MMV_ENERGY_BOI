@@ -177,7 +177,7 @@ if uploaded_file is not None:
                         width = patch.get_width()
                         x_position = patch.get_x() + width / 2
                         percentage = (height / total) * 100
-                        ax.text(x_position, height + 0.01, f'{percentage:.1f}%', ha='center', fontsize=9)
+                        ax.text(x_position, height + 0.05, f'{percentage:.1f}%', ha='center', fontsize=9)
                     
                     # Ajouter des titres et labels
                     ax.set_title("Histogramme des Prédictions de Consommation Énergétique", fontsize=14)
