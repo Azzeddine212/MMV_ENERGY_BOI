@@ -170,6 +170,14 @@ if uploaded_file is not None:
                     ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
                     ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
                     ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
+
+                    total = df_results["Prédictions"].shape[0]
+                    for patch in ax.patches:
+                        height = patch.get_height()
+                        width = patch.get_width()
+                        x_position = patch.get_x() + width / 2
+                        percentage = (height / total) * 100
+                        ax.text(x_position, height + 0.01, f'{percentage:.1f}%', ha='center', fontsize=9)
                     
                     # Ajouter des titres et labels
                     ax.set_title("Histogramme des Prédictions de Consommation Énergétique", fontsize=14)
