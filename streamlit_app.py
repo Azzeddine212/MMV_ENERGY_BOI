@@ -150,7 +150,7 @@ if uploaded_file is not None:
                 st.pyplot(fig)
 
                 # Vérifier que la colonne "Prédictions" existe
-                if "Prédictions" in df_pred.columns:
+                if "Prédictions" in df_results.columns:
                     # Calcul des statistiques
                     moyenne = df_results["Prédictions"].mean()
                     mediane = df_results["Prédictions"].median()
