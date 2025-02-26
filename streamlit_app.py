@@ -148,36 +148,13 @@ if uploaded_file is not None:
                 ax.legend()
                 ax.grid(True)
                 st.pyplot(fig)
-                def categoriser_conso(valeur):
-                    """Catégorise la consommation énergétique en Faible, Moyen ou Élevé."""
-                    if valeur < 145:
-                        return "Faible"
-                    elif 145 <= valeur <= 185:
-                        return "Moyen"
-                    else:
-                        return "Élevé"
-                # Appliquer la fonction de catégorisation
-                df_results["Niveau de consommation"] = df_results["Prédictions"].apply(categoriser_conso)
-                
-                # Afficher la répartition des niveaux
-                st.write("### Répartition des niveaux de consommation :")
-                st.write(df_results["Niveau de consommation"].value_counts())
-                
-                # Afficher un graphique en camembert
-                fig_pie, ax_pie = plt.subplots()
-                df_results["Niveau de consommation"].value_counts().plot(
-                    kind="pie", autopct="%1.1f%%", colors=["green", "orange", "red"], ax=ax_pie
-                )
-                ax_pie.set_ylabel("")
-                ax_pie.set_title("Répartition des niveaux de consommation")
-                st.pyplot(fig_pie)
 
                 # Vérifier que la colonne "Prédictions" existe
                 if "Prédictions" in df_pred.columns:
                     # Calcul des statistiques
-                    moyenne = df_pred["Prédictions"].mean()
-                    mediane = df_pred["Prédictions"].median()
-                    ecart_type = df_pred["Prédictions"].std()
+                    moyenne = df_results["Prédictions"].mean()
+                    mediane = df_results["Prédictions"].median()
+                    ecart_type = df_results["Prédictions"].std()
                     
                     # Affichage des statistiques
                     st.write(f"**Moyenne:** {moyenne:.2f} kWh")
@@ -186,7 +163,7 @@ if uploaded_file is not None:
                     
                     # Tracer l'histogramme avec KDE
                     fig, ax = plt.subplots(figsize=(10, 5))
-                    sns.histplot(df_pred["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
+                    sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
                     
                     # Ajouter les statistiques sur le graphique
                     ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
