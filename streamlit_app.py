@@ -188,8 +188,8 @@ if uploaded_file is not None:
                     
                     # Affichage du graphique dans Streamlit
                     st.pyplot(fig)
-                else:
-                    st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
+                    else:
+                        st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
                     
                 with tab2:
                     # Plotting each variable
