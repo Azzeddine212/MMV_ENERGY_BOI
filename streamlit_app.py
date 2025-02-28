@@ -151,7 +151,7 @@ if uploaded_file is not None:
                 tab1, tab2, tab3 = st.tabs(["📊 Prédictions(Métriques)", "📈 statistiques & Analyse", "📥 Télécharger"])
 
                 with tab1:
-                    st.dataframe(df_test.describe())
+                    st.dataframe(df_results.describe())
                     if "Prédictions" in df_results.columns:
                         # Calcul des statistiques
                         moyenne = df_results["Prédictions"].mean()
