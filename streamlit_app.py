@@ -98,7 +98,7 @@ st.title("🔍 Prédiction de la Consommation d'Énergie")
 uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
 
 if uploaded_file is not None:
-    data_boiry = pd.read_excel(uploaded_file)
+    data_boiry = pd.read_excel(uploaded_file, index_col='Date')
     st.success("✅ Fichier chargé avec succès !")
     st.dataframe(data_boiry.head())
     
