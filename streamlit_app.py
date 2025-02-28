@@ -86,7 +86,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     variables = data_test.drop(columns=[target_column])
     X_scaled = scaler.transform(variables)
     predictions = model.predict(X_scaled)
-    df_pred = pd.DataFrame(predictions, columns=["Prédictions"], index=data_boiry.index)
+    df_pred = pd.DataFrame(predictions, columns=["Prédictions"], index= data_test.index)
     df_test = pd.concat([variables, df_pred], axis=1)
     
     return df_test, variables
