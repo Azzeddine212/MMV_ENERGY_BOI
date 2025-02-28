@@ -173,13 +173,9 @@ if uploaded_file is not None:
                         ax.legend()
                         st.pyplot(fig)
 
-                 with col2:
-                    fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))    # Plotting each variable
-                    
-                    # If there is only one column, axes will be a single object, not an array
+                with col2:
                     if len(variables.columns) > 0:
                         st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
-                
                         num_cols = 2  # Nombre de graphes par ligne
                         num_vars = len(variables.columns)
                         rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Calcul du nombre de lignes
@@ -208,7 +204,6 @@ if uploaded_file is not None:
     
                         plt.tight_layout()
                         st.pyplot(fig)
-
                 
                 # Download results
                 st.download_button(
