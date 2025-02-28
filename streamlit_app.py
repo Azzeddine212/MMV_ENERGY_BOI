@@ -75,9 +75,6 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
             if valeurs_hors_min > 0 or valeurs_hors_max > 0:
                 valeurs_hors_limites[col] = (valeurs_hors_min, valeurs_hors_max)
     
-    st.title("La description des données après traitement :")
-    st.dataframe(data_test.describe())
-    
     for col in data_test.columns:
         if col in df_lim.columns:
             data_test = data_test[(data_test[col] >= df_lim.loc['min', col]) & (data_test[col] <= df_lim.loc['max', col])]
@@ -123,60 +120,98 @@ if uploaded_file is not None:
             df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
             if df_results is not None:
                 st.success("✅ Prédictions terminées !")
-                
+
+
+                # Affichage des statistiques
+                moyenne = df_results["Prédictions"].mean()
+                mediane = df_results["Prédictions"].median()
+                ecart_type = df_results["Prédictions"].std()
+                st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+                st.write(f"**Médiane:** {mediane:.2f} kWh")
+                st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
+
+                # Plotting the predictions
+                fig, ax = plt.subplots(figsize=(10, 5))
+                mean = df_results["Prédictions"].mean()
+                std_dev = df_results["Prédictions"].std()
+                upper_limit = mean + 3 * std_dev
+                lower_limit = mean - 3 * std_dev
+    
+                ax.axhline(upper_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
+                ax.axhline(lower_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
+                ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
+                ax.set_title("Prédiction CB24")
+                ax.set_xlabel("Date")
+                ax.set_ylabel("Conso NRJ (kWh/tcossette)")
+                ax.legend()
+                ax.grid(True)
+                st.pyplot(fig)
+
                 # Onglets
-                tab1, tab2, tab3 = st.tabs(["📊 Prédictions", "📈 Graphiques", "📥 Télécharger"])
+                tab1, tab2, tab3 = st.tabs(["📊 Prédictions(Métriques)", "📈 statistiques & Analyse", "📥 Télécharger"])
 
                 with tab1:
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.dataframe(df_results.head())
-
-                    with col2:
-                        # Affichage des statistiques
+                    st.dataframe(data_test.describe())
+                    if "Prédictions" in df_results.columns:
+                        # Calcul des statistiques
                         moyenne = df_results["Prédictions"].mean()
                         mediane = df_results["Prédictions"].median()
                         ecart_type = df_results["Prédictions"].std()
+                        
+                        # Affichage des statistiques
                         st.write(f"**Moyenne:** {moyenne:.2f} kWh")
                         st.write(f"**Médiane:** {mediane:.2f} kWh")
                         st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
-
-                with tab2:
-                    # Visualisation des graphiques
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        # Visualisation des prédictions
+                        
+                        # Tracer l'histogramme avec KDE
                         fig, ax = plt.subplots(figsize=(10, 5))
-                        mean = df_results["Prédictions"].mean()
-                        std_dev = df_results["Prédictions"].std()
-                        upper_limit = mean + 3 * std_dev
-                        lower_limit = mean - 3 * std_dev
-        
-                        ax.axhline(upper_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
-                        ax.axhline(lower_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
-                        ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
-                        ax.set_title("Prédiction CB24")
-                        ax.set_xlabel("Date")
-                        ax.set_ylabel("Conso NRJ (kWh/tcossette)")
-                        ax.legend()
-                        ax.grid(True)
-                        st.pyplot(fig)
-
-                    with col2:
-                        # Affichage des tendances des variables
+                        sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
+                        
+                        # Ajouter les statistiques sur le graphique
+                        ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
+                        ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
+                        ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
+    
+                        total = df_results["Prédictions"].shape[0]
+                    for patch in ax.patches:
+                        height = patch.get_height()
+                        width = patch.get_width()
+                        x_position = patch.get_x() + width / 2
+                        percentage = (height / total) * 100
+                        ax.text(x_position, height + 5, f'{percentage:.1f}%', ha='center', fontsize=7)
+                    
+                    # Ajouter des titres et labels
+                    ax.set_title("Histogramme des Prédictions de Consommation Énergétique", fontsize=14)
+                    ax.set_xlabel("Consommation Énergétique (kWh)", fontsize=12)
+                    ax.set_ylabel("Densité", fontsize=12)
+                    ax.legend()
+                    
+                    # Affichage du graphique dans Streamlit
+                    st.pyplot(fig)
+                else:
+                    st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
+                    
+                with tab2:
+                    # Plotting each variable
+                    fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
+                    
+                    # If there is only one column, axes will be a single object, not an array
+                    if len(variables.columns) > 0:
                         st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
-                        num_cols = 2
+                
+                        num_cols = 2  # Nombre de graphes par ligne
                         num_vars = len(variables.columns)
-                        rows = (num_vars // num_cols) + (num_vars % num_cols > 0)
+                        rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Calcul du nombre de lignes
                         
                         fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
-                        axes = axes.flatten()
-                        
+                        axes = axes.flatten()  # Convertir en tableau 1D pour une boucle facile
+                
                         for idx, col in enumerate(variables.columns):
                             mean = variables[col].mean()
                             std_dev = variables[col].std()
                             upper_limit = mean + 3 * std_dev
                             lower_limit = mean - 3 * std_dev
+                
                             axes[idx].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
                             axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                             axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
@@ -186,12 +221,12 @@ if uploaded_file is not None:
                             axes[idx].legend()
                             axes[idx].grid(True)
                 
+                        # Supprimer les axes vides si le nombre de variables est impair
                         for idx in range(num_vars, len(axes)):
                             fig.delaxes(axes[idx])
     
                         plt.tight_layout()
                         st.pyplot(fig)
-
                 with tab3:
                     # Télécharger les résultats
                     st.download_button(
