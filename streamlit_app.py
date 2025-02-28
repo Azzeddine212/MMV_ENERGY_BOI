@@ -33,7 +33,7 @@ def add_bg_from_local(image_file):
         )
 
 # Ajouter l'image en arrière-plan
-#add_bg_from_local('interface.jpg')
+# add_bg_from_local('interface.jpg')
 
 # Convertir un DataFrame en fichier Excel pour téléchargement
 def convert_df_to_excel(df):
@@ -75,18 +75,8 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
             if valeurs_hors_min > 0 or valeurs_hors_max > 0:
                 valeurs_hors_limites[col] = (valeurs_hors_min, valeurs_hors_max)
     
-    #if valeurs_hors_limites:
-        #st.warning("⚠️ Certaines valeurs sont hors des limites définies par le modèle :")
-        #for col, (hors_min, hors_max) in valeurs_hors_limites.items():
-            #st.write(f"- **{col}** : {hors_min} valeurs < min, {hors_max} valeurs > max")
-            #st.write(f"  🟢 Intervalle autorisé : **[{df_lim.loc['min', col]} - {df_lim.loc['max', col]}]**")
-    #else:
-        #st.success("✅ Toutes les valeurs sont dans les intervalles min/max définis par le modèle.")
-
-
-    st.title("La description des données aprés traitement :")
+    st.title("La description des données après traitement :")
     st.dataframe(data_test.describe())
-    
     
     for col in data_test.columns:
         if col in df_lim.columns:
@@ -134,66 +124,59 @@ if uploaded_file is not None:
             if df_results is not None:
                 st.success("✅ Prédictions terminées !")
                 
-                # Display multiple tables side by side
-                col1, col2 = st.columns(2)
-                  
-                with col1:
-                    st.dataframe(df_results.head())
-                
-                    # Visualisation des prédictions
-                    fig, ax = plt.subplots(figsize=(10, 5))
-                    mean = df_results["Prédictions"].mean()
-                    std_dev = df_results["Prédictions"].std()
-                    upper_limit = mean + 3 * std_dev
-                    lower_limit = mean - 3 * std_dev
-        
-                    ax.axhline(upper_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
-                    ax.axhline(lower_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
-                    ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
-                    ax.set_title("Prédiction CB24")
-                    ax.set_xlabel("Date")
-                    ax.set_ylabel("Conso NRJ (kWh/tcossette)")
-                    ax.legend()
-                    ax.grid(True)
-                    st.pyplot(fig)
-                    
-                    # Calcul et affichage des statistiques
-                    if "Prédictions" in df_results.columns:
+                # Onglets
+                tab1, tab2, tab3 = st.tabs(["📊 Prédictions", "📈 Graphiques", "📥 Télécharger"])
+
+                with tab1:
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.dataframe(df_results.head())
+
+                    with col2:
+                        # Affichage des statistiques
                         moyenne = df_results["Prédictions"].mean()
                         mediane = df_results["Prédictions"].median()
                         ecart_type = df_results["Prédictions"].std()
                         st.write(f"**Moyenne:** {moyenne:.2f} kWh")
                         st.write(f"**Médiane:** {mediane:.2f} kWh")
                         st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
-                        
-                        # Tracer l'histogramme avec KDE
+
+                with tab2:
+                    # Visualisation des graphiques
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        # Visualisation des prédictions
                         fig, ax = plt.subplots(figsize=(10, 5))
-                        sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
-                        ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
-                        ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
-                        ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
-                        ax.set_title("Histogramme des Prédictions de Consommation Énergétique")
-                        ax.set_xlabel("Consommation Énergétique (kWh)")
-                        ax.set_ylabel("Densité")
+                        mean = df_results["Prédictions"].mean()
+                        std_dev = df_results["Prédictions"].std()
+                        upper_limit = mean + 3 * std_dev
+                        lower_limit = mean - 3 * std_dev
+        
+                        ax.axhline(upper_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
+                        ax.axhline(lower_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
+                        ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
+                        ax.set_title("Prédiction CB24")
+                        ax.set_xlabel("Date")
+                        ax.set_ylabel("Conso NRJ (kWh/tcossette)")
                         ax.legend()
+                        ax.grid(True)
                         st.pyplot(fig)
 
-                with col2:
-                    if len(variables.columns) > 0:
+                    with col2:
+                        # Affichage des tendances des variables
                         st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
-                        num_cols = 2  # Nombre de graphes par ligne
+                        num_cols = 2
                         num_vars = len(variables.columns)
-                        rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Calcul du nombre de lignes
+                        rows = (num_vars // num_cols) + (num_vars % num_cols > 0)
                         
                         fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
-                        axes = axes.flatten()  # Convertir en tableau 1D pour une boucle facile
-                
+                        axes = axes.flatten()
+                        
                         for idx, col in enumerate(variables.columns):
                             mean = variables[col].mean()
                             std_dev = variables[col].std()
                             upper_limit = mean + 3 * std_dev
                             lower_limit = mean - 3 * std_dev
-                
                             axes[idx].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
                             axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                             axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
@@ -203,17 +186,17 @@ if uploaded_file is not None:
                             axes[idx].legend()
                             axes[idx].grid(True)
                 
-                        # Supprimer les axes vides si le nombre de variables est impair
                         for idx in range(num_vars, len(axes)):
                             fig.delaxes(axes[idx])
     
                         plt.tight_layout()
                         st.pyplot(fig)
-                
-                # Download results
-                st.download_button(
-                    label="💾 Télécharger les résultats",
-                    data=convert_df_to_excel(df_results),
-                    file_name="predictions.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
+
+                with tab3:
+                    # Télécharger les résultats
+                    st.download_button(
+                        label="💾 Télécharger les résultats",
+                        data=convert_df_to_excel(df_results),
+                        file_name="predictions.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    )
