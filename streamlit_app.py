@@ -85,7 +85,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
 
 
     st.title("La description des données aprés traitement :")
-    st.dataframe(data_test.head())
+    st.dataframe(data_test.describe())
     
     
     for col in data_test.columns:
