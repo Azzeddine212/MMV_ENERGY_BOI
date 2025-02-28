@@ -33,7 +33,7 @@ def add_bg_from_local(image_file):
         )
 
 # Ajouter l'image en arrière-plan
-add_bg_from_local('interface.jpg')
+#add_bg_from_local('interface.jpg')
 
 # Convertir un DataFrame en fichier Excel pour téléchargement
 def convert_df_to_excel(df):
