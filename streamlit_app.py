@@ -131,8 +131,7 @@ if uploaded_file is not None:
                 
                 # Display multiple tables side by side
                 col1, col2 = st.columns(2)
-                
-                
+                  
                 with col1:
                     st.dataframe(df_results.head())
                 
@@ -175,8 +174,7 @@ if uploaded_file is not None:
                         st.pyplot(fig)
 
                  with col2:
-                    # Plotting each variable
-                    fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
+                    fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))    # Plotting each variable
                     
                     # If there is only one column, axes will be a single object, not an array
                     if len(variables.columns) > 0:
