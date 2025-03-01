@@ -126,9 +126,9 @@ if uploaded_file is not None:
                 moyenne = df_results["Prédictions"].mean()
                 mediane = df_results["Prédictions"].median()
                 ecart_type = df_results["Prédictions"].std()
-                #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
-                #st.write(f"**Médiane:** {mediane:.2f} kWh")
-                #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
+                st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+                st.write(f"**Médiane:** {mediane:.2f} kWh")
+                st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
 
                 # Plotting the predictions
                 fig, ax = plt.subplots(figsize=(10, 5))
@@ -159,9 +159,9 @@ if uploaded_file is not None:
                         ecart_type = df_results["Prédictions"].std()
                         
                         # Affichage des statistiques
-                        st.write(f"**Moyenne:** {moyenne:.2f} kWh")
-                        st.write(f"**Médiane:** {mediane:.2f} kWh")
-                        st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
+                        #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+                        #st.write(f"**Médiane:** {mediane:.2f} kWh")
+                        #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
                         
                         # Tracer l'histogramme avec KDE
                         fig, ax = plt.subplots(figsize=(10, 5))
