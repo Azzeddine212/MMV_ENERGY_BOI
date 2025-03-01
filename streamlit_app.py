@@ -135,7 +135,7 @@ if uploaded_file is not None:
                 st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
 
                 # Plotting the predictions
-                fig, ax = plt.subplots(figsize=(10, 5))
+                fig, ax = plt.subplots(figsize=(8, 4))
                 mean = df_results["Prédictions"].mean()
                 std_dev = df_results["Prédictions"].std()
                 upper_limit = mean + 3 * std_dev
