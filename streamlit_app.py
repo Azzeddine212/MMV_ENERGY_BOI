@@ -96,7 +96,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
 st.set_page_config(page_title="Tableau de Bord Interactif", layout="wide")
 
 # Titre de l'application
-st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
+#st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
 
 # Téléchargement du fichier Excel
 uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
