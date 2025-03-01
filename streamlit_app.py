@@ -168,7 +168,7 @@ if uploaded_file is not None:
                         #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
                         
                         # Tracer l'histogramme avec KDE
-                        fig, ax = plt.subplots(figsize=(10, 5))
+                        fig, ax = plt.subplots(figsize=(20, 10))
                         sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
                         
                         # Ajouter les statistiques sur le graphique
