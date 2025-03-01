@@ -14,6 +14,10 @@ import warnings
 # Désactiver les avertissements
 warnings.filterwarnings("ignore")
 
+
+# Configuration de la page en mode large
+st.set_page_config(page_title="🔍 Prédiction de la Consommation d'Énergie BOIRY", layout="wide")
+
 # Fonction pour ajouter une image en arrière-plan via CSS
 def add_bg_from_local(image_file):
     with open(image_file, "rb") as image:
@@ -91,9 +95,6 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     
     return df_test, variables
 
-
-# Configuration de la page en mode large
-st.set_page_config(page_title="🔍 Prédiction de la Consommation d'Énergie BOIRY", layout="wide")
 
 # Titre de l'application
 st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
