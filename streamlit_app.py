@@ -92,7 +92,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     return df_test, variables
 
 # Titre de l'application
-st.title("🔍 Prédiction de la Consommation d'Énergie")
+st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
 
 # Téléchargement du fichier Excel
 uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
@@ -126,9 +126,9 @@ if uploaded_file is not None:
                 moyenne = df_results["Prédictions"].mean()
                 mediane = df_results["Prédictions"].median()
                 ecart_type = df_results["Prédictions"].std()
-                st.write(f"**Moyenne:** {moyenne:.2f} kWh")
-                st.write(f"**Médiane:** {mediane:.2f} kWh")
-                st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
+                #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+                #st.write(f"**Médiane:** {mediane:.2f} kWh")
+                #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
 
                 # Plotting the predictions
                 fig, ax = plt.subplots(figsize=(10, 5))
