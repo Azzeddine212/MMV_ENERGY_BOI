@@ -152,7 +152,7 @@ if uploaded_file is not None:
     objectif = st.sidebar.number_input("🔢 Entrez l'objectif de consommation énergétique (kWh)", min_value=100, max_value=250, value=180)  
     
     if st.sidebar.button("🚀 Lancer la prédiction"):
-        with st.sidebar.spinner("📊 Calcul en cours..."):
+        with st.spinner("📊 Calcul en cours..."):
             df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
             if df_results is not None:
                 st.sidebar.success("✅ Prédictions terminées !")
