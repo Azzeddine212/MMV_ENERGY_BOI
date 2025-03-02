@@ -57,9 +57,28 @@ def process_boiry_data(df_boiry):
     df_boiry['Temp sortie JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp sortie JAE A'], row['Temp sortie JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
     df_boiry['Débit JAE_tot'] = df_boiry['Débit JAE A'] + df_boiry['Débit JAE B']
     df_boiry['Débit vapeur_tot'] = df_boiry['Débit vapeur 140T'] + df_boiry['Débit vapeur 120T']
+    
+    # Sélection des colonnes moyennées
+    df_boiry= df_boiry[['Date','Tonnage', 'Température', 'Soutirage_tot', 'Temp jus TEJC',
+       'Débit jus chaulé', 'Temp jus chaulé', 'Débit JC1', 'Temp JC1 ech 1',
+       'Temp JC1 ech 2', '% condenseur', 'Temp entrée JAE_moy',
+       'Temp sortie JAE_moy', 'Débit JAE_tot', 'Débit sirop 5C',
+       'Débit sirop stocké', 'Pression VE', 'Débit SBP', 'Débit refonte',
+       'Débit sucre', 'Richesse cossettes - BOI & ART (g%g)',
+       'JAE - Brix poids (g%g)', 'Sirop sortie évapo-Brix poids (g%g)',
+       'LS1 - Brix poids (g%g)', 'LS1 concentrée - Brix poids (g%g)',
+       'SBP - Brix (g%g)', 'SBP instantané - Brix (g%g)',
+       'Débit eau_tot', 'Débit vapeur_tot', 'Temp fumée_moy','Energie KWh 0°C']]
+    
     df_boiry['Energie kWh 0°C_pci'] = df_boiry['Energie KWh 0°C'] * 0.9
     df_boiry['Conso NRJ Usine (kwh/tcossette)'] = df_boiry['Energie kWh 0°C_pci'] / df_boiry['Tonnage']
+    
     df_boiry.reset_index(drop=True, inplace=True)
+
+    # Ajout des données de la chaufferie
+    df_boiry['Temp fumée_moy'] = df_boiry['Temp fumée_moy']
+    df_boiry.reset_index(drop=True, inplace=True)
+
     return df_boiry
 
 # Chargement du modèle et prédiction
@@ -90,7 +109,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     variables = data_test.drop(columns=[target_column])
     X_scaled = scaler.transform(variables)
     predictions = model.predict(X_scaled)
-    df_pred = pd.DataFrame(predictions, columns=["Prédictions"], index= data_test.index)
+    df_pred = pd.DataFrame(predictions, columns=["Prédictions"], index= variables.index)
     df_test = pd.concat([variables, df_pred], axis=1)
     
     return df_test, variables
