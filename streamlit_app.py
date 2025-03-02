@@ -122,6 +122,8 @@ st.sidebar.title("🔧 Téléchargement & Exploration des données")
 # Téléchargement du fichier Excel
 uploaded_file = st.sidebar.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
 
+
+
 # Ajout de sélecteurs et boutons dans le panneau latéral
 option = st.sidebar.selectbox("Sélectionnez une option :", ["Option 1", "Option 2", "Option 3"])
 if st.sidebar.button("Valider"):
@@ -148,7 +150,7 @@ if uploaded_file is not None:
     #data_boiry = pd.read_excel(uploaded_file, index_col='Date')
     data_boiry = pd.read_excel(uploaded_file)
     df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
-    st.success("✅ Fichier chargé avec succès !")
+    st.sidebar.success("✅ Fichier chargé avec succès !")
     st.dataframe(variables.describe())
     
     # Input pour définir l'objectif
