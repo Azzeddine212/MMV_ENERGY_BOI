@@ -101,15 +101,16 @@ st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
 
 # Téléchargement du fichier Excel
 uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
-df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
 if uploaded_file is not None:
-    data_boiry = pd.read_excel(uploaded_file, index_col='Date')
-    st.success("✅ Fichier chargé avec succès !")
-    st.dataframe(variables.describe())
-    
+
     model_path = "xgb_model_cb22-23-24_10_param.joblib"
     scaler_path = "scaler_cb22-23-24_10_param.pkl"
     target_column = "Conso NRJ Usine (kwh/tcossette)"
+    
+    data_boiry = pd.read_excel(uploaded_file, index_col='Date')
+    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
+    st.success("✅ Fichier chargé avec succès !")
+    st.dataframe(variables.describe())
     
     df_lim = pd.DataFrame({
         "Tonnage": [500, 900], "Température": [-2, 50],
