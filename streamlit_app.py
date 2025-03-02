@@ -158,118 +158,119 @@ if uploaded_file is not None:
             if df_results is not None:
                 
                 st.sidebar.success("✅ Prédictions terminées !")
-                page = st.sidebar.radio("Sélectionnez une page :", ["🔍 résultat de prédiction","📈 statistiques & Analyse", "📥 Télécharger"])
                 
-                if page == "🔍 résultat de prédiction":
-                             
-                    # Affichage des statistiques
-                    #moyenne = df_results["Prédictions"].mean()
-                    #mediane = df_results["Prédictions"].median()
-                    #ecart_type = df_results["Prédictions"].std()
-                    #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
-                    #st.write(f"**Médiane:** {mediane:.2f} kWh")
-                    #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
+    page = st.sidebar.radio("Sélectionnez une page :", ["🔍 résultat de prédiction","📈 statistiques & Analyse", "📥 Télécharger"])
     
-                    st.dataframe(df_results["Prédictions"].describe().to_frame().T)
-                    
-                    # Plotting the predictions
-                    fig, ax = plt.subplots(figsize=(20, 10))
-                    mean = df_results["Prédictions"].mean()
-                    std_dev = df_results["Prédictions"].std()
-                    upper_limit = mean + 2 * std_dev
-                    lower_limit = mean - 2 * std_dev
-    
-                    # Ajouter une ligne horizontale représentant l'objectif
-                    ax.axhline(y=objectif, color="red", linestyle="--", linewidth=2, label=f'Objectif : {objectif} kWh')
-    
-                    # Identifier et marquer les points au-dessus de l'objectif
-                    au_dessus = df_results["Prédictions"] > objectif  # Masque booléen
-                    ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
+    if page == "🔍 résultat de prédiction":
+                 
+        # Affichage des statistiques
+        #moyenne = df_results["Prédictions"].mean()
+        #mediane = df_results["Prédictions"].median()
+        #ecart_type = df_results["Prédictions"].std()
+        #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+        #st.write(f"**Médiane:** {mediane:.2f} kWh")
+        #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
+
+        st.dataframe(df_results["Prédictions"].describe().to_frame().T)
         
-                    ax.axhline(upper_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean + 2σ = {upper_limit:.2f}")
-                    ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean - 2σ = {lower_limit:.2f}")
-                    ax.plot(df_results.index, df_results["Prédictions"], color="blue", label='Prédiction CB24', alpha=0.6)
-                    #ax.bar(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
-                    ax.set_title("Prédiction CB24")
-                    ax.set_xlabel("Date")
-                    ax.set_ylabel("Conso NRJ (kWh/tcossette)")
-                    ax.legend()
-                    ax.grid(True)
-                    st.pyplot(fig)
-    
-    
-                if "Prédictions" in df_results.columns:
-                    moyenne = df_results["Prédictions"].mean()
-                    mediane = df_results["Prédictions"].median()
-                    ecart_type = df_results["Prédictions"].std()
-            
-                    st.write(f"**Moyenne :** {moyenne:.2f} kWh")
-                    st.write(f"**Médiane :** {mediane:.2f} kWh")
-                    st.write(f"**Écart-type :** {ecart_type:.2f} kWh")
-            
-                    # Tracer l'histogramme avec KDE
-                    fig, ax = plt.subplots(figsize=(10, 5))
-                    sns.histplot(df_results["Prédictions"], bins=10, kde=True, color='blue', ax=ax)
-            
-                    ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
-                    ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
-                    ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
-            
-                    ax.set_title("Histogramme des Prédictions")
-                    ax.set_xlabel("Consommation (kWh)")
-                    ax.set_ylabel("Densité")
-                    ax.legend()
-                    st.pyplot(fig)
-                else:
-                    st.error("Le fichier ne contient pas de colonne 'Prédictions'.")
-      
+        # Plotting the predictions
+        fig, ax = plt.subplots(figsize=(20, 10))
+        mean = df_results["Prédictions"].mean()
+        std_dev = df_results["Prédictions"].std()
+        upper_limit = mean + 2 * std_dev
+        lower_limit = mean - 2 * std_dev
 
-            if page == "📈 statistiques & Analysel":
-                # Plotting each variable
-                fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 2 * len(variables.columns)))
-                
-                # If there is only one column, axes will be a single object, not an array
-                if len(variables.columns) > 0:
-                    st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
-            
-                    num_cols = 2  # Nombre de graphes par ligne
-                    num_vars = len(variables.columns)
-                    rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Calcul du nombre de lignes
-                    
-                    fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
-                    axes = axes.flatten()  # Convertir en tableau 1D pour une boucle facile
-            
-                    for idx, col in enumerate(variables.columns):
-                        mean = variables[col].mean()
-                        std_dev = variables[col].std()
-                        upper_limit = mean + 3 * std_dev
-                        lower_limit = mean - 3 * std_dev
-            
-                        axes[idx].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
-                        axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
-                        axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
-                        axes[idx].set_title(f"Tendance : {col}")
-                        axes[idx].set_xlabel("Date")
-                        axes[idx].set_ylabel(col)
-                        axes[idx].legend()
-                        axes[idx].grid(True)
-            
-                    # Supprimer les axes vides si le nombre de variables est impair
-                    for idx in range(num_vars, len(axes)):
-                        fig.delaxes(axes[idx])
+        # Ajouter une ligne horizontale représentant l'objectif
+        ax.axhline(y=objectif, color="red", linestyle="--", linewidth=2, label=f'Objectif : {objectif} kWh')
 
-                    plt.tight_layout()
-                    st.pyplot(fig)
-            
-            # --- Page Téléchargement ---
-            elif page == "Téléchargement":
-                st.title("📥 Télécharger les Résultats")
-            
-                @st.cache_data
-                def convert_df_to_csv(df):
-                    st.download_button(
-                        label="💾 Télécharger les résultats",
-                        data=convert_df_to_excel(df_results),
-                        file_name="predictions.xlsx",
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    )
+        # Identifier et marquer les points au-dessus de l'objectif
+        au_dessus = df_results["Prédictions"] > objectif  # Masque booléen
+        ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
+
+        ax.axhline(upper_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean + 2σ = {upper_limit:.2f}")
+        ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean - 2σ = {lower_limit:.2f}")
+        ax.plot(df_results.index, df_results["Prédictions"], color="blue", label='Prédiction CB24', alpha=0.6)
+        #ax.bar(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
+        ax.set_title("Prédiction CB24")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Conso NRJ (kWh/tcossette)")
+        ax.legend()
+        ax.grid(True)
+        st.pyplot(fig)
+
+
+    if "Prédictions" in df_results.columns:
+        moyenne = df_results["Prédictions"].mean()
+        mediane = df_results["Prédictions"].median()
+        ecart_type = df_results["Prédictions"].std()
+
+        st.write(f"**Moyenne :** {moyenne:.2f} kWh")
+        st.write(f"**Médiane :** {mediane:.2f} kWh")
+        st.write(f"**Écart-type :** {ecart_type:.2f} kWh")
+
+        # Tracer l'histogramme avec KDE
+        fig, ax = plt.subplots(figsize=(10, 5))
+        sns.histplot(df_results["Prédictions"], bins=10, kde=True, color='blue', ax=ax)
+
+        ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
+        ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
+        ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
+
+        ax.set_title("Histogramme des Prédictions")
+        ax.set_xlabel("Consommation (kWh)")
+        ax.set_ylabel("Densité")
+        ax.legend()
+        st.pyplot(fig)
+    else:
+        st.error("Le fichier ne contient pas de colonne 'Prédictions'.")
+
+
+if page == "📈 statistiques & Analysel":
+    # Plotting each variable
+    fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 2 * len(variables.columns)))
+    
+    # If there is only one column, axes will be a single object, not an array
+    if len(variables.columns) > 0:
+        st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
+
+        num_cols = 2  # Nombre de graphes par ligne
+        num_vars = len(variables.columns)
+        rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Calcul du nombre de lignes
+        
+        fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
+        axes = axes.flatten()  # Convertir en tableau 1D pour une boucle facile
+
+        for idx, col in enumerate(variables.columns):
+            mean = variables[col].mean()
+            std_dev = variables[col].std()
+            upper_limit = mean + 3 * std_dev
+            lower_limit = mean - 3 * std_dev
+
+            axes[idx].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
+            axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
+            axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
+            axes[idx].set_title(f"Tendance : {col}")
+            axes[idx].set_xlabel("Date")
+            axes[idx].set_ylabel(col)
+            axes[idx].legend()
+            axes[idx].grid(True)
+
+        # Supprimer les axes vides si le nombre de variables est impair
+        for idx in range(num_vars, len(axes)):
+            fig.delaxes(axes[idx])
+
+        plt.tight_layout()
+        st.pyplot(fig)
+
+# --- Page Téléchargement ---
+elif page == "Téléchargement":
+    st.title("📥 Télécharger les Résultats")
+
+    @st.cache_data
+    def convert_df_to_csv(df):
+        st.download_button(
+            label="💾 Télécharger les résultats",
+            data=convert_df_to_excel(df_results),
+            file_name="predictions.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
