@@ -263,9 +263,6 @@ if uploaded_file is not None:
             
                 @st.cache_data
                 def convert_df_to_csv(df):
-                    return df.to_csv(index=False).encode("utf-8")
-            
-                st.download_button(
                     st.download_button(
                         label="💾 Télécharger les résultats",
                         data=convert_df_to_excel(df_results),
