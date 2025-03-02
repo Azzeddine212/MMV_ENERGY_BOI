@@ -146,7 +146,6 @@ if uploaded_file is not None:
     df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
     st.sidebar.success("✅ Fichier chargé avec succès !")
     st.sidebar.success("✅ Exploration et traitement des données effectués avec succès !")
-    st.dataframe(variables.describe())
     
     # Input pour définir l'objectif
     objectif = st.sidebar.number_input("🔢 Entrez l'objectif de consommation énergétique (kWh)", min_value=100, max_value=250, value=180)  
@@ -162,7 +161,7 @@ if uploaded_file is not None:
     page = st.sidebar.radio("Sélectionnez une page :", ["🔍 résultat de prédiction","📈 statistiques & Analyse", "📥 Télécharger"])
     
     if page == "🔍 résultat de prédiction":
-                 
+               
         # Affichage des statistiques
         #moyenne = df_results["Prédictions"].mean()
         #mediane = df_results["Prédictions"].median()
@@ -240,7 +239,7 @@ if uploaded_file is not None:
 
     
     if page == "📈 statistiques & Analyse":
-        
+        st.dataframe(df_results.describe())  
         fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
                 
         # If there is only one column, axes will be a single object, not an array
@@ -280,11 +279,11 @@ if uploaded_file is not None:
     elif page == "📥 Télécharger":
         st.title("📥 Télécharger les Résultats")
     
-        @st.cache_data
-        def convert_df_to_csv(df):
-            st.download_button(
-                label="💾 Télécharger les résultats",
-                data=convert_df_to_excel(df_results),
-                file_name="predictions.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    # Download button for Excel
+        st.download_button(
+            label="💾 Télécharger les résultats",
+            data=convert_df_to_excel(df_results),  # Convert the DataFrame to Excel bytes
+            file_name="predictions.xlsx",  # File name with .xlsx extension
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  # MIME type for Excel
             )
+
