@@ -147,7 +147,7 @@ if uploaded_file is not None:
                 ax.axhline(upper_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                 ax.axhline(lower_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
                 #ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
-                ax.hist(df_results["Prédictions"], color="red", alpha=0.6, label='Prédiction CB24')
+                ax.bar(df_results["Prédictions"], color="red", alpha=0.6, label='Prédiction CB24')
                 ax.set_title("Prédiction CB24")
                 ax.set_xlabel("Date")
                 ax.set_ylabel("Conso NRJ (kWh/tcossette)")
