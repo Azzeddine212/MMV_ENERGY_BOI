@@ -116,26 +116,20 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     
     return df_test, variables
 
-
 # Ajout d'un panneau latéral
-st.sidebar.title("🔧 Paramètres")
-objectif = st.sidebar.number_input("Objectif de consommation énergétique (kWh)", min_value=0, value=50)
+st.sidebar.title("🔧 Téléchargement & Exploration des données")
+
+# Téléchargement du fichier Excel
+uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
 
 # Ajout de sélecteurs et boutons dans le panneau latéral
 option = st.sidebar.selectbox("Sélectionnez une option :", ["Option 1", "Option 2", "Option 3"])
 if st.sidebar.button("Valider"):
     st.sidebar.success(f"✅ Vous avez choisi : {option}")
 
-# Affichage principal
-st.title("📊 Analyse des Consommations Énergétiques")
-st.write(f"Votre objectif est fixé à **{objectif} kWh**.")
-
-
 # Titre de l'application
 st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
 
-# Téléchargement du fichier Excel
-uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
 if uploaded_file is not None:
 
     model_path = "xgb_model_cb22-23-24_10_param.joblib"
