@@ -95,6 +95,8 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     
     return df_test, variables
 
+# ---- Panneau de contrôle (Sidebar) ----
+st.sidebar.header("⚙️ Paramètres du Tableau de Bord")
 
 # Titre de l'application
 st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
