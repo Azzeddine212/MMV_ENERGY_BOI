@@ -120,7 +120,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
 st.sidebar.title("🔧 Téléchargement & Exploration des données")
 
 # Téléchargement du fichier Excel
-uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
+uploaded_file = st.sidebar.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
 
 # Ajout de sélecteurs et boutons dans le panneau latéral
 option = st.sidebar.selectbox("Sélectionnez une option :", ["Option 1", "Option 2", "Option 3"])
