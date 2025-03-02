@@ -263,7 +263,7 @@ if uploaded_file is not None:
                 axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                 axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
                 axes[idx].set_title(f"Tendance : {col}")
-                axes[idx].set_xlabel("Index")
+                axes[idx].set_xlabel("Date")
                 axes[idx].set_ylabel(col)
                 axes[idx].legend()
                 axes[idx].grid(True)
@@ -271,7 +271,7 @@ if uploaded_file is not None:
             # Supprimer les axes vides si le nombre de variables est impair
             for idx in range(num_vars, len(axes)):
                 fig.delaxes(axes[idx])
-
+            plt.xticks(rotation=45)
             plt.tight_layout()
             st.pyplot(fig)
                 
