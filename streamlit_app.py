@@ -135,7 +135,8 @@ if uploaded_file is not None:
         "Conso NRJ Usine (kwh/tcossette)": [125, 205]
     }, index=["min", "max"])
     
-    data_boiry = pd.read_excel(uploaded_file, index_col='Date')
+    #data_boiry = pd.read_excel(uploaded_file, index_col='Date')
+    data_boiry = pd.read_excel(uploaded_file)
     df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
     st.success("✅ Fichier chargé avec succès !")
     st.dataframe(variables.describe())
