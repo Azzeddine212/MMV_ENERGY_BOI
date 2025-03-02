@@ -193,7 +193,7 @@ if uploaded_file is not None:
                 st.pyplot(fig)
 
                 # Onglets
-                #tab1, tab2, tab3 = st.tabs(["📊 Prédictions(Métriques)", "📈 statistiques & Analyse", "📥 Télécharger"])
+                tab1, tab2, tab3 = st.tabs(["📊 Prédictions(Métriques)", "📈 statistiques & Analyse", "📥 Télécharger"])
 
                 with tab1:
                     #st.dataframe(df_results.describe())
