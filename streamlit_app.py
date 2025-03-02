@@ -95,12 +95,13 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     
     return df_test, variables
 
+
 # Titre de l'application
 st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
 
 # Téléchargement du fichier Excel
 uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
-
+df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
 if uploaded_file is not None:
     data_boiry = pd.read_excel(uploaded_file, index_col='Date')
     st.success("✅ Fichier chargé avec succès !")
