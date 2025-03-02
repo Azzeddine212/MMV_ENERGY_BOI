@@ -146,8 +146,8 @@ if uploaded_file is not None:
     
                 ax.axhline(upper_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                 ax.axhline(lower_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
-                #ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
-                ax.bar(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
+                ax.plot(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
+                #ax.bar(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
                 ax.set_title("Prédiction CB24")
                 ax.set_xlabel("Date")
                 ax.set_ylabel("Conso NRJ (kWh/tcossette)")
@@ -173,7 +173,7 @@ if uploaded_file is not None:
                         
                         # Tracer l'histogramme avec KDE
                         fig, ax = plt.subplots(figsize=(20, 10))
-                        sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
+                        sns.histplot(df_results["Prédictions"], bins=30, kde=True, color='blue', ax=ax)
                         
                         # Ajouter les statistiques sur le graphique
                         ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
