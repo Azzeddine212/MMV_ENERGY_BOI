@@ -150,8 +150,8 @@ if uploaded_file is not None:
                 ax.axhline(y=objectif, color="blue", linestyle="--", linewidth=2, label=f'Objectif : {objectif} kWh')
 
                 # Identifier et marquer les points au-dessus de l'objectif
-                au_dessus = df_pred["Prédictions"] > objectif  # Masque booléen
-                ax.scatter(df_pred.index[au_dessus], df_pred["Prédictions"][au_dessus], color="green", label="Au-dessus de l'objectif", zorder=3)
+                au_dessus = df_results["Prédictions"] > objectif  # Masque booléen
+                ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="green", label="Au-dessus de l'objectif", zorder=3)
     
                 ax.axhline(upper_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                 ax.axhline(lower_limit, color="blue", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
