@@ -153,72 +153,76 @@ if uploaded_file is not None:
     
     if st.sidebar.button("🚀 Lancer la prédiction"):
         with st.spinner("📊 Calcul en cours..."):
+                 
             df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
             if df_results is not None:
-                st.sidebar.success("✅ Prédictions terminées !")
-    
-                # Affichage des statistiques
-                #moyenne = df_results["Prédictions"].mean()
-                #mediane = df_results["Prédictions"].median()
-                #ecart_type = df_results["Prédictions"].std()
-                #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
-                #st.write(f"**Médiane:** {mediane:.2f} kWh")
-                #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
-
-                st.dataframe(df_results["Prédictions"].describe().to_frame().T)
                 
-                # Plotting the predictions
-                fig, ax = plt.subplots(figsize=(20, 10))
-                mean = df_results["Prédictions"].mean()
-                std_dev = df_results["Prédictions"].std()
-                upper_limit = mean + 2 * std_dev
-                lower_limit = mean - 2 * std_dev
-
-                # Ajouter une ligne horizontale représentant l'objectif
-                ax.axhline(y=objectif, color="red", linestyle="--", linewidth=2, label=f'Objectif : {objectif} kWh')
-
-                # Identifier et marquer les points au-dessus de l'objectif
-                au_dessus = df_results["Prédictions"] > objectif  # Masque booléen
-                ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
+                st.sidebar.success("✅ Prédictions terminées !")
+                page = st.sidebar.radio("Sélectionnez une page :", ["🔍 résultat de prédiction","📈 statistiques & Analyse", "📥 Télécharger"])
+                
+                if page == "🔍 résultat de prédiction":
+                             
+                    # Affichage des statistiques
+                    #moyenne = df_results["Prédictions"].mean()
+                    #mediane = df_results["Prédictions"].median()
+                    #ecart_type = df_results["Prédictions"].std()
+                    #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+                    #st.write(f"**Médiane:** {mediane:.2f} kWh")
+                    #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
     
-                ax.axhline(upper_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean + 2σ = {upper_limit:.2f}")
-                ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean - 2σ = {lower_limit:.2f}")
-                ax.plot(df_results.index, df_results["Prédictions"], color="blue", label='Prédiction CB24', alpha=0.6)
-                #ax.bar(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
-                ax.set_title("Prédiction CB24")
-                ax.set_xlabel("Date")
-                ax.set_ylabel("Conso NRJ (kWh/tcossette)")
-                ax.legend()
-                ax.grid(True)
-                st.pyplot(fig)
-
-
-            if "Prédictions" in df_results.columns:
-                moyenne = df_results["Prédictions"].mean()
-                mediane = df_results["Prédictions"].median()
-                ecart_type = df_results["Prédictions"].std()
+                    st.dataframe(df_results["Prédictions"].describe().to_frame().T)
+                    
+                    # Plotting the predictions
+                    fig, ax = plt.subplots(figsize=(20, 10))
+                    mean = df_results["Prédictions"].mean()
+                    std_dev = df_results["Prédictions"].std()
+                    upper_limit = mean + 2 * std_dev
+                    lower_limit = mean - 2 * std_dev
+    
+                    # Ajouter une ligne horizontale représentant l'objectif
+                    ax.axhline(y=objectif, color="red", linestyle="--", linewidth=2, label=f'Objectif : {objectif} kWh')
+    
+                    # Identifier et marquer les points au-dessus de l'objectif
+                    au_dessus = df_results["Prédictions"] > objectif  # Masque booléen
+                    ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
         
-                st.write(f"**Moyenne :** {moyenne:.2f} kWh")
-                st.write(f"**Médiane :** {mediane:.2f} kWh")
-                st.write(f"**Écart-type :** {ecart_type:.2f} kWh")
-        
-                # Tracer l'histogramme avec KDE
-                fig, ax = plt.subplots(figsize=(10, 5))
-                sns.histplot(df_results["Prédictions"], bins=10, kde=True, color='blue', ax=ax)
-        
-                ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
-                ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
-                ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
-        
-                ax.set_title("Histogramme des Prédictions")
-                ax.set_xlabel("Consommation (kWh)")
-                ax.set_ylabel("Densité")
-                ax.legend()
-                st.pyplot(fig)
-            else:
-                st.error("Le fichier ne contient pas de colonne 'Prédictions'.")
-
-            page = st.sidebar.radio("Sélectionnez une page :", ["📈 statistiques & Analyse", "📥 Télécharger"])
+                    ax.axhline(upper_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean + 2σ = {upper_limit:.2f}")
+                    ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean - 2σ = {lower_limit:.2f}")
+                    ax.plot(df_results.index, df_results["Prédictions"], color="blue", label='Prédiction CB24', alpha=0.6)
+                    #ax.bar(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
+                    ax.set_title("Prédiction CB24")
+                    ax.set_xlabel("Date")
+                    ax.set_ylabel("Conso NRJ (kWh/tcossette)")
+                    ax.legend()
+                    ax.grid(True)
+                    st.pyplot(fig)
+    
+    
+                if "Prédictions" in df_results.columns:
+                    moyenne = df_results["Prédictions"].mean()
+                    mediane = df_results["Prédictions"].median()
+                    ecart_type = df_results["Prédictions"].std()
+            
+                    st.write(f"**Moyenne :** {moyenne:.2f} kWh")
+                    st.write(f"**Médiane :** {mediane:.2f} kWh")
+                    st.write(f"**Écart-type :** {ecart_type:.2f} kWh")
+            
+                    # Tracer l'histogramme avec KDE
+                    fig, ax = plt.subplots(figsize=(10, 5))
+                    sns.histplot(df_results["Prédictions"], bins=10, kde=True, color='blue', ax=ax)
+            
+                    ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
+                    ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
+                    ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
+            
+                    ax.set_title("Histogramme des Prédictions")
+                    ax.set_xlabel("Consommation (kWh)")
+                    ax.set_ylabel("Densité")
+                    ax.legend()
+                    st.pyplot(fig)
+                else:
+                    st.error("Le fichier ne contient pas de colonne 'Prédictions'.")
+      
 
             if page == "📈 statistiques & Analysel":
                 # Plotting each variable
