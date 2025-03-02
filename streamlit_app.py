@@ -135,7 +135,7 @@ if uploaded_file is not None:
                 #st.write(f"**Médiane:** {mediane:.2f} kWh")
                 #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
 
-                st.dataframe(df_results["Prédictions"].describe().T)
+                st.dataframe(df_results["Prédictions"].describe().to_frame().T)
                 
                 # Plotting the predictions
                 fig, ax = plt.subplots(figsize=(20, 10))
