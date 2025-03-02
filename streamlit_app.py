@@ -95,9 +95,6 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     
     return df_test, variables
 
-# ---- Panneau de contrôle (Sidebar) ----
-st.sidebar.header("⚙️ Paramètres du Tableau de Bord")
-
 # Titre de l'application
 st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
 
@@ -107,7 +104,7 @@ uploaded_file = st.file_uploader("📂 Téléchargez votre fichier Excel", type=
 if uploaded_file is not None:
     data_boiry = pd.read_excel(uploaded_file, index_col='Date')
     st.success("✅ Fichier chargé avec succès !")
-    st.dataframe(data_boiry.head())
+    st.dataframe(dvariables.describe())
     
     model_path = "xgb_model_cb22-23-24_10_param.joblib"
     scaler_path = "scaler_cb22-23-24_10_param.pkl"
@@ -158,7 +155,7 @@ if uploaded_file is not None:
                 tab1, tab2, tab3 = st.tabs(["📊 Prédictions(Métriques)", "📈 statistiques & Analyse", "📥 Télécharger"])
 
                 with tab1:
-                    st.dataframe(df_results.describe())
+                    #st.dataframe(df_results.describe())
                     if "Prédictions" in df_results.columns:
                         # Calcul des statistiques
                         moyenne = df_results["Prédictions"].mean()
