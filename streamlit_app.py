@@ -116,8 +116,6 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     
     return df_test, variables
 
-# Configuration de la page en mode large
-st.set_page_config(page_title="Application avec Panneau Latéral", layout="wide")
 
 # Ajout d'un panneau latéral
 st.sidebar.title("🔧 Paramètres")
