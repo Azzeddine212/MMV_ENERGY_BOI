@@ -239,7 +239,8 @@ if uploaded_file is not None:
             st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
 
     
-    if page == "📈 statistiques & Analysel":
+    if page == "📈 statistiques & Analyse":
+        
         fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
                 
         # If there is only one column, axes will be a single object, not an array
@@ -276,7 +277,7 @@ if uploaded_file is not None:
             st.pyplot(fig)
                 
     # --- Page Téléchargement ---
-    elif page == "Téléchargement":
+    elif page == "📥 Télécharger":
         st.title("📥 Télécharger les Résultats")
     
         @st.cache_data
