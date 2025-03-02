@@ -240,9 +240,8 @@ if uploaded_file is not None:
 
     
     if page == "📈 statistiques & Analysel":
-        # Plotting each variable
-        fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 2 * len(variables.columns)))
-        
+        fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
+                
         # If there is only one column, axes will be a single object, not an array
         if len(variables.columns) > 0:
             st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
@@ -264,7 +263,7 @@ if uploaded_file is not None:
                 axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                 axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
                 axes[idx].set_title(f"Tendance : {col}")
-                axes[idx].set_xlabel("Date")
+                axes[idx].set_xlabel("Index")
                 axes[idx].set_ylabel(col)
                 axes[idx].legend()
                 axes[idx].grid(True)
@@ -272,10 +271,10 @@ if uploaded_file is not None:
             # Supprimer les axes vides si le nombre de variables est impair
             for idx in range(num_vars, len(axes)):
                 fig.delaxes(axes[idx])
-    
+
             plt.tight_layout()
             st.pyplot(fig)
-    
+                
     # --- Page Téléchargement ---
     elif page == "Téléchargement":
         st.title("📥 Télécharger les Résultats")
