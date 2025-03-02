@@ -117,14 +117,14 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
     return df_test, variables
 
 # Ajout d'un panneau latéral
-st.sidebar.title("🔧 Téléchargement & Exploration des données")
+st.sidebar.title("🔍 Entrainement Analyse et Prédiction")
 
 # Téléchargement du fichier Excel
 uploaded_file = st.sidebar.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
 
 
 # Titre de l'application
-st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
+st.title("Prédiction & Analyse de la Consommation d'Énergie BOIRY")
 
 if uploaded_file is not None:
 
@@ -158,9 +158,9 @@ if uploaded_file is not None:
                 
                 st.sidebar.success("✅ Prédictions terminées !")
                 
-    page = st.sidebar.radio("Sélectionnez une page :", ["🔍 résultat de prédiction","📈 statistiques & Analyse", "📥 Télécharger"])
+    page = st.sidebar.radio("Sélectionnez une page :", ["🔍 Prédiction & Analyse","📈 Statistiques & Tendance", "📥 Télécharger"])
     
-    if page == "🔍 résultat de prédiction":
+    if page == "🔍 Prédiction & Analyse":
                
         # Affichage des statistiques
         #moyenne = df_results["Prédictions"].mean()
@@ -238,7 +238,7 @@ if uploaded_file is not None:
             st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
 
     
-    if page == "📈 statistiques & Analyse":
+    if page == "📈 Statistiques & Tendance":
         st.dataframe(df_results.describe())  
         fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
                 
