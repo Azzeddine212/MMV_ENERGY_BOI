@@ -88,6 +88,8 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
         scaler = pickle.load(f)
     
     data_test = process_boiry_data(input_data)
+    data_test["Date"] = pd.to_datetime(data_test["Date"])
+    data_test.set_index("Date", inplace=True)
     data_test = data_test[df_lim.columns.intersection(data_test.columns)]
     
     valeurs_hors_limites = {}
