@@ -233,7 +233,7 @@ if uploaded_file is not None:
                     
                 with tab2:
                     # Plotting each variable
-                    fig, axes = plt.subplots(len(variables.columns), 1, figsize=(20, 2 * len(variables.columns)))
+                    fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 2 * len(variables.columns)))
                     
                     # If there is only one column, axes will be a single object, not an array
                     if len(variables.columns) > 0:
@@ -256,7 +256,7 @@ if uploaded_file is not None:
                             axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                             axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
                             axes[idx].set_title(f"Tendance : {col}")
-                            axes[idx].set_xlabel("Index")
+                            axes[idx].set_xlabel("Date")
                             axes[idx].set_ylabel(col)
                             axes[idx].legend()
                             axes[idx].grid(True)
