@@ -170,15 +170,15 @@ if uploaded_file is not None:
                 lower_limit = mean - 2 * std_dev
 
                 # Ajouter une ligne horizontale représentant l'objectif
-                ax.axhline(y=objectif, color="green", linestyle="--", linewidth=2, label=f'Objectif : {objectif} kWh')
+                ax.axhline(y=objectif, color="red", linestyle="--", linewidth=2, label=f'Objectif : {objectif} kWh')
 
                 # Identifier et marquer les points au-dessus de l'objectif
                 au_dessus = df_results["Prédictions"] > objectif  # Masque booléen
-                ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="green", label="Au-dessus de l'objectif", zorder=3)
+                ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
     
-                ax.axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 2σ = {upper_limit:.2f}")
-                ax.axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 2σ = {lower_limit:.2f}")
-                ax.plot(df_results.index, df_results["Prédictions"], color="black", label='Prédiction CB24', alpha=0.6)
+                ax.axhline(upper_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean + 2σ = {upper_limit:.2f}")
+                ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean - 2σ = {lower_limit:.2f}")
+                ax.plot(df_results.index, df_results["Prédictions"], color="blue", label='Prédiction CB24', alpha=0.6)
                 #ax.bar(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
                 ax.set_title("Prédiction CB24")
                 ax.set_xlabel("Date")
