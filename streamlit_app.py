@@ -198,31 +198,45 @@ if uploaded_file is not None:
         ax.grid(True)
         st.pyplot(fig)
 
+    # Vérifier que la colonne "Prédictions" existe
+        if "Prédictions" in df_results.columns:
+            # Calcul des statistiques
+            moyenne = df_results["Prédictions"].mean()
+            mediane = df_results["Prédictions"].median()
+            ecart_type = df_results["Prédictions"].std()
+            
+            # Affichage des statistiques
+            st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+            st.write(f"**Médiane:** {mediane:.2f} kWh")
+            st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
+            
+            # Tracer l'histogramme avec KDE
+            fig, ax = plt.subplots(figsize=(10, 5))
+            sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
+            
+            # Ajouter les statistiques sur le graphique
+            ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
+            ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
+            ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
 
-    if "Prédictions" in df_results.columns:
-        moyenne = df_results["Prédictions"].mean()
-        mediane = df_results["Prédictions"].median()
-        ecart_type = df_results["Prédictions"].std()
-
-        st.write(f"**Moyenne :** {moyenne:.2f} kWh")
-        st.write(f"**Médiane :** {mediane:.2f} kWh")
-        st.write(f"**Écart-type :** {ecart_type:.2f} kWh")
-
-        # Tracer l'histogramme avec KDE
-        fig, ax = plt.subplots(figsize=(10, 5))
-        sns.histplot(df_results["Prédictions"], bins=10, kde=True, color='blue', ax=ax)
-
-        ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
-        ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
-        ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
-
-        ax.set_title("Histogramme des Prédictions")
-        ax.set_xlabel("Consommation (kWh)")
-        ax.set_ylabel("Densité")
-        ax.legend()
-        st.pyplot(fig)
-    else:
-        st.error("Le fichier ne contient pas de colonne 'Prédictions'.")
+            total = df_results["Prédictions"].shape[0]
+            for patch in ax.patches:
+                height = patch.get_height()
+                width = patch.get_width()
+                x_position = patch.get_x() + width / 2
+                percentage = (height / total) * 100
+                ax.text(x_position, height + 5, f'{percentage:.1f}%', ha='center', fontsize=7)
+            
+            # Ajouter des titres et labels
+            ax.set_title("Histogramme des Prédictions de Consommation Énergétique", fontsize=14)
+            ax.set_xlabel("Consommation Énergétique (kWh)", fontsize=12)
+            ax.set_ylabel("Densité", fontsize=12)
+            ax.legend()
+            
+            # Affichage du graphique dans Streamlit
+            st.pyplot(fig)
+        else:
+            st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
 
     
     if page == "📈 statistiques & Analysel":
