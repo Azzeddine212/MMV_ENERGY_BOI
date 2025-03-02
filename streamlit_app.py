@@ -123,12 +123,6 @@ st.sidebar.title("🔧 Téléchargement & Exploration des données")
 uploaded_file = st.sidebar.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
 
 
-
-# Ajout de sélecteurs et boutons dans le panneau latéral
-option = st.sidebar.selectbox("Sélectionnez une option :", ["Option 1", "Option 2", "Option 3"])
-if st.sidebar.button("Valider"):
-    st.sidebar.success(f"✅ Vous avez choisi : {option}")
-
 # Titre de l'application
 st.title("🔍 Prédiction de la Consommation d'Énergie BOIRY")
 
@@ -151,16 +145,17 @@ if uploaded_file is not None:
     data_boiry = pd.read_excel(uploaded_file)
     df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
     st.sidebar.success("✅ Fichier chargé avec succès !")
+    st.sidebar.success("✅ Exploration et traitement des données effectués avec succès !")
     st.dataframe(variables.describe())
     
     # Input pour définir l'objectif
-    objectif = st.number_input("🔢 Entrez l'objectif de consommation énergétique (kWh)", min_value=100, max_value=250, value=180)  
+    objectif = st.sidebar.number_input("🔢 Entrez l'objectif de consommation énergétique (kWh)", min_value=100, max_value=250, value=180)  
     
     if st.button("🚀 Lancer la prédiction"):
-        with st.spinner("📊 Calcul en cours..."):
+        with stsidebar.spinner("📊 Calcul en cours..."):
             df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
             if df_results is not None:
-                st.success("✅ Prédictions terminées !")
+                st.sidebar.success("✅ Prédictions terminées !")
     
                 # Affichage des statistiques
                 #moyenne = df_results["Prédictions"].mean()
@@ -197,6 +192,11 @@ if uploaded_file is not None:
                 ax.grid(True)
                 st.pyplot(fig)
 
+                # Ajout de sélecteurs et boutons dans le panneau latéral
+                option = st.sidebar.selectbox("Sélectionnez une option :", ["Option 1", "Option 2", "Option 3"])
+                if st.sidebar.button("Valider"):
+                    st.sidebar.success(f"✅ Vous avez choisi : {option}")
+                
                 # Onglets
                 tab1, tab2, tab3 = st.tabs(["📊 Prédictions(Métriques)", "📈 statistiques & Analyse", "📥 Télécharger"])
 
