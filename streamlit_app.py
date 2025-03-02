@@ -126,16 +126,17 @@ if uploaded_file is not None:
             df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
             if df_results is not None:
                 st.success("✅ Prédictions terminées !")
-
-
+    
                 # Affichage des statistiques
-                moyenne = df_results["Prédictions"].mean()
-                mediane = df_results["Prédictions"].median()
-                ecart_type = df_results["Prédictions"].std()
-                st.write(f"**Moyenne:** {moyenne:.2f} kWh")
-                st.write(f"**Médiane:** {mediane:.2f} kWh")
-                st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
+                #moyenne = df_results["Prédictions"].mean()
+                #mediane = df_results["Prédictions"].median()
+                #ecart_type = df_results["Prédictions"].std()
+                #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+                #st.write(f"**Médiane:** {mediane:.2f} kWh")
+                #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
 
+                st.dataframe(df_results["Prédictions"].describe())
+                
                 # Plotting the predictions
                 fig, ax = plt.subplots(figsize=(20, 10))
                 mean = df_results["Prédictions"].mean()
