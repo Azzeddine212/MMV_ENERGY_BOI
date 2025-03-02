@@ -196,9 +196,13 @@ if uploaded_file is not None:
                 option = st.sidebar.selectbox("Sélectionnez une option :", ["Option 1", "Option 2", "Option 3"])
                 if st.sidebar.button("Valider"):
                     st.sidebar.success(f"✅ Vous avez choisi : {option}")
-                
+
+
+                option = st.sidebar.selectbox("Sélectionnez une option :", ["Option 1", "Option 2", "Option 3"])
+                if st.sidebar.button("Valider"):
+                        st.sidebar.success(f"✅ Vous avez choisi : {option}")
                 # Onglets
-                tab1, tab2, tab3 = st.tabs(["📊 Prédictions(Métriques)", "📈 statistiques & Analyse", "📥 Télécharger"])
+                #tab1, tab2, tab3 = st.tabs(["📊 Prédictions(Métriques)", "📈 statistiques & Analyse", "📥 Télécharger"])
 
                 with tab1:
                     #st.dataframe(df_results.describe())
