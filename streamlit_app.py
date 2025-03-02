@@ -267,11 +267,12 @@ if uploaded_file is not None:
                 axes[idx].set_ylabel(col)
                 axes[idx].legend()
                 axes[idx].grid(True)
+                axes[idx].set_xticks(rotation=45)
     
             # Supprimer les axes vides si le nombre de variables est impair
             for idx in range(num_vars, len(axes)):
                 fig.delaxes(axes[idx])
-            plt.xticks(rotation=45)
+                
             plt.tight_layout()
             st.pyplot(fig)
                 
