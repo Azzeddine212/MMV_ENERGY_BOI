@@ -173,7 +173,7 @@ if uploaded_file is not None:
         st.dataframe(df_results["Prédictions"].describe().to_frame().T)
         
         # Plotting the predictions
-        fig, ax = plt.subplots(figsize=(20, 10))
+        fig, ax = plt.subplots(figsize=(20, 10), dpi=100)
         mean = df_results["Prédictions"].mean()
         std_dev = df_results["Prédictions"].std()
         upper_limit = mean + 2 * std_dev
