@@ -195,7 +195,7 @@ if uploaded_file is not None:
         ax.set_ylabel("Conso NRJ (kWh/tcossette)")
         ax.legend()
         ax.grid(True)
-        st.pyplot(fig)
+        st.pyplot(fig,use_container_width=False)
 
     # Vérifier que la colonne "Prédictions" existe
         if "Prédictions" in df_results.columns:
@@ -233,7 +233,7 @@ if uploaded_file is not None:
             ax.legend()
             
             # Affichage du graphique dans Streamlit
-            st.pyplot(fig)
+            st.pyplot(fig,use_container_width=False)
         else:
             st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
 
@@ -274,7 +274,7 @@ if uploaded_file is not None:
                 fig.delaxes(axes[idx])
                 
             plt.tight_layout()
-            st.pyplot(fig)
+            st.pyplot(fig,use_container_width=False)
                 
     # --- Page Téléchargement ---
     elif page == "📥 Télécharger":
