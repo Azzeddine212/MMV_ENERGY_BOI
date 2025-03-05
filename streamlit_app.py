@@ -211,6 +211,10 @@ if uploaded_file is not None:
         # Afficher le total de la surconsommation d'énergie
         energie_totale = df_surco["NRJ_suconsommée"].sum()/1000
         st.success(f"💡 La quantité d'énergie surconsommée par rapport à l'objectif est : **{energie_totale:.2f}** Mwh")
+
+        # Afficher le total de la surcoût d'énergie en k€
+        cout_totale = (df_surco["NRJ_suconsommée"].sum()/1000)* prix_gn /1000
+        st.success(f"💡 Le coût total de surconsommation d'énergie est : **{cout_totale:.2f}** k€")
         
 
     # Vérifier que la colonne "Prédictions" existe
