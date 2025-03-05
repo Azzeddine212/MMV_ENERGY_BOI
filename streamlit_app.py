@@ -230,11 +230,11 @@ if uploaded_file is not None:
         
         # Afficher les résultats dans un cadre blanc
         # Construire la chaîne de texte à afficher
-        message_1 =f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {surenergie_totale:.2f} Mwh"
-        message_2 = f"💰 Le coût total de surconsommation d'énergie est : {surcout_totale:.2f} k€"
+        message_1 =f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {surenergie_totale:.2f} Mwh 📈"
+        message_2 = f"💰 Le coût total de surconsommation d'énergie est : {surcout_totale:.2f} k€ 📈"
 
-        message_3 =f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {sousenergie_totale:.2f} Mwh"
-        message_4 = f"💰 Le coût total de sous-consommation d'énergie est : {souscout_totale:.2f} k€"
+        message_3 =f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {sousenergie_totale:.2f} Mwh 📉 "
+        message_4 = f"💰 Le coût total de sous-consommation d'énergie est : {souscout_totale:.2f} k€ 📉"
         
         # Afficher le message dans un cadre blanc
         st.markdown(f"""
