@@ -223,12 +223,12 @@ if uploaded_file is not None:
         # Afficher le message dans un cadre blanc
         st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 14px;">{message_1}</h3>
+                <h3 style="color: #2F4F4F; font-size: 16px;">{message_1}</h3>
             </div>
         """, unsafe_allow_html=True)
         st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 14px;">{message_2}</h3>
+                <h3 style="color: #2F4F4F; font-size: 16px;">{message_2}</h3>
             </div>
         """, unsafe_allow_html=True)
         
