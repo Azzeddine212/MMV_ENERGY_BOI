@@ -219,7 +219,7 @@ if uploaded_file is not None:
         st.markdown("""
             <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
                 <h3 style="color: #2F4F4F;">💡 Résultats de surconsommation d'énergie :</h3>
-                <p style="color: #2F4F4F;">Le coût total de surconsommation d'énergie est : <strong>{cout_totale:.2f} k€</strong></p>
+                <p style="color: #2F4F4F;f">💡 Le coût total de surconsommation d'énergie est : <strong>{cout_totale:.2f} k€</strong></p>"
             </div>
         """, unsafe_allow_html=True)
 
