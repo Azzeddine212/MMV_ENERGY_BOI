@@ -210,19 +210,25 @@ if uploaded_file is not None:
         
         # Afficher le total de la surconsommation d'énergie
         energie_totale = df_surco["NRJ_suconsommée"].sum()/1000
-        st.success(f"💡 La quantité d'énergie surconsommée par rapport à l'objectif est : **{energie_totale:.2f}** Mwh")
+        #st.success(f"💡 La quantité d'énergie surconsommée par rapport à l'objectif est : **{energie_totale:.2f}** Mwh")
 
         # Afficher le total de la surcoût d'énergie en k€
         cout_totale = (df_surco["NRJ_suconsommée"].sum()/1000)* prix_gn /1000
-        st.success(f"💡 Le coût total de surconsommation d'énergie est : **{cout_totale:.2f}** k€")
+        #st.success(f"💡 Le coût total de surconsommation d'énergie est : **{cout_totale:.2f}** k€")
         # Afficher les résultats dans un cadre blanc
         # Construire la chaîne de texte à afficher
-        message = f"💡 Le coût total de surconsommation d'énergie est : **{cout_totale:.2f}** k€"
+        message_1 =f"💡 La quantité d'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} Mwh"
+        message_2 = f"💡 Le coût total de surconsommation d'énergie est : {cout_totale:.2f} k€"
         
         # Afficher le message dans un cadre blanc
         st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F;">{message}</h3>
+                <h3 style="color: #2F4F4F;">{message_1}</h3>
+            </div>
+        """, unsafe_allow_html=True)
+        st.markdown(f"""
+            <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                <h3 style="color: #2F4F4F;">{message_2}</h3>
             </div>
         """, unsafe_allow_html=True)
     # Vérifier que la colonne "Prédictions" existe
