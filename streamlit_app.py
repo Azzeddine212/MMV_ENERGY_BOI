@@ -217,8 +217,8 @@ if uploaded_file is not None:
         #st.success(f"💡 Le coût total de surconsommation d'énergie est : **{cout_totale:.2f}** k€")
         # Afficher les résultats dans un cadre blanc
         # Construire la chaîne de texte à afficher
-        message_1 =f"💡 La quantité d'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} Mwh"
-        message_2 = f"💡 Le coût total de surconsommation d'énergie est : {cout_totale:.2f} k€"
+        message_1 =f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} Mwh"
+        message_2 = f"💰 Le coût total de surconsommation d'énergie est : {cout_totale:.2f} k€"
         
         # Afficher le message dans un cadre blanc
         st.markdown(f"""
