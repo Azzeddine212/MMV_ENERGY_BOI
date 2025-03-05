@@ -148,7 +148,8 @@ if uploaded_file is not None:
     st.sidebar.success("✅ Exploration et traitement des données effectués avec succès !")
     
     # Input pour définir l'objectif
-    objectif = st.sidebar.number_input("🔢 Entrez l'objectif de consommation énergétique (kWh)", min_value=100, max_value=250, value=180)  
+    objectif = st.sidebar.number_input("🔢 Entrez l'objectif de consommation énergétique (kWh)", min_value=100, max_value=250)
+    prix_gn = st.sidebar.number_input("🔢 Entrez l'objectif le prix du Mwh Gaz Naturel (€/MWh)", min_value=0, max_value=250)
     df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
     if st.sidebar.button("🚀 Lancer la prédiction"):
         with st.spinner("📊 Calcul en cours..."):
@@ -196,6 +197,21 @@ if uploaded_file is not None:
         ax.legend()
         ax.grid(True)
         st.pyplot(fig,use_container_width=False)
+
+        # Filtrer les lignes où "Prédictions" est supérieure à l'objectif
+        df_surco = df_results[df_results["Prédictions"] > objectif].copy()
+        
+        # Calculer la surconsommation d'énergie
+        df_surco["NRJ_suconsommée"] = df_surco["Prédictions"] * df_surco["Tonnage"]
+        
+        # Afficher les résultats
+        #st.write("### Données filtrées :")
+        #st.dataframe(df_surco)
+        
+        # Afficher le total de la surconsommation d'énergie
+        energie_totale = df_surco["NRJ_suconsommée"].sum()/1000
+        st.success(f"💡 La quantité d'énergie surconsommée par rapport à l'objectif est : **{energie_totale:.2f}** Mwh")
+        
 
     # Vérifier que la colonne "Prédictions" existe
         if "Prédictions" in df_results.columns:
