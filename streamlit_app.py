@@ -242,7 +242,7 @@ if uploaded_file is not None:
                 <h3 style="color: #2F4F4F; font-size: 16px;">{message_1}</h3>
             </div>
         """, unsafe_allow_html=True)
-         st.markdown(f"""
+        st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
                 <h3 style="color: #2F4F4F; font-size: 16px;">{message_3}</h3>
             </div>
