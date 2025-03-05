@@ -200,25 +200,41 @@ if uploaded_file is not None:
 
         # Filtrer les lignes où "Prédictions" est supérieure à l'objectif
         df_surco = df_results[df_results["Prédictions"] > objectif].copy()
+
+        # Filtrer les lignes où "Prédictions" est inferieure à l'objectif
+        df_sousco = df_results[df_results["Prédictions"] < objectif].copy()
         
         # Calculer la surconsommation d'énergie
-        df_surco["NRJ_suconsommée"] = df_surco["Prédictions"] * df_surco["Tonnage"]
+        df_surco["NRJ_surconsommée"] = df_surco["Prédictions"] * df_surco["Tonnage"]
+
+        # Calculer la sousconsommation d'énergie
+        df_sousco["NRJ_sousconsommée"] = df_sousco["Prédictions"] * df_sousco["Tonnage"]
         
         # Afficher les résultats
         #st.write("### Données filtrées :")
         #st.dataframe(df_surco)
         
         # Afficher le total de la surconsommation d'énergie
-        energie_totale = df_surco["NRJ_suconsommée"].sum()/1000
+        surenergie_totale = df_surco["NRJ_surconsommée"].sum()/1000
         #st.success(f"💡 La quantité d'énergie surconsommée par rapport à l'objectif est : **{energie_totale:.2f}** Mwh")
 
+        # Afficher le total de la surconsommation d'énergie
+        sousenergie_totale = df_sousco["NRJ_sousconsommée"].sum()/1000
+        
         # Afficher le total de la surcoût d'énergie en k€
-        cout_totale = (df_surco["NRJ_suconsommée"].sum()/1000)* prix_gn /1000
+        surcout_totale = (df_surco["NRJ_surconsommée"].sum()/1000)* prix_gn /1000
         #st.success(f"💡 Le coût total de surconsommation d'énergie est : **{cout_totale:.2f}** k€")
+
+        # Afficher le total de la souscoût d'énergie en k€
+        souscout_totale = (df_sousco["NRJ_sousconsommée"].sum()/1000)* prix_gn /1000
+        
         # Afficher les résultats dans un cadre blanc
         # Construire la chaîne de texte à afficher
-        message_1 =f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} Mwh"
-        message_2 = f"💰 Le coût total de surconsommation d'énergie est : {cout_totale:.2f} k€"
+        message_1 =f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {surenergie_totale:.2f} Mwh"
+        message_2 = f"💰 Le coût total de surconsommation d'énergie est : {surcout_totale:.2f} k€"
+
+        message_3 =f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {sousenergie_totale:.2f} Mwh"
+        message_4 = f"💰 Le coût total de sous-consommation d'énergie est : {souscout_totale:.2f} k€"
         
         # Afficher le message dans un cadre blanc
         st.markdown(f"""
@@ -226,9 +242,19 @@ if uploaded_file is not None:
                 <h3 style="color: #2F4F4F; font-size: 16px;">{message_1}</h3>
             </div>
         """, unsafe_allow_html=True)
+         st.markdown(f"""
+            <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                <h3 style="color: #2F4F4F; font-size: 16px;">{message_3}</h3>
+            </div>
+        """, unsafe_allow_html=True)
         st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
                 <h3 style="color: #2F4F4F; font-size: 16px;">{message_2}</h3>
+            </div>
+        """, unsafe_allow_html=True)
+        st.markdown(f"""
+            <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                <h3 style="color: #2F4F4F; font-size: 16px;">{message_4}</h3>
             </div>
         """, unsafe_allow_html=True)
         
