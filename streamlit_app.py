@@ -216,10 +216,13 @@ if uploaded_file is not None:
         cout_totale = (df_surco["NRJ_suconsommée"].sum()/1000)* prix_gn /1000
         st.success(f"💡 Le coût total de surconsommation d'énergie est : **{cout_totale:.2f}** k€")
         # Afficher les résultats dans un cadre blanc
-        st.markdown("""
+        # Construire la chaîne de texte à afficher
+        message = f"💡 Le coût total de surconsommation d'énergie est : **{cout_totale:.2f}** k€"
+        
+        # Afficher le message dans un cadre blanc
+        st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F;">💡 Résultats de surconsommation d'énergie :</h3>
-                <p style="color: #2F4F4F;">Le coût total de surconsommation d'énergie est : <strong>{cout_totale:.2f} k€</strong></p>
+                <h3 style="color: #2F4F4F;">{message}</h3>
             </div>
         """, unsafe_allow_html=True)
     # Vérifier que la colonne "Prédictions" existe
