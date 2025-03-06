@@ -235,28 +235,34 @@ if uploaded_file is not None:
 
         message_3 =f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {sousenergie_totale:.2f} Mwh 📉 "
         message_4 = f"💰 Le coût total de sous-consommation d'énergie est : {souscout_totale:.2f} k€ 📉"
+
+
+        energie_totale = surenergie_totale - sousenergie_totale 
+        conso_NRJ = surcout_totale - souscout_totale
         
-        # Afficher le message dans un cadre blanc
-        st.markdown(f"""
-            <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 16px;">{message_1}</h3>
-            </div>
-        """, unsafe_allow_html=True)
-        st.markdown(f"""
-            <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 16px;">{message_3}</h3>
-            </div>
-        """, unsafe_allow_html=True)
-        st.markdown(f"""
-            <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 16px;">{message_2}</h3>
-            </div>
-        """, unsafe_allow_html=True)
-        st.markdown(f"""
-            <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 16px;">{message_4}</h3>
-            </div>
-        """, unsafe_allow_html=True)
+        if energie_totale > 0 :
+            message_5 =f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est  : {energie_totale:.2f} Mwh 📈 "
+            # Afficher le message dans un cadre blanc
+            st.markdown(f"""
+                <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                    <h3 style="color: #2F4F4F; font-size: 16px;">{message_5}</h3>
+                </div>
+            
+        elif energie_totale < 0 :
+            message_6 =f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {energie_totale:.2f} Mwh 📉 "
+            # Afficher le message dans un cadre blanc
+            st.markdown(f"""
+                <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                    <h3 style="color: #2F4F4F; font-size: 16px;">{message_6}</h3>
+                </div>
+                             
+        else :
+            message_7 =f"⚡ La quantité d'énergie consommée est ègale à l'objectif est : {energie_totale:.2f} Mwh 📉 "
+            # Afficher le message dans un cadre blanc
+            st.markdown(f"""
+                <div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                    <h3 style="color: #2F4F4F; font-size: 16px;">{message_7}</h3>
+                </div>
         
     # Vérifier que la colonne "Prédictions" existe
         if "Prédictions" in df_results.columns:
