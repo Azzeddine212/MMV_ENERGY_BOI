@@ -205,10 +205,10 @@ if uploaded_file is not None:
         df_sousco = df_results[df_results["Prédictions"] < objectif].copy()
         
         # Calculer la surconsommation d'énergie
-        df_surco["NRJ_surconsommée"] = df_surco["Prédictions"] * df_surco["Tonnage"]
+        df_surco["NRJ_surconsommée"] = abs(df_surco["Prédictions"]-objectif)  * df_surco["Tonnage"]
 
         # Calculer la sousconsommation d'énergie
-        df_sousco["NRJ_sousconsommée"] = df_sousco["Prédictions"] * df_sousco["Tonnage"]
+        df_sousco["NRJ_sousconsommée"] = abs(df_sousco["Prédictions"]-objectif)  * df_sousco["Tonnage"]
         
         # Afficher les résultats
         #st.write("### Données filtrées :")
