@@ -238,20 +238,29 @@ if uploaded_file is not None:
 
 
         energie_totale = surenergie_totale - sousenergie_totale 
-        conso_NRJ = surcout_totale - souscout_totale
+        cout_NRJ = surcout_totale - souscout_totale
         
         if energie_totale > 0:
-            message = f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} MWh 📈"
+            message_5 = f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} MWh 📈"
+            message_6 = f"💰 Le coût total de sur-consommation d'énergie est : {cout_NRJ:.2f} k€ 📉"
         elif energie_totale < 0:
-            message = f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {abs(energie_totale):.2f} MWh 📉"
+            message_5 = f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {abs(energie_totale):.2f} MWh 📉"
+            message_6 = f"💰 Le coût total de sous-consommation d'énergie est : {abs(cout_NRJ):.2f} k€ 📉"
         else:
-            message = f"⚡ La quantité d'énergie consommée est égale à l'objectif : {energie_totale:.2f} MWh ✅"
+            message_5 = f"⚡ La quantité d'énergie consommée est égale à l'objectif : {energie_totale:.2f} MWh ✅"
+            message_6 = f"💰 Le coût total d'énergie consommée est égale à l'objectif : {cout_NRJ:.2f} k€ ✅"
 
         # Afficher le message dans un cadre blanc
         st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; 
                         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 16px;">{message}</h3>
+                <h3 style="color: #2F4F4F; font-size: 16px;">{message_5}</h3>
+            </div>
+        """, unsafe_allow_html=True)
+        st.markdown(f"""
+            <div style="background-color: white; padding: 15px; border-radius: 8px; 
+                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                <h3 style="color: #2F4F4F; font-size: 16px;">{message_6}</h3>
             </div>
         """, unsafe_allow_html=True)
         
