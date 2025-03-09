@@ -124,7 +124,7 @@ uploaded_file = st.sidebar.file_uploader("📂 Téléchargez votre fichier Excel
 
 
 # Titre de l'application
-st.title("Prédiction & Analyse de la Consommation d'Énergie BOIRY")
+st.markdown("<h1 style='text-align: center; color: white;'>PRÉDICTION & ANALYSE DE LA CONSOMMATION ÉNERGÉTIQUE – TEREOS BOIRY</h1>", unsafe_allow_html=True)
 
 if uploaded_file is not None:
 
@@ -313,7 +313,7 @@ if uploaded_file is not None:
         if len(variables.columns) > 0:
             st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
     
-            num_cols = 2  # Nombre de graphes par ligne
+            num_cols = 1  # Nombre de graphes par ligne
             num_vars = len(variables.columns)
             rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Calcul du nombre de lignes
             
