@@ -261,7 +261,7 @@ if uploaded_file is not None:
             selected_vars = selected_vars[:6] + [None] * (6 - len(selected_vars))
         
             #st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
-            fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
+            fig, axes = plt.subplots(3, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
         
             for idx, col in enumerate(selected_vars):
                 if col is not None:  # Vérifier que la variable est bien définie
