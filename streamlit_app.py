@@ -306,19 +306,19 @@ if uploaded_file is not None:
 
     
     if page == "📈 Statistiques & Tendance":
-        st.dataframe(df_results.describe())
-
-        # Vérifier qu'il y a des variables à afficher
+        st.dataframe(df_results.describe())  
+        fig, axes = plt.subplots(len(variables.columns), 1, figsize=(10, 5 * len(variables.columns)))
+                
+        # If there is only one column, axes will be a single object, not an array
         if len(variables.columns) > 0:
             st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
     
             num_cols = 2  # Nombre de graphes par ligne
             num_vars = len(variables.columns)
-            rows = -(-num_vars // num_cols)  # Équivalent à math.ceil(num_vars / num_cols)
-    
-            # 📌 Fixe : On crée UNE SEULE figure
+            rows = (num_vars // num_cols) + (num_vars % num_cols > 0)  # Calcul du nombre de lignes
+            
             fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
-            axes = axes.flatten()  # Conversion en tableau 1D pour éviter les erreurs d'indexation
+            axes = axes.flatten()  # Convertir en tableau 1D pour une boucle facile
     
             for idx, col in enumerate(variables.columns):
                 mean = variables[col].mean()
@@ -336,12 +336,12 @@ if uploaded_file is not None:
                 axes[idx].grid(True)
                 axes[idx].tick_params(axis="x", rotation=45)
     
-            # 📌 Fixe : Masquer les axes vides au lieu de les supprimer
+            # Supprimer les axes vides si le nombre de variables est impair
             for idx in range(num_vars, len(axes)):
-                axes[idx].axis("off")
-    
+                fig.delaxes(axes[idx])
+                
             plt.tight_layout()
-            st.pyplot(fig, use_container_width=True)
+            st.pyplot(fig,use_container_width=False)
         
                 
     # --- Page Téléchargement ---
