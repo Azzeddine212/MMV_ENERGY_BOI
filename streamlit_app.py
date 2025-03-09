@@ -243,96 +243,96 @@ if uploaded_file is not None:
                 st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
 
 
-      with col2:
-        st.header("📊 Bilan & Résultats")
-        st.dataframe(df_results["Prédictions"].describe().to_frame().T)
-        
-        # Filtrer les lignes où "Prédictions" est supérieure à l'objectif
-        df_surco = df_results[df_results["Prédictions"] > objectif].copy()
-        # Filtrer les lignes où "Prédictions" est inférieure à l'objectif
-        df_sousco = df_results[df_results["Prédictions"] < objectif].copy()
-    
-        # Calculer la surconsommation d'énergie
-        df_surco["NRJ_surconsommée"] = abs(df_surco["Prédictions"] - objectif) * df_surco["Tonnage"]
-        
-        # Calculer la sousconsommation d'énergie
-        df_sousco["NRJ_sousconsommée"] = abs(df_sousco["Prédictions"] - objectif) * df_sousco["Tonnage"]
-        
-        # Calculer le total des surconsommations et sousconsommations
-        surenergie_totale = df_surco["NRJ_surconsommée"].sum() / 1000
-        sousenergie_totale = df_sousco["NRJ_sousconsommée"].sum() / 1000
-        
-        # Calculer les coûts associés
-        surcout_totale = (df_surco["NRJ_surconsommée"].sum() / 1000) * prix_gn / 1000
-        souscout_totale = (df_sousco["NRJ_sousconsommée"].sum() / 1000) * prix_gn / 1000
-        
-        # Calcul des totaux nets
-        energie_totale = surenergie_totale - sousenergie_totale
-        cout_NRJ = surcout_totale - souscout_totale
-        
-        # Messages à afficher
-        if energie_totale > 0:
-            message_5 = f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} MWh 📈"
-            message_6 = f"💰 Le coût total de sur-consommation d'énergie est : {cout_NRJ:.2f} k€ 📉"
-        elif energie_totale < 0:
-            message_5 = f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {abs(energie_totale):.2f} MWh 📉"
-            message_6 = f"💰 Le coût total de sous-consommation d'énergie est : {abs(cout_NRJ):.2f} k€ 📉"
-        else:
-            message_5 = f"⚡ La quantité d'énergie consommée est égale à l'objectif : {energie_totale:.2f} MWh ✅"
-            message_6 = f"💰 Le coût total d'énergie consommée est égale à l'objectif : {cout_NRJ:.2f} k€ ✅"
-        
-        # Afficher les résultats dans un cadre blanc
-        st.markdown(f"""
-        <div style="background-color: white; padding: 15px; border-radius: 8px; 
-                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-            <h3 style="color: #2F4F4F; font-size: 16px;">{message_5}</h3>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div style="background-color: white; padding: 15px; border-radius: 8px; 
-                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-            <h3 style="color: #2F4F4F; font-size: 16px;">{message_6}</h3>
-        </div>
-        """, unsafe_allow_html=True)
+	      with col2:
+	        st.header("📊 Bilan & Résultats")
+	        st.dataframe(df_results["Prédictions"].describe().to_frame().T)
+	        
+	        # Filtrer les lignes où "Prédictions" est supérieure à l'objectif
+	        df_surco = df_results[df_results["Prédictions"] > objectif].copy()
+	        # Filtrer les lignes où "Prédictions" est inférieure à l'objectif
+	        df_sousco = df_results[df_results["Prédictions"] < objectif].copy()
+	    
+	        # Calculer la surconsommation d'énergie
+	        df_surco["NRJ_surconsommée"] = abs(df_surco["Prédictions"] - objectif) * df_surco["Tonnage"]
+	        
+	        # Calculer la sousconsommation d'énergie
+	        df_sousco["NRJ_sousconsommée"] = abs(df_sousco["Prédictions"] - objectif) * df_sousco["Tonnage"]
+	        
+	        # Calculer le total des surconsommations et sousconsommations
+	        surenergie_totale = df_surco["NRJ_surconsommée"].sum() / 1000
+	        sousenergie_totale = df_sousco["NRJ_sousconsommée"].sum() / 1000
+	        
+	        # Calculer les coûts associés
+	        surcout_totale = (df_surco["NRJ_surconsommée"].sum() / 1000) * prix_gn / 1000
+	        souscout_totale = (df_sousco["NRJ_sousconsommée"].sum() / 1000) * prix_gn / 1000
+	        
+	        # Calcul des totaux nets
+	        energie_totale = surenergie_totale - sousenergie_totale
+	        cout_NRJ = surcout_totale - souscout_totale
+	        
+	        # Messages à afficher
+	        if energie_totale > 0:
+	            message_5 = f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} MWh 📈"
+	            message_6 = f"💰 Le coût total de sur-consommation d'énergie est : {cout_NRJ:.2f} k€ 📉"
+	        elif energie_totale < 0:
+	            message_5 = f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {abs(energie_totale):.2f} MWh 📉"
+	            message_6 = f"💰 Le coût total de sous-consommation d'énergie est : {abs(cout_NRJ):.2f} k€ 📉"
+	        else:
+	            message_5 = f"⚡ La quantité d'énergie consommée est égale à l'objectif : {energie_totale:.2f} MWh ✅"
+	            message_6 = f"💰 Le coût total d'énergie consommée est égale à l'objectif : {cout_NRJ:.2f} k€ ✅"
+	        
+	        # Afficher les résultats dans un cadre blanc
+	        st.markdown(f"""
+	        <div style="background-color: white; padding: 15px; border-radius: 8px; 
+	                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+	            <h3 style="color: #2F4F4F; font-size: 16px;">{message_5}</h3>
+	        </div>
+	        """, unsafe_allow_html=True)
+	        
+	        st.markdown(f"""
+	        <div style="background-color: white; padding: 15px; border-radius: 8px; 
+	                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+	            <h3 style="color: #2F4F4F; font-size: 16px;">{message_6}</h3>
+	        </div>
+	        """, unsafe_allow_html=True)
                 
-      with col3:
-        st.header("📈 Statistiques & Tendance")
-        # Définir 'available_vars' comme étant les colonnes du DataFrame df_results
-        available_vars = df_results.columns.tolist()
-    
-        # Sélection de 2 variables via sidebar
-        st.sidebar.header("🔧 Sélection des Variables")
-        selected_vars = st.sidebar.multiselect("Choisissez **deux** variables :", available_vars, default=available_vars[:2])
-        
-        # Assurer toujours deux éléments (None si insuffisants)
-        selected_vars = selected_vars[:2] + [None] * (2 - len(selected_vars))
-    
-        st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
-        fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
-    
-        for idx, col in enumerate(selected_vars):
-            if col is not None:  # Vérifier que la variable est bien définie
-                mean = df_results[col].mean()
-                std_dev = df_results[col].std()
-                upper_limit = mean + 3 * std_dev
-                lower_limit = mean - 3 * std_dev
-    
-                axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
-                axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
-                axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
-                axes[idx].set_title(f"Tendance : {col}")
-                axes[idx].set_xlabel("Date")
-                axes[idx].set_ylabel(col)
-                axes[idx].legend()
-                axes[idx].grid(True)
-                axes[idx].tick_params(axis="x", rotation=45)
-            else:
-                axes[idx].set_visible(False)  # Masquer proprement l'axe
-    
-        plt.tight_layout()
-        st.pyplot(fig, use_container_width=True)
-            
+	      with col3:
+	        st.header("📈 Statistiques & Tendance")
+	        # Définir 'available_vars' comme étant les colonnes du DataFrame df_results
+	        available_vars = df_results.columns.tolist()
+	    
+	        # Sélection de 2 variables via sidebar
+	        st.sidebar.header("🔧 Sélection des Variables")
+	        selected_vars = st.sidebar.multiselect("Choisissez **deux** variables :", available_vars, default=available_vars[:2])
+	        
+	        # Assurer toujours deux éléments (None si insuffisants)
+	        selected_vars = selected_vars[:2] + [None] * (2 - len(selected_vars))
+	    
+	        st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
+	        fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
+	    
+	        for idx, col in enumerate(selected_vars):
+	            if col is not None:  # Vérifier que la variable est bien définie
+	                mean = df_results[col].mean()
+	                std_dev = df_results[col].std()
+	                upper_limit = mean + 3 * std_dev
+	                lower_limit = mean - 3 * std_dev
+	    
+	                axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
+	                axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
+	                axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
+	                axes[idx].set_title(f"Tendance : {col}")
+	                axes[idx].set_xlabel("Date")
+	                axes[idx].set_ylabel(col)
+	                axes[idx].legend()
+	                axes[idx].grid(True)
+	                axes[idx].tick_params(axis="x", rotation=45)
+	            else:
+	                axes[idx].set_visible(False)  # Masquer proprement l'axe
+	    
+	        plt.tight_layout()
+	        st.pyplot(fig, use_container_width=True)
+	            
                 
     # --- Page Téléchargement ---
     elif page == "📥 Télécharger":
