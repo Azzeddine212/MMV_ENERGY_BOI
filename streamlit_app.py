@@ -255,10 +255,10 @@ if uploaded_file is not None:
         
             # Sélection de 2 variables via sidebar
             st.sidebar.header("🔧 Sélection des Variables")
-            selected_vars = st.sidebar.multiselect("Choisissez **six** variables :", available_vars, default=available_vars[:7])
+            selected_vars = st.sidebar.multiselect("Choisissez **six** variables :", available_vars, default=available_vars[:6])
             
             # Assurer toujours deux éléments (None si insuffisants)
-            selected_vars = selected_vars[:7] + [None] * (7 - len(selected_vars))
+            selected_vars = selected_vars[:6] + [None] * (6 - len(selected_vars))
         
             #st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
             fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
