@@ -306,11 +306,7 @@ if uploaded_file is not None:
 
     
     if page == "📈 Statistiques & Tendance":
-        @st.cache_data
-        def get_dataframe():
-            return df_results
         
-        df_results = get_dataframe()
         # Sélection de 2 variables via sidebar
         st.sidebar.header("🔧 Sélection des Variables")
         available_vars = df_results.columns.tolist()
@@ -320,28 +316,33 @@ if uploaded_file is not None:
         if len(selected_vars) == 2:
             st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
         
-            fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Deux graphes côte à côte
-        
+            fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
+
+            # Remplir avec des graphiques vides si nécessaire
+            while len(selected_vars) < 2:
+                selected_vars.append(None)
+            
             for idx, col in enumerate(selected_vars):
-                mean = df_results[col].mean()
-                std_dev = df_results[col].std()
-                upper_limit = mean + 3 * std_dev
-                lower_limit = mean - 3 * std_dev
-        
-                axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
-                axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
-                axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
-                axes[idx].set_title(f"Tendance : {col}")
-                axes[idx].set_xlabel("Date")
-                axes[idx].set_ylabel(col)
-                axes[idx].legend()
-                axes[idx].grid(True)
-                axes[idx].tick_params(axis="x", rotation=45)
-        
+                if col:  # Si une variable est sélectionnée, tracer la courbe
+                    mean = df_results[col].mean()
+                    std_dev = df_results[col].std()
+                    upper_limit = mean + 3 * std_dev
+                    lower_limit = mean - 3 * std_dev
+            
+                    axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
+                    axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
+                    axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
+                    axes[idx].set_title(f"Tendance : {col}")
+                    axes[idx].set_xlabel("Date")
+                    axes[idx].set_ylabel(col)
+                    axes[idx].legend()
+                    axes[idx].grid(True)
+                    axes[idx].tick_params(axis="x", rotation=45)
+                else:  # Si aucune variable n’est sélectionnée, masquer l'axe
+                    axes[idx].axis("off")
+            
             plt.tight_layout()
             st.pyplot(fig, use_container_width=True)
-        else:
-            st.warning("⚠️ Veuillez sélectionner exactement **deux** variables.")
         
                 
     # --- Page Téléchargement ---
