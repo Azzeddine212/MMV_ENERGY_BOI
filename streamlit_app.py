@@ -169,7 +169,7 @@ if uploaded_file is not None:
           
         with col1:
             #st.header("🔍 Prédiction & Résultats ")
-            st.markdown("<h1 style='text-align: center; color: #003366;;'>🔍 Prédiction & Résultats</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 style='text-align: center; color: #003366; font-size: 36px;'>🔍 Prédiction & Résultats</h1>", unsafe_allow_html=True)
         
             # Affichage des statistiques
             #moyenne = df_results["Prédictions"].mean()
