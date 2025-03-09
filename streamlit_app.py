@@ -168,7 +168,8 @@ if uploaded_file is not None:
         col1, col2, = st.columns([2, 2]) # 2 colonnes avec un ratio de largeur
           
         with col1:
-            st.header("🔍 Prédiction & Résultats ")      
+            #st.header("🔍 Prédiction & Résultats ")
+            st.markdown("<h1 style='text-align: center; color: #003366;;'>🔍 Prédiction & Résultats</h1>", unsafe_allow_html=True)
         
             # Affichage des statistiques
             #moyenne = df_results["Prédictions"].mean()
