@@ -163,7 +163,7 @@ if uploaded_file is not None:
     
     if page == "📈 Tableau de Bord":
         
-        col1, col2, = st.columns([2, 2]) # 3 colonnes avec un ratio de largeur
+        col1, col2, = st.columns([2, 2]) # 2 colonnes avec un ratio de largeur
           
         with col1:
             st.header("🔍 Prédiction ")      
