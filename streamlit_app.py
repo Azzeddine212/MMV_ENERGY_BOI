@@ -124,7 +124,8 @@ uploaded_file = st.sidebar.file_uploader("📂 Téléchargez votre fichier Excel
 
 
 # Titre de l'application
-st.title("Prédiction & Analyse de la Consommation d'Énergie BOIRY")
+#st.title("Prédiction & Analyse de la Consommation d'Énergie BOIRY")
+st.markdown("""<h2 style="text-align: center; font-size: 36px;">PREDICTION ET ANALYSE DE LA CONSOMMATION ENERGETIQUE A TEREOS BOIRY</h2>""", unsafe_allow_html=True)
 
 if uploaded_file is not None:
 
