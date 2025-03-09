@@ -159,188 +159,179 @@ if uploaded_file is not None:
                 
                 st.sidebar.success("✅ Prédictions terminées !")
                 
-    page = st.sidebar.radio("Sélectionnez une page :", ["🔍 Prédiction & Analyse","📈 Statistiques & Tendance", "📥 Télécharger"])
+    page = st.sidebar.radio("Sélectionnez une page :", ["📈 Tableau de Bord", "📥 Télécharger"])
     
-    if page == "🔍 Prédiction & Analyse":
-               
-        # Affichage des statistiques
-        #moyenne = df_results["Prédictions"].mean()
-        #mediane = df_results["Prédictions"].median()
-        #ecart_type = df_results["Prédictions"].std()
-        #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
-        #st.write(f"**Médiane:** {mediane:.2f} kWh")
-        #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
-
-        st.dataframe(df_results["Prédictions"].describe().to_frame().T)
+    if page == "📈 Tableau de Bord":
         
-        # Plotting the predictions
-        fig, ax = plt.subplots(figsize=(20, 10), dpi=100)
-        mean = df_results["Prédictions"].mean()
-        std_dev = df_results["Prédictions"].std()
-        upper_limit = mean + 2 * std_dev
-        lower_limit = mean - 2 * std_dev
-
-        # Ajouter une ligne horizontale représentant l'objectif
-        ax.axhline(y=objectif, color="red", linestyle="--", linewidth=2, label=f'Objectif : {objectif} kWh')
-
-        # Identifier et marquer les points au-dessus de l'objectif
-        au_dessus = df_results["Prédictions"] > objectif  # Masque booléen
-        ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
-
-        ax.axhline(upper_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean + 2σ = {upper_limit:.2f}")
-        ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean - 2σ = {lower_limit:.2f}")
-        ax.plot(df_results.index, df_results["Prédictions"], color="blue", label='Prédiction CB24', alpha=0.6)
-        #ax.bar(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
-        ax.set_title("Prédiction CB24")
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Conso NRJ (kWh/tcossette)")
-        ax.legend()
-        ax.grid(True)
-        st.pyplot(fig,use_container_width=False)
-
-        # Filtrer les lignes où "Prédictions" est supérieure à l'objectif
-        df_surco = df_results[df_results["Prédictions"] > objectif].copy()
-
-        # Filtrer les lignes où "Prédictions" est inferieure à l'objectif
-        df_sousco = df_results[df_results["Prédictions"] < objectif].copy()
+        col1, col2, col3, = st.columns([2, 1, 2]) # 3 colonnes avec un ratio de largeur
+          
+        with col1:
+            st.header("🔍 Prédiction & Analyse")      
         
-        # Calculer la surconsommation d'énergie
-        df_surco["NRJ_surconsommée"] = abs(df_surco["Prédictions"]-objectif)  * df_surco["Tonnage"]
+            # Affichage des statistiques
+            #moyenne = df_results["Prédictions"].mean()
+            #mediane = df_results["Prédictions"].median()
+            #ecart_type = df_results["Prédictions"].std()
+            #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+            #st.write(f"**Médiane:** {mediane:.2f} kWh")
+            #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
 
-        # Calculer la sousconsommation d'énergie
-        df_sousco["NRJ_sousconsommée"] = abs(df_sousco["Prédictions"]-objectif)  * df_sousco["Tonnage"]
+            # Plotting the predictions
+            fig, ax = plt.subplots(figsize=(20, 10), dpi=100)
+            mean = df_results["Prédictions"].mean()
+            std_dev = df_results["Prédictions"].std()
+            upper_limit = mean + 2 * std_dev
+            lower_limit = mean - 2 * std_dev
+    
+            # Ajouter une ligne horizontale représentant l'objectif
+            ax.axhline(y=objectif, color="red", linestyle="--", linewidth=2, label=f'Objectif : {objectif} kWh')
+    
+            # Identifier et marquer les points au-dessus de l'objectif
+            au_dessus = df_results["Prédictions"] > objectif  # Masque booléen
+            ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
+    
+            ax.axhline(upper_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean + 2σ = {upper_limit:.2f}")
+            ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=1, label=f"Mean - 2σ = {lower_limit:.2f}")
+            ax.plot(df_results.index, df_results["Prédictions"], color="blue", label='Prédiction CB24', alpha=0.6)
+            #ax.bar(df_results.index, df_results["Prédictions"], color="red", label='Prédiction CB24', alpha=0.6)
+            ax.set_title("Prédiction CB24")
+            ax.set_xlabel("Date")
+            ax.set_ylabel("Conso NRJ (kWh/tcossette)")
+            ax.legend()
+            ax.grid(True)
+            st.pyplot(fig,use_container_width=False)
+
+             
+            # Vérifier que la colonne "Prédictions" existe
+            if "Prédictions" in df_results.columns:
+                # Calcul des statistiques
+                moyenne = df_results["Prédictions"].mean()
+                mediane = df_results["Prédictions"].median()
+                ecart_type = df_results["Prédictions"].std()
+                
+                # Affichage des statistiques
+                #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+                #st.write(f"**Médiane:** {mediane:.2f} kWh")
+                #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
+                
+                # Tracer l'histogramme avec KDE
+                fig, ax = plt.subplots(figsize=(10, 5))
+                sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
+                
+                # Ajouter les statistiques sur le graphique
+                ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
+                ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
+                ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
+    
+                total = df_results["Prédictions"].shape[0]
+                for patch in ax.patches:
+                    height = patch.get_height()
+                    width = patch.get_width()
+                    x_position = patch.get_x() + width / 2
+                    percentage = (height / total) * 100
+                    ax.text(x_position, height + 5, f'{percentage:.1f}%', ha='center', fontsize=7)
+                
+                # Ajouter des titres et labels
+                ax.set_title("Histogramme des Prédictions de Consommation Énergétique", fontsize=14)
+                ax.set_xlabel("Consommation Énergétique (kWh)", fontsize=12)
+                ax.set_ylabel("Densité", fontsize=12)
+                ax.legend()
+                
+                # Affichage du graphique dans Streamlit
+                st.pyplot(fig,use_container_width=False)
+            else:
+                st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
+
+
+          with col2:
+            st.header("📊 Bilan & Résultats")
+            st.dataframe(df_results["Prédictions"].describe().to_frame().T)
+            
+            # Filtrer les lignes où "Prédictions" est supérieure à l'objectif
+            df_surco = df_results[df_results["Prédictions"] > objectif].copy()
+            # Filtrer les lignes où "Prédictions" est inférieure à l'objectif
+            df_sousco = df_results[df_results["Prédictions"] < objectif].copy()
         
-        # Afficher les résultats
-        #st.write("### Données filtrées :")
-        #st.dataframe(df_surco)
-        
-        # Afficher le total de la surconsommation d'énergie
-        surenergie_totale = df_surco["NRJ_surconsommée"].sum()/1000
-        #st.success(f"💡 La quantité d'énergie surconsommée par rapport à l'objectif est : **{energie_totale:.2f}** Mwh")
-
-        # Afficher le total de la surconsommation d'énergie
-        sousenergie_totale = df_sousco["NRJ_sousconsommée"].sum()/1000
-        
-        # Afficher le total de la surcoût d'énergie en k€
-        surcout_totale = (df_surco["NRJ_surconsommée"].sum()/1000)* prix_gn /1000
-        #st.success(f"💡 Le coût total de surconsommation d'énergie est : **{cout_totale:.2f}** k€")
-
-        # Afficher le total de la souscoût d'énergie en k€
-        souscout_totale = (df_sousco["NRJ_sousconsommée"].sum()/1000)* prix_gn /1000
-        
-        # Afficher les résultats dans un cadre blanc
-        # Construire la chaîne de texte à afficher
-        message_1 =f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {surenergie_totale:.2f} Mwh 📈"
-        message_2 = f"💰 Le coût total de surconsommation d'énergie est : {surcout_totale:.2f} k€ 📈"
-
-        message_3 =f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {sousenergie_totale:.2f} Mwh 📉 "
-        message_4 = f"💰 Le coût total de sous-consommation d'énergie est : {souscout_totale:.2f} k€ 📉"
-
-
-        energie_totale = surenergie_totale - sousenergie_totale 
-        cout_NRJ = surcout_totale - souscout_totale
-        
-        if energie_totale > 0:
-            message_5 = f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} MWh 📈"
-            message_6 = f"💰 Le coût total de sur-consommation d'énergie est : {cout_NRJ:.2f} k€ 📉"
-        elif energie_totale < 0:
-            message_5 = f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {abs(energie_totale):.2f} MWh 📉"
-            message_6 = f"💰 Le coût total de sous-consommation d'énergie est : {abs(cout_NRJ):.2f} k€ 📉"
-        else:
-            message_5 = f"⚡ La quantité d'énergie consommée est égale à l'objectif : {energie_totale:.2f} MWh ✅"
-            message_6 = f"💰 Le coût total d'énergie consommée est égale à l'objectif : {cout_NRJ:.2f} k€ ✅"
-
-        # Afficher le message dans un cadre blanc
-        st.markdown(f"""
+            # Calculer la surconsommation d'énergie
+            df_surco["NRJ_surconsommée"] = abs(df_surco["Prédictions"] - objectif) * df_surco["Tonnage"]
+            
+            # Calculer la sousconsommation d'énergie
+            df_sousco["NRJ_sousconsommée"] = abs(df_sousco["Prédictions"] - objectif) * df_sousco["Tonnage"]
+            
+            # Calculer le total des surconsommations et sousconsommations
+            surenergie_totale = df_surco["NRJ_surconsommée"].sum() / 1000
+            sousenergie_totale = df_sousco["NRJ_sousconsommée"].sum() / 1000
+            
+            # Calculer les coûts associés
+            surcout_totale = (df_surco["NRJ_surconsommée"].sum() / 1000) * prix_gn / 1000
+            souscout_totale = (df_sousco["NRJ_sousconsommée"].sum() / 1000) * prix_gn / 1000
+            
+            # Calcul des totaux nets
+            energie_totale = surenergie_totale - sousenergie_totale
+            cout_NRJ = surcout_totale - souscout_totale
+            
+            # Messages à afficher
+            if energie_totale > 0:
+                message_5 = f"⚡ La quantité d'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} MWh 📈"
+                message_6 = f"💰 Le coût total de sur-consommation d'énergie est : {cout_NRJ:.2f} k€ 📉"
+            elif energie_totale < 0:
+                message_5 = f"⚡ La quantité d'énergie sous-consommée par rapport à l'objectif est : {abs(energie_totale):.2f} MWh 📉"
+                message_6 = f"💰 Le coût total de sous-consommation d'énergie est : {abs(cout_NRJ):.2f} k€ 📉"
+            else:
+                message_5 = f"⚡ La quantité d'énergie consommée est égale à l'objectif : {energie_totale:.2f} MWh ✅"
+                message_6 = f"💰 Le coût total d'énergie consommée est égale à l'objectif : {cout_NRJ:.2f} k€ ✅"
+            
+            # Afficher les résultats dans un cadre blanc
+            st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; 
                         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
                 <h3 style="color: #2F4F4F; font-size: 16px;">{message_5}</h3>
             </div>
-        """, unsafe_allow_html=True)
-        st.markdown(f"""
+            """, unsafe_allow_html=True)
+            
+            st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; 
                         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
                 <h3 style="color: #2F4F4F; font-size: 16px;">{message_6}</h3>
             </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
+                
+          with col2:
+            st.header("📈 Statistiques & Tendance")
+            # Définir 'available_vars' comme étant les colonnes du DataFrame df_results
+            available_vars = df_results.columns.tolist()
         
-    # Vérifier que la colonne "Prédictions" existe
-        if "Prédictions" in df_results.columns:
-            # Calcul des statistiques
-            moyenne = df_results["Prédictions"].mean()
-            mediane = df_results["Prédictions"].median()
-            ecart_type = df_results["Prédictions"].std()
+            # Sélection de 2 variables via sidebar
+            st.sidebar.header("🔧 Sélection des Variables")
+            selected_vars = st.sidebar.multiselect("Choisissez **deux** variables :", available_vars, default=available_vars[:2])
             
-            # Affichage des statistiques
-            #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
-            #st.write(f"**Médiane:** {mediane:.2f} kWh")
-            #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
-            
-            # Tracer l'histogramme avec KDE
-            fig, ax = plt.subplots(figsize=(10, 5))
-            sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
-            
-            # Ajouter les statistiques sur le graphique
-            ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
-            ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
-            ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
-
-            total = df_results["Prédictions"].shape[0]
-            for patch in ax.patches:
-                height = patch.get_height()
-                width = patch.get_width()
-                x_position = patch.get_x() + width / 2
-                percentage = (height / total) * 100
-                ax.text(x_position, height + 5, f'{percentage:.1f}%', ha='center', fontsize=7)
-            
-            # Ajouter des titres et labels
-            ax.set_title("Histogramme des Prédictions de Consommation Énergétique", fontsize=14)
-            ax.set_xlabel("Consommation Énergétique (kWh)", fontsize=12)
-            ax.set_ylabel("Densité", fontsize=12)
-            ax.legend()
-            
-            # Affichage du graphique dans Streamlit
-            st.pyplot(fig,use_container_width=False)
-        else:
-            st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
-
-    
-    if page == "📈 Statistiques & Tendance":
+            # Assurer toujours deux éléments (None si insuffisants)
+            selected_vars = selected_vars[:2] + [None] * (2 - len(selected_vars))
         
-        # Définir 'available_vars' comme étant les colonnes du DataFrame df_results
-        available_vars = df_results.columns.tolist()
-    
-        # Sélection de 2 variables via sidebar
-        st.sidebar.header("🔧 Sélection des Variables")
-        selected_vars = st.sidebar.multiselect("Choisissez **deux** variables :", available_vars, default=available_vars[:2])
+            st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
+            fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
         
-        # Assurer toujours deux éléments (None si insuffisants)
-        selected_vars = selected_vars[:2] + [None] * (2 - len(selected_vars))
-    
-        st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
-        fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
-    
-        for idx, col in enumerate(selected_vars):
-            if col is not None:  # Vérifier que la variable est bien définie
-                mean = df_results[col].mean()
-                std_dev = df_results[col].std()
-                upper_limit = mean + 3 * std_dev
-                lower_limit = mean - 3 * std_dev
-    
-                axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
-                axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
-                axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
-                axes[idx].set_title(f"Tendance : {col}")
-                axes[idx].set_xlabel("Date")
-                axes[idx].set_ylabel(col)
-                axes[idx].legend()
-                axes[idx].grid(True)
-                axes[idx].tick_params(axis="x", rotation=45)
-            else:
-                axes[idx].set_visible(False)  # Masquer proprement l'axe
-    
-        plt.tight_layout()
-        st.pyplot(fig, use_container_width=True)
+            for idx, col in enumerate(selected_vars):
+                if col is not None:  # Vérifier que la variable est bien définie
+                    mean = df_results[col].mean()
+                    std_dev = df_results[col].std()
+                    upper_limit = mean + 3 * std_dev
+                    lower_limit = mean - 3 * std_dev
+        
+                    axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
+                    axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
+                    axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
+                    axes[idx].set_title(f"Tendance : {col}")
+                    axes[idx].set_xlabel("Date")
+                    axes[idx].set_ylabel(col)
+                    axes[idx].legend()
+                    axes[idx].grid(True)
+                    axes[idx].tick_params(axis="x", rotation=45)
+                else:
+                    axes[idx].set_visible(False)  # Masquer proprement l'axe
+        
+            plt.tight_layout()
+            st.pyplot(fig, use_container_width=True)
             
                 
     # --- Page Téléchargement ---
