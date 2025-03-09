@@ -306,42 +306,42 @@ if uploaded_file is not None:
 
     
     if page == "📈 Statistiques & Tendance":
-    st.dataframe(df_results.describe())
+        st.dataframe(df_results.describe())
 
-    # Vérifier qu'il y a des variables à afficher
-    if len(variables.columns) > 0:
-        st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
-
-        num_cols = 2  # Nombre de graphes par ligne
-        num_vars = len(variables.columns)
-        rows = -(-num_vars // num_cols)  # Équivalent à math.ceil(num_vars / num_cols)
-
-        # 📌 Fixe : On crée UNE SEULE figure
-        fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
-        axes = axes.flatten()  # Conversion en tableau 1D pour éviter les erreurs d'indexation
-
-        for idx, col in enumerate(variables.columns):
-            mean = variables[col].mean()
-            std_dev = variables[col].std()
-            upper_limit = mean + 3 * std_dev
-            lower_limit = mean - 3 * std_dev
-
-            axes[idx].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
-            axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
-            axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
-            axes[idx].set_title(f"Tendance : {col}")
-            axes[idx].set_xlabel("Date")
-            axes[idx].set_ylabel(col)
-            axes[idx].legend()
-            axes[idx].grid(True)
-            axes[idx].tick_params(axis="x", rotation=45)
-
-        # 📌 Fixe : Masquer les axes vides au lieu de les supprimer
-        for idx in range(num_vars, len(axes)):
-            axes[idx].axis("off")
-
-        plt.tight_layout()
-        st.pyplot(fig, use_container_width=True)
+        # Vérifier qu'il y a des variables à afficher
+        if len(variables.columns) > 0:
+            st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
+    
+            num_cols = 2  # Nombre de graphes par ligne
+            num_vars = len(variables.columns)
+            rows = -(-num_vars // num_cols)  # Équivalent à math.ceil(num_vars / num_cols)
+    
+            # 📌 Fixe : On crée UNE SEULE figure
+            fig, axes = plt.subplots(rows, num_cols, figsize=(12, 5 * rows))
+            axes = axes.flatten()  # Conversion en tableau 1D pour éviter les erreurs d'indexation
+    
+            for idx, col in enumerate(variables.columns):
+                mean = variables[col].mean()
+                std_dev = variables[col].std()
+                upper_limit = mean + 3 * std_dev
+                lower_limit = mean - 3 * std_dev
+    
+                axes[idx].plot(variables.index, variables[col], color="blue", alpha=0.6, label=col)
+                axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
+                axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
+                axes[idx].set_title(f"Tendance : {col}")
+                axes[idx].set_xlabel("Date")
+                axes[idx].set_ylabel(col)
+                axes[idx].legend()
+                axes[idx].grid(True)
+                axes[idx].tick_params(axis="x", rotation=45)
+    
+            # 📌 Fixe : Masquer les axes vides au lieu de les supprimer
+            for idx in range(num_vars, len(axes)):
+                axes[idx].axis("off")
+    
+            plt.tight_layout()
+            st.pyplot(fig, use_container_width=True)
         
                 
     # --- Page Téléchargement ---
