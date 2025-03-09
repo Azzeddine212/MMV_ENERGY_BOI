@@ -245,12 +245,12 @@ if uploaded_file is not None:
             st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; 
                         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 16px;">{message_5} <br> {message_6}</h3>
+                <h3 style="color: #2F4F4F; font-size: 16px;">{message_5} <br><br><br> {message_6}</h3>
             </div>
             """, unsafe_allow_html=True)
                     
         with col2:
-            st.header("📈 Analyse & Tendance")
+            #st.header("📈 Analyse & Tendance")
             st.markdown("<h1 style='text-align: center; color: #003366; font-size: 28px;'>📈 Analyse & Tendance</h1>", unsafe_allow_html=True)
 
             # Vérifier que la colonne "Prédictions" existe
