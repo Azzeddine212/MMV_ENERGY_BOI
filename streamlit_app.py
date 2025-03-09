@@ -310,7 +310,8 @@ if uploaded_file is not None:
         # Sélection de 2 variables via sidebar
         st.sidebar.header("🔧 Sélection des Variables")
         available_vars = df_results.columns.tolist()
-        selected_vars = st.sidebar.multiselect("Choisissez **deux** variables :", available_vars, default=available_vars[:2])
+        #selected_vars = st.sidebar.multiselect("Choisissez **deux** variables :", available_vars, default=available_vars[:2])
+        selected_vars = sorted(st.sidebar.multiselect("Choisissez **deux** variables :", available_vars, default=available_vars[:2]))
         
         # Vérifier que 2 variables sont sélectionnées
         if len(selected_vars) == 2:
