@@ -166,7 +166,7 @@ if uploaded_file is not None:
         col1, col2, = st.columns([2, 2]) # 2 colonnes avec un ratio de largeur
           
         with col1:
-            st.header("🔍 Prédiction ")      
+            st.header("🔍 Prédiction & Résultats ")      
         
             # Affichage des statistiques
             #moyenne = df_results["Prédictions"].mean()
@@ -201,7 +201,7 @@ if uploaded_file is not None:
             ax.grid(True)
             st.pyplot(fig,use_container_width=False)
 
-            st.header("📊 Bilan & Résultats")
+            #st.header("📊 Bilan & Résultats")
             st.dataframe(df_results["Prédictions"].describe().to_frame().T)
             
             # Filtrer les lignes où "Prédictions" est supérieure à l'objectif
@@ -269,7 +269,7 @@ if uploaded_file is not None:
                 #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
                 
                 # Tracer l'histogramme avec KDE
-                fig, ax = plt.subplots(figsize=(10, 5))
+                fig, ax = plt.subplots(figsize=(20, 10))
                 sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
                 
                 # Ajouter les statistiques sur le graphique
@@ -307,7 +307,7 @@ if uploaded_file is not None:
             # Assurer toujours deux éléments (None si insuffisants)
             selected_vars = selected_vars[:2] + [None] * (2 - len(selected_vars))
         
-            st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
+            #st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
             fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
         
             for idx, col in enumerate(selected_vars):
