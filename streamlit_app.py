@@ -165,10 +165,10 @@ if uploaded_file is not None:
     
     if page == "📈 Tableau de Bord":
         
-        col1, col2, = st.columns([2, 2]) # 2 colonnes avec un ratio de largeur
+        col1, col2, = st.columns([2, 1]) # 2 colonnes avec un ratio de largeur
           
         with col1:
-            #st.header("🔍 Prédiction & Résultats ")
+            #st.header("📊 Prédiction & Analyse ")
             st.markdown("<h1 style='text-align: center; color: #003366; font-size: 28px;'>🔍 Prédiction & Résultats</h1>", unsafe_allow_html=True)
         
             # Affichage des statistiques
@@ -203,6 +203,87 @@ if uploaded_file is not None:
             ax.legend()
             ax.grid(True)
             st.pyplot(fig,use_container_width=False)
+
+            # Vérifier que la colonne "Prédictions" existe
+            if "Prédictions" in df_results.columns:
+                # Calcul des statistiques
+                moyenne = df_results["Prédictions"].mean()
+                mediane = df_results["Prédictions"].median()
+                ecart_type = df_results["Prédictions"].std()
+                
+                # Affichage des statistiques
+                #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
+                #st.write(f"**Médiane:** {mediane:.2f} kWh")
+                #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
+                
+                # Tracer l'histogramme avec KDE
+                fig, ax = plt.subplots(figsize=(20, 10))
+                sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
+                
+                # Ajouter les statistiques sur le graphique
+                ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
+                ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
+                ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
+    
+                total = df_results["Prédictions"].shape[0]
+                for patch in ax.patches:
+                    height = patch.get_height()
+                    width = patch.get_width()
+                    x_position = patch.get_x() + width / 2
+                    percentage = (height / total) * 100
+                    ax.text(x_position, height + 5, f'{percentage:.1f}%', ha='center', fontsize=7)
+                
+                # Ajouter des titres et labels
+                ax.set_title("Histogramme des Prédictions de Consommation Énergétique", fontsize=14)
+                ax.set_xlabel("Consommation Énergétique (kWh)", fontsize=12)
+                ax.set_ylabel("Densité", fontsize=12)
+                ax.legend()
+                
+                # Affichage du graphique dans Streamlit
+                st.pyplot(fig,use_container_width=False)
+            else:
+                st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
+
+   
+                    
+        with col2:
+            #st.header("📈 Tendances des Variables ")
+            st.markdown("<h1 style='text-align: center; color: #003366; font-size: 28px;'>📈 Analyse & Tendance</h1>", unsafe_allow_html=True)
+            
+            # Définir 'available_vars' comme étant les colonnes du DataFrame df_results
+            available_vars = df_results.columns.tolist()
+        
+            # Sélection de 2 variables via sidebar
+            st.sidebar.header("🔧 Sélection des Variables")
+            selected_vars = st.sidebar.multiselect("Choisissez **six** variables :", available_vars, default=available_vars[:7])
+            
+            # Assurer toujours deux éléments (None si insuffisants)
+            selected_vars = selected_vars[:7] + [None] * (7 - len(selected_vars))
+        
+            #st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
+            fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
+        
+            for idx, col in enumerate(selected_vars):
+                if col is not None:  # Vérifier que la variable est bien définie
+                    mean = df_results[col].mean()
+                    std_dev = df_results[col].std()
+                    upper_limit = mean + 3 * std_dev
+                    lower_limit = mean - 3 * std_dev
+        
+                    axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
+                    axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
+                    axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
+                    axes[idx].set_title(f"Tendance : {col}")
+                    axes[idx].set_xlabel("Date")
+                    axes[idx].set_ylabel(col)
+                    axes[idx].legend()
+                    axes[idx].grid(True)
+                    axes[idx].tick_params(axis="x", rotation=45)
+                else:
+                    axes[idx].set_visible(False)  # Masquer proprement l'axe
+        
+            plt.tight_layout()
+            st.pyplot(fig, use_container_width=True)
 
             #st.header("📊 Bilan & Résultats")
             st.dataframe(df_results["Prédictions"].describe().to_frame().T)
@@ -248,87 +329,6 @@ if uploaded_file is not None:
                 <h3 style="color: #2F4F4F; font-size: 16px;">{message_5} <br><br><br> {message_6}</h3>
             </div>
             """, unsafe_allow_html=True)
-                    
-        with col2:
-            #st.header("📈 Analyse & Tendance")
-            st.markdown("<h1 style='text-align: center; color: #003366; font-size: 28px;'>📈 Analyse & Tendance</h1>", unsafe_allow_html=True)
-
-            # Vérifier que la colonne "Prédictions" existe
-            if "Prédictions" in df_results.columns:
-                # Calcul des statistiques
-                moyenne = df_results["Prédictions"].mean()
-                mediane = df_results["Prédictions"].median()
-                ecart_type = df_results["Prédictions"].std()
-                
-                # Affichage des statistiques
-                #st.write(f"**Moyenne:** {moyenne:.2f} kWh")
-                #st.write(f"**Médiane:** {mediane:.2f} kWh")
-                #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
-                
-                # Tracer l'histogramme avec KDE
-                fig, ax = plt.subplots(figsize=(20, 10))
-                sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
-                
-                # Ajouter les statistiques sur le graphique
-                ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
-                ax.axvline(mediane, color='green', linestyle='--', label=f'Médiane: {mediane:.2f} kWh')
-                ax.axvline(moyenne + ecart_type, color='orange', linestyle=':', label=f'Écart-type: {ecart_type:.2f} kWh')
-    
-                total = df_results["Prédictions"].shape[0]
-                for patch in ax.patches:
-                    height = patch.get_height()
-                    width = patch.get_width()
-                    x_position = patch.get_x() + width / 2
-                    percentage = (height / total) * 100
-                    ax.text(x_position, height + 5, f'{percentage:.1f}%', ha='center', fontsize=7)
-                
-                # Ajouter des titres et labels
-                ax.set_title("Histogramme des Prédictions de Consommation Énergétique", fontsize=14)
-                ax.set_xlabel("Consommation Énergétique (kWh)", fontsize=12)
-                ax.set_ylabel("Densité", fontsize=12)
-                ax.legend()
-                
-                # Affichage du graphique dans Streamlit
-                st.pyplot(fig,use_container_width=False)
-            else:
-                st.error("Le fichier ne contient pas de colonne 'Prédictions'. Veuillez vérifier vos données.")
-
-            
-            # Définir 'available_vars' comme étant les colonnes du DataFrame df_results
-            available_vars = df_results.columns.tolist()
-        
-            # Sélection de 2 variables via sidebar
-            st.sidebar.header("🔧 Sélection des Variables")
-            selected_vars = st.sidebar.multiselect("Choisissez **deux** variables :", available_vars, default=available_vars[:2])
-            
-            # Assurer toujours deux éléments (None si insuffisants)
-            selected_vars = selected_vars[:2] + [None] * (2 - len(selected_vars))
-        
-            #st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
-            fig, axes = plt.subplots(1, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
-        
-            for idx, col in enumerate(selected_vars):
-                if col is not None:  # Vérifier que la variable est bien définie
-                    mean = df_results[col].mean()
-                    std_dev = df_results[col].std()
-                    upper_limit = mean + 3 * std_dev
-                    lower_limit = mean - 3 * std_dev
-        
-                    axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
-                    axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
-                    axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
-                    axes[idx].set_title(f"Tendance : {col}")
-                    axes[idx].set_xlabel("Date")
-                    axes[idx].set_ylabel(col)
-                    axes[idx].legend()
-                    axes[idx].grid(True)
-                    axes[idx].tick_params(axis="x", rotation=45)
-                else:
-                    axes[idx].set_visible(False)  # Masquer proprement l'axe
-        
-            plt.tight_layout()
-            st.pyplot(fig, use_container_width=True)
-                
                     
     # --- Page Téléchargement ---
     elif page == "📥 Télécharger":
