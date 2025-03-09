@@ -306,6 +306,9 @@ if uploaded_file is not None:
 
     
     if page == "📈 Statistiques & Tendance":
+        
+        # Définir 'available_vars' comme étant les colonnes du DataFrame df_results
+        available_vars = df_results.columns.tolist()
     
         # Sélection de 2 variables via sidebar
         st.sidebar.header("🔧 Sélection des Variables")
