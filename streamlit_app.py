@@ -293,7 +293,7 @@ if uploaded_file is not None:
             
             # Appliquer du style avec fond blanc sur tout le tableau
             styled_table = df_stats.style \
-                .format(precision=2) \  
+                .format(precision=2) \  # Formatage à 2 décimales
                 .set_properties(**{
                     "background-color": "white",  # Fond blanc
                     "color": "black",  # Texte noir
@@ -302,17 +302,19 @@ if uploaded_file is not None:
                     "text-align": "center",  # Alignement centré
                     "width": "100px",  # Largeur contrôlée
                 }) \
-                .hide(axis="index") \
-                .set_table_styles([{
-                    "selector": "thead th",
-                    "props": [("background-color", "white"), ("color", "black"), ("font-weight", "bold")]
-                }]) \
+                .hide_index() \
+                .set_table_styles([
+                    {
+                        "selector": "thead th",
+                        "props": [("background-color", "white"), ("color", "black"), ("font-weight", "bold")]
+                    }
+                ]) \
                 .to_html()
             
-            # Affichage dans Streamlit
+            # Affichage dans Streamlit avec une largeur adaptée et un fond blanc
             st.markdown(
                 f"""
-                <div style="overflow-x: auto; max-width: 700px;"> 
+                <div style="overflow-x: auto; max-width: 100%; background-color: white; padding: 10px; border-radius: 5px;">
                     {styled_table}
                 </div>
                 """,
