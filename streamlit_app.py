@@ -376,4 +376,5 @@ if uploaded_file is not None:
             file_name="predictions.xlsx",  # File name with .xlsx extension
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  # MIME type for Excel
         )
-        st.dataframe(df_results.to_frame())
+        # Affichage du DataFrame sous forme de tableau
+        st.dataframe(df_results)  # Afficher df_results en tant que DataFrame
