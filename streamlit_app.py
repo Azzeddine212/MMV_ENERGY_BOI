@@ -262,7 +262,7 @@ if uploaded_file is not None:
         
             #st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
             # Création de la figure avec 3 lignes et 2 colonnes
-            fig, axes = plt.subplots(3, 2, figsize=(15, 20))  # Hauteur augmentée pour un meilleur affichage
+            fig, axes = plt.subplots(3, 2, figsize=(15, 19))  # Hauteur augmentée pour un meilleur affichage
             axes = axes.flatten()  # Aplatir en 1D pour indexation plus facile
             
             for idx, col in enumerate(selected_vars):
@@ -328,7 +328,7 @@ if uploaded_file is not None:
             st.markdown(f"""
             <div style="background-color: white; padding: 15px; border-radius: 8px; 
                         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 16px;">{message_5} <br><br><br> {message_6}</h3>
+                <h3 style="color: #2F4F4F; font-size: 16px;">{message_5} <br><br> {message_6}</h3>
             </div>
             """, unsafe_allow_html=True)
                     
