@@ -381,7 +381,6 @@ if uploaded_file is not None:
         st.dataframe(df_results)  # Afficher df_results en tant que DataFrame
 
         # Calculer les statistiques descriptives et transformer en DataFrame
-        df_stats = df_results.describe().T
-        
+        st.dataframe(df_results.describe().T)
         
             
