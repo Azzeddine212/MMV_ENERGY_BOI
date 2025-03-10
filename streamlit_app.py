@@ -288,7 +288,11 @@ if uploaded_file is not None:
             st.pyplot(fig, use_container_width=True)
 
             #st.header("📊 Bilan & Résultats")
-            st.dataframe(df_results["Prédictions"].describe().to_frame().T)
+            # Calculer les statistiques descriptives et transformer en DataFrame
+            df_stats = df_results["Prédictions"].describe().to_frame().T
+            
+            # Convertir le DataFrame en HTML sans index et avec texte en gras
+            st.markdown(df_stats.style.hide(axis="index").set_properties(**{"font-weight": "bold"}).to_html(), unsafe_allow_html=True)
             
             # Filtrer les lignes où "Prédictions" est supérieure à l'objectif
             df_surco = df_results[df_results["Prédictions"] > objectif].copy()
