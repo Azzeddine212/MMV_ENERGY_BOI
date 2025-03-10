@@ -293,7 +293,7 @@ if uploaded_file is not None:
             
             # Appliquer du style avec fond blanc sur tout le tableau
             styled_table = df_stats.style \
-            .format(precision=2) \  # Formatage à 2 décimales
+                .format(precision=2) \  
                 .set_properties(**{
                     "background-color": "white",  # Fond blanc
                     "color": "black",  # Texte noir
