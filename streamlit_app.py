@@ -262,7 +262,7 @@ if uploaded_file is not None:
         
             #st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
             # Création de la figure avec 3 lignes et 2 colonnes
-            fig, axes = plt.subplots(3, 2, figsize=(15, 18))  # Hauteur augmentée pour un meilleur affichage
+            fig, axes = plt.subplots(3, 2, figsize=(15, 15))  # Hauteur augmentée pour un meilleur affichage
             axes = axes.flatten()  # Aplatir en 1D pour indexation plus facile
             
             for idx, col in enumerate(selected_vars):
