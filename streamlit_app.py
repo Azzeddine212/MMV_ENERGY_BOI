@@ -292,7 +292,13 @@ if uploaded_file is not None:
             df_stats = df_results["Prédictions"].describe().to_frame().T
             
             # Convertir le DataFrame en HTML sans index et avec texte en gras
-            st.markdown(df_stats.style.hide(axis="index").set_properties(**{"font-weight": "bold"}).to_html(), unsafe_allow_html=True)
+            # Appliquer du style avec un fond blanc et texte en gras
+            styled_table = df_stats.style.hide(axis="index") \
+                .set_properties(**{"font-weight": "bold", "background-color": "white", "color": "black"}) \
+                .to_html()
+            
+            # Afficher dans Streamlit
+            st.markdown(styled_table, unsafe_allow_html=True)
             
             # Filtrer les lignes où "Prédictions" est supérieure à l'objectif
             df_surco = df_results[df_results["Prédictions"] > objectif].copy()
