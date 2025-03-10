@@ -378,9 +378,9 @@ if uploaded_file is not None:
         )
         
         # Affichage du DataFrame sous forme de tableau
-        st.dataframe(df_results)  # Afficher df_results en tant que DataFrame
+        st.dataframe(df_results.round(2))  # Afficher df_results en tant que DataFrame
 
         # Calculer les statistiques descriptives et transformer en DataFrame
-        st.dataframe(df_results.describe())
+        st.dataframe(df_results.describe().round(2))
         
             
