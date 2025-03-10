@@ -356,12 +356,14 @@ if uploaded_file is not None:
                 message_6 = f"💰 Le coût total d'énergie consommée est égale à l'objectif : {cout_NRJ:.2f} k€ ✅"
             
             # Afficher les résultats dans un cadre blanc
-            st.markdown(f"""
-            <div style="background-color: white; padding: 10px; border-radius: 8px; 
-                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 20px;">{message_5} <br><br> {message_6}</h3>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(
+                f"""
+                <div style="overflow-x: auto; max-width: 100%; background-color: white; 
+                            padding: 10px; border-radius: 5px; margin-bottom: 0px; padding-bottom: 0px;">
+                    {styled_table}</div>
+                """,
+                unsafe_allow_html=True
+            )
                     
     # --- Page Téléchargement ---
     elif page == "📥 Télécharger":
