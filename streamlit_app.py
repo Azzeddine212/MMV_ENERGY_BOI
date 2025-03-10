@@ -169,7 +169,7 @@ if uploaded_file is not None:
           
         with col1:
             #st.header("📊 Prédiction & Analyse ")
-            st.markdown("<h1 style='text-align: center; color: #003366; font-size: 28px;'>🔍 Prédiction & Résultats</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 style='text-align: center; color: #003366; font-size: 28px;'>📊 Prédiction & Analyse</h1>", unsafe_allow_html=True)
         
             # Affichage des statistiques
             #moyenne = df_results["Prédictions"].mean()
@@ -248,7 +248,7 @@ if uploaded_file is not None:
                     
         with col2:
             #st.header("📈 Tendances des Variables ")
-            st.markdown("<h1 style='text-align: center; color: #003366; font-size: 28px;'>📈 Analyse & Tendance</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 style='text-align: center; color: #003366; font-size: 28px;'>📈 Tendances des Variables</h1>", unsafe_allow_html=True)
             
             # Définir 'available_vars' comme étant les colonnes du DataFrame df_results
             available_vars = df_results.columns.tolist()
@@ -262,7 +262,7 @@ if uploaded_file is not None:
         
             #st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
             # Création de la figure avec 3 lignes et 2 colonnes
-            fig, axes = plt.subplots(3, 2, figsize=(15, 15))  # Hauteur augmentée pour un meilleur affichage
+            fig, axes = plt.subplots(3, 2, figsize=(15, 14.5))  # Hauteur augmentée pour un meilleur affichage
             axes = axes.flatten()  # Aplatir en 1D pour indexation plus facile
             
             for idx, col in enumerate(selected_vars):
@@ -326,7 +326,7 @@ if uploaded_file is not None:
             
             # Afficher les résultats dans un cadre blanc
             st.markdown(f"""
-            <div style="background-color: white; padding: 15px; border-radius: 8px; 
+            <div style="background-color: #E3F2FD; padding: 15px; border-radius: 8px; 
                         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
                 <h3 style="color: #2F4F4F; font-size: 16px;">{message_5} <br><br> {message_6}</h3>
             </div>
