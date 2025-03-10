@@ -301,7 +301,7 @@ if uploaded_file is not None:
                     "text-align": "center",  # Alignement centré
                     "width": "100px",  # Largeur contrôlée
                 }) \
-                .hide(axis="index") \  # Cacher l’index
+                .hide(axis="index") \
                 .set_table_styles([{
                     "selector": "thead th",
                     "props": [("background-color", "white"), ("color", "black"), ("font-weight", "bold")]
