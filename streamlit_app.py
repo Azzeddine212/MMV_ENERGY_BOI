@@ -302,7 +302,7 @@ if uploaded_file is not None:
                     "text-align": "center",  # Alignement centré
                     "width": "100px",  # Largeur contrôlée
                 }) \
-                .hide_index() \
+                .hide(axis="index") \
                 .set_table_styles([
                     {
                         "selector": "thead th",
