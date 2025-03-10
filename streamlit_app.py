@@ -261,15 +261,17 @@ if uploaded_file is not None:
             selected_vars = selected_vars[:6] + [None] * (6 - len(selected_vars))
         
             #st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
-            fig, axes = plt.subplots(3, 2, figsize=(14, 5))  # Toujours 2 colonnes fixes
-        
+            # Création de la figure avec 3 lignes et 2 colonnes
+            fig, axes = plt.subplots(3, 2, figsize=(12, 9))  # Hauteur augmentée pour un meilleur affichage
+            axes = axes.flatten()  # Aplatir en 1D pour indexation plus facile
+            
             for idx, col in enumerate(selected_vars):
-                if col is not None:  # Vérifier que la variable est bien définie
+                if col is not None:
                     mean = df_results[col].mean()
                     std_dev = df_results[col].std()
                     upper_limit = mean + 3 * std_dev
                     lower_limit = mean - 3 * std_dev
-        
+            
                     axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
                     axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                     axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
@@ -280,8 +282,8 @@ if uploaded_file is not None:
                     axes[idx].grid(True)
                     axes[idx].tick_params(axis="x", rotation=45)
                 else:
-                    axes[idx].set_visible(False)  # Masquer proprement l'axe
-        
+                    axes[idx].set_visible(False)  # Masquer proprement l'axe vide
+            
             plt.tight_layout()
             st.pyplot(fig, use_container_width=True)
 
