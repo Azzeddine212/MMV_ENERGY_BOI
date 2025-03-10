@@ -180,7 +180,7 @@ if uploaded_file is not None:
             #st.write(f"**Écart-type:** {ecart_type:.2f} kWh")
 
             # Plotting the predictions
-            fig, ax = plt.subplots(figsize=(10, 30), dpi=100)
+            fig, ax = plt.subplots(figsize=(20, 10), dpi=100)
             mean = df_results["Prédictions"].mean()
             std_dev = df_results["Prédictions"].std()
             upper_limit = mean + 2 * std_dev
@@ -262,7 +262,7 @@ if uploaded_file is not None:
         
             #st.subheader("📊 Tendances des Variables avec Seuils ± 3σ")
             # Création de la figure avec 3 lignes et 2 colonnes
-            fig, axes = plt.subplots(3, 2, figsize=(30, 10))  # Hauteur augmentée pour un meilleur affichage
+            fig, axes = plt.subplots(3, 2, figsize=(20, 30))  # Hauteur augmentée pour un meilleur affichage
             axes = axes.flatten()  # Aplatir en 1D pour indexation plus facile
             
             for idx, col in enumerate(selected_vars):
