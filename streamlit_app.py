@@ -326,9 +326,9 @@ if uploaded_file is not None:
             
             # Afficher les résultats dans un cadre blanc
             st.markdown(f"""
-            <div style="background-color: white; padding: 25px; border-radius: 8px; 
+            <div style="background-color: white; padding: 15px; border-radius: 8px; 
                         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3 style="color: #2F4F4F; font-size: 16px;">{message_5} <br><br> {message_6}</h3>
+                <h3 style="color: #2F4F4F; font-size: 25px;">{message_5} <br><br> {message_6}</h3>
             </div>
             """, unsafe_allow_html=True)
                     
