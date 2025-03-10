@@ -291,14 +291,32 @@ if uploaded_file is not None:
             # Calculer les statistiques descriptives et transformer en DataFrame
             df_stats = df_results["Prédictions"].describe().to_frame().T
             
-            # Convertir le DataFrame en HTML sans index et avec texte en gras
-            # Appliquer du style avec un fond blanc et texte en gras
-            styled_table = df_stats.style.hide(axis="index") \
-                .set_properties(**{"font-weight": "bold", "background-color": "white", "color": "black"}) \
+            # Appliquer du style avec fond blanc sur tout le tableau
+            styled_table = df_stats.style \
+                .set_properties(**{
+                    "background-color": "white",  # Fond blanc
+                    "color": "black",  # Texte noir
+                    "font-weight": "bold",  # Texte en gras
+                    "border": "1px solid #ddd",  # Bordures légères
+                    "text-align": "center",  # Alignement centré
+                    "width": "100px",  # Largeur contrôlée
+                }) \
+                .hide(axis="index") \  # Cacher l’index
+                .set_table_styles([{
+                    "selector": "thead th",
+                    "props": [("background-color", "white"), ("color", "black"), ("font-weight", "bold")]
+                }]) \
                 .to_html()
             
-            # Afficher dans Streamlit
-            st.markdown(styled_table, unsafe_allow_html=True)
+            # Affichage dans Streamlit
+            st.markdown(
+                f"""
+                <div style="overflow-x: auto; max-width: 700px;"> 
+                    {styled_table}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
             
             # Filtrer les lignes où "Prédictions" est supérieure à l'objectif
             df_surco = df_results[df_results["Prédictions"] > objectif].copy()
