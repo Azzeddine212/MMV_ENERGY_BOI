@@ -383,33 +383,5 @@ if uploaded_file is not None:
         # Calculer les statistiques descriptives et transformer en DataFrame
         df_stats = df_results.describe().T
         
-        # Appliquer du style avec fond blanc sur tout le tableau
-        styled_table = df_stats.style \
-            .format(precision=2) \
-            .set_properties(**{
-                "background-color": "white",  # Fond blanc
-                "color": "black",  # Texte noir
-                "font-weight": "bold",  # Texte en gras
-                "border": "1px solid #ddd",  # Bordures légères
-                "text-align": "center",  # Alignement centré
-                "width": "100px",  # Largeur contrôlée
-            }) \
-            .set_table_styles([
-                {
-                    "selector": "thead th",
-                    "props": [("background-color", "white"), ("color", "black"), ("font-weight", "bold")]
-                }
-            ]) \
-            .to_html()
         
-        # Affichage dans Streamlit avec une largeur adaptée et un fond blanc
-        # Afficher les résultats dans un cadre blanc
-        st.markdown(
-            f"""
-            <div style="overflow-x: auto; max-width: 100%; background-color: white; 
-                        padding: 10px; border-radius: 5px; margin-bottom: 0px; padding-bottom: 0px;">
-                {styled_table}</div>
-            """,
-            unsafe_allow_html=True
-        )
             
