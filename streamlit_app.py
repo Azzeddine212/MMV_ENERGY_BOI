@@ -269,8 +269,8 @@ if uploaded_file is not None:
                 if col is not None:
                     mean = df_results[col].mean()
                     std_dev = df_results[col].std()
-                    upper_limit = mean + 3 * std_dev
-                    lower_limit = mean - 3 * std_dev
+                    upper_limit = mean + 2 * std_dev
+                    lower_limit = mean - 2 * std_dev
             
                     axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
                     axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
@@ -347,10 +347,10 @@ if uploaded_file is not None:
             
             # Messages à afficher
             if energie_totale > 0:
-                message_5 = f"⚡ L'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} MWh 📈"
+                message_5 = f"⚡ L'énergie surconsommée vs l'objectif est : {energie_totale:.2f} MWh 📈"
                 message_6 = f"💰 Le coût total de sur-consommation d'énergie est : {cout_NRJ:.2f} k€ 📈"
             elif energie_totale < 0:
-                message_5 = f"⚡ L'énergie sous-consommée par rapport à l'objectif est : {abs(energie_totale):.2f} MWh 📉"
+                message_5 = f"⚡ L'énergie sous-consommée vs l'objectif est : {abs(energie_totale):.2f} MWh 📉"
                 message_6 = f"💰 Le coût total de sous-consommation d'énergie est : {abs(cout_NRJ):.2f} k€ 📉"
             else:
                 message_5 = f"⚡ L'énergie consommée est égale à l'objectif : {energie_totale:.2f} MWh ✅"
