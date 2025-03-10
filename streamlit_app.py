@@ -381,7 +381,7 @@ if uploaded_file is not None:
         st.dataframe(df_results)  # Afficher df_results en tant que DataFrame
 
         # Calculer les statistiques descriptives et transformer en DataFrame
-        df_stats = df_results.describe().to_frame().T
+        df_stats = df_results.describe().T
         
         # Appliquer du style avec fond blanc sur tout le tableau
         styled_table = df_stats.style \
