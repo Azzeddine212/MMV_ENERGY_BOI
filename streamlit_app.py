@@ -348,7 +348,7 @@ if uploaded_file is not None:
             # Messages à afficher
             if energie_totale > 0:
                 message_5 = f"⚡ L'énergie surconsommée par rapport à l'objectif est : {energie_totale:.2f} MWh 📈"
-                message_6 = f"💰 Le coût total de sur-consommation d'énergie est : {cout_NRJ:.2f} k€ 📉"
+                message_6 = f"💰 Le coût total de sur-consommation d'énergie est : {cout_NRJ:.2f} k€ 📈"
             elif energie_totale < 0:
                 message_5 = f"⚡ L'énergie sous-consommée par rapport à l'objectif est : {abs(energie_totale):.2f} MWh 📉"
                 message_6 = f"💰 Le coût total de sous-consommation d'énergie est : {abs(cout_NRJ):.2f} k€ 📉"
