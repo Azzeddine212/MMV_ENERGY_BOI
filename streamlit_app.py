@@ -190,13 +190,13 @@ if uploaded_file is not None:
             au_dessus = df_results["Prédictions"] > objectif
             
             # Tracer la ligne horizontale de l'objectif
-            ax.axhline(y=objectif, color="red", linestyle="--", linewidth=2, label=f'Objectif : {objectif} kWh')
+            ax.axhline(y=objectif, color="red", linestyle="-", linewidth=4, label=f'Objectif : {objectif} kWh')
             
             # Tracer les points en rouge s'ils sont au-dessus de l'objectif
             ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
             
             # Tracer les lignes horizontales des limites
-            ax.axhline(upper_limit, color="green", linestyle="dashed", linewidth=2, label=f"Mean + 2σ = {upper_limit:.2f}")
+            ax.axhline(upper_limit, color="red", linestyle="dashed", linewidth=2, label=f"Mean + 2σ = {upper_limit:.2f}")
             ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=2, label=f"Mean - 2σ = {lower_limit:.2f}")
             
             # Séparer les segments au-dessus et en dessous de l'objectif
