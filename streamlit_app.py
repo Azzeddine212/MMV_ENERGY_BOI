@@ -229,7 +229,7 @@ if uploaded_file is not None:
                 
                 # Tracer l'histogramme avec KDE
                 fig, ax = plt.subplots(figsize=(20, 10))
-                sns.histplot(df_results["Prédictions"], bins=30, kde=True, color='blue', ax=ax)
+                sns.histplot(df_results["Prédictions"], bins=25, kde=True, color='blue', ax=ax)
                 
                 # Ajouter les statistiques sur le graphique
                 ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
@@ -242,7 +242,7 @@ if uploaded_file is not None:
                     width = patch.get_width()
                     x_position = patch.get_x() + width / 2
                     percentage = (height / total) * 100
-                    ax.text(x_position, height + 5, f'{percentage:.1f}%', ha='center', fontsize=14)
+                    ax.text(x_position, height + 1, f'{percentage:.1f}%', ha='center', fontsize=14)
                 
                 # Ajouter des titres et labels
                 ax.set_title("Histogramme des Prédictions de Consommation Énergétique", fontsize=14)
