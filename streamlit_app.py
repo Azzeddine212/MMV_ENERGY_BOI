@@ -210,7 +210,8 @@ if uploaded_file is not None:
             ax.set_ylabel("Conso NRJ (kWh/tcossette)")
             ax.legend()
             ax.grid(True)
-            # Incliner les dates sur l'axe X
+            # Formatage de l'axe des dates pour afficher date + heure
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M"))  # Affichage complet
             # Inclinaison des étiquettes de l'axe des X
             plt.xticks(rotation=45)  # Rotation des dates
             st.pyplot(fig, use_container_width=False)
