@@ -188,7 +188,7 @@ if uploaded_file is not None:
     
             # Création d'un masque booléen pour les segments au-dessus et en dessous de l'objectif
             au_dessus = df_results["Prédictions"] > objectif
-            en-dessous = df_results["Prédictions"] < objectif
+            en_dessous = df_results["Prédictions"] < objectif
             
             # Tracer la ligne horizontale de l'objectif
             ax.axhline(y=objectif, color="red", linestyle="-", linewidth=4, label=f'Objectif : {objectif} kWh')
@@ -197,7 +197,7 @@ if uploaded_file is not None:
             ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
 
             # Tracer les points en rouge s'ils sont en-dessous de l'objectif
-            ax.scatter(df_results.index[en-dessous], df_results["Prédictions"][en-dessous], color="green", label="En-dessous de l'objectif", zorder=3)
+            ax.scatter(df_results.index[en_dessous], df_results["Prédictions"][en_dessous], color="green", label="En-dessous de l'objectif", zorder=3)
             
             # Tracer les lignes horizontales des limites
             ax.axhline(upper_limit, color="red", linestyle="dashed", linewidth=2, label=f"Mean + 2σ = {upper_limit:.2f}")
