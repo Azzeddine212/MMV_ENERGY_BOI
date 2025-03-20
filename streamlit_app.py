@@ -229,7 +229,7 @@ if uploaded_file is not None:
                 
                 # Tracer l'histogramme avec KDE
                 fig, ax = plt.subplots(figsize=(20, 10))
-                sns.histplot(df_results["Prédictions"], bins=20, kde=True, color='blue', ax=ax)
+                sns.histplot(df_results["Prédictions"], bins=30, kde=True, color='blue', ax=ax)
                 
                 # Ajouter les statistiques sur le graphique
                 ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
