@@ -188,24 +188,22 @@ if uploaded_file is not None:
     
             # Création d'un masque booléen pour les segments au-dessus et en dessous de l'objectif
             au_dessus = df_results["Prédictions"] > objectif
+            en-dessous = df_results["Prédictions"] < objectif
             
             # Tracer la ligne horizontale de l'objectif
             ax.axhline(y=objectif, color="red", linestyle="-", linewidth=4, label=f'Objectif : {objectif} kWh')
             
             # Tracer les points en rouge s'ils sont au-dessus de l'objectif
             ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
+
+            # Tracer les points en rouge s'ils sont en-dessous de l'objectif
+            ax.scatter(df_results.index[en-dessous], df_results["Prédictions"][en-dessous], color="green", label="En-dessous de l'objectif", zorder=3)
             
             # Tracer les lignes horizontales des limites
             ax.axhline(upper_limit, color="red", linestyle="dashed", linewidth=2, label=f"Mean + 2σ = {upper_limit:.2f}")
             ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=2, label=f"Mean - 2σ = {lower_limit:.2f}")
             
-            # Séparer les segments au-dessus et en dessous de l'objectif
-            for i in range(len(df_results) - 1):
-                x_values = [df_results.index[i], df_results.index[i+1]]
-                y_values = [df_results["Prédictions"][i], df_results["Prédictions"][i+1]]
-                
-                color = "red" if y_values[0] > objectif else "green"
-                ax.plot(x_values, y_values, color=color, alpha=0.6)
+            ax.plot(df_results.index, df_results["Prédictions"], color=red, alpha=0.6)
             
             ax.set_title("Prédiction CB24")
             ax.set_xlabel("Date")
