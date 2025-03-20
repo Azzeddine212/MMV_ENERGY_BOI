@@ -252,6 +252,10 @@ if uploaded_file is not None:
                 ax.set_xlabel("Consommation Énergétique (kWh)", fontsize=12)
                 ax.set_ylabel("Densité", fontsize=12)
                 ax.legend()
+                # Formatage de l'axe des dates pour afficher date + heure
+                ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M"))  # Affichage complet
+                # Inclinaison des étiquettes de l'axe des X
+                plt.xticks(rotation=45)  # Rotation des dates
                 
                 # Affichage du graphique dans Streamlit
                 st.pyplot(fig,use_container_width=False)
