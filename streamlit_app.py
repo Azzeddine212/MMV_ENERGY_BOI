@@ -295,16 +295,21 @@ if uploaded_file is not None:
                     axes[idx].legend()
                     axes[idx].grid(True)
                     axes[idx].tick_params(axis="x", rotation=45)
+                    # Formatage de l'axe des dates pour afficher date + heure
+                    axes[idx].xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M"))  # Affichage complet
+                    # Inclinaison des étiquettes de l'axe des X
+                    plt.xticks(rotation=45)  # Rotation des dates
+                    # Formatage de l'axe des dates
+                    axes[idx].xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M"))  # Date + Heure
+                    axes[idx].tick_params(axis="x", rotation=45)  # Rotation des dates
+            
+                    # Ajustement de la mise en page pour éviter le chevauchement
+                    plt.tight_layout()
+                    st.pyplot(fig, use_container_width=True)
                 else:
-                    axes[idx].set_visible(False)  # Masquer proprement l'axe vide
-                    
-             # Formatage de l'axe des dates pour afficher date + heure
-            ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M"))  # Affichage complet
-            # Inclinaison des étiquettes de l'axe des X
-            plt.xticks(rotation=45)  # Rotation des dates
-            plt.tight_layout()
-            st.pyplot(fig, use_container_width=True)
+                    st.warning("⚠️ Aucune variable sélectionnée à afficher.")
 
+            
             #st.header("📊 Bilan & Résultats")
             # Calculer les statistiques descriptives et transformer en DataFrame
             df_stats = df_results["Prédictions"].describe().to_frame().T
