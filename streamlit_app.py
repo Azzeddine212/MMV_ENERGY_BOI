@@ -203,14 +203,16 @@ if uploaded_file is not None:
             ax.axhline(upper_limit, color="red", linestyle="dashed", linewidth=2, label=f"Mean + 2σ = {upper_limit:.2f}")
             ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=2, label=f"Mean - 2σ = {lower_limit:.2f}")
             
-            ax.plot(df_results.index, df_results["Prédictions"], color="red", alpha=0.6)
+            ax.plot(df_results.index, df_results["Prédictions"], color="blue", alpha=1)
             
             ax.set_title("Prédiction CB24")
             ax.set_xlabel("Date")
             ax.set_ylabel("Conso NRJ (kWh/tcossette)")
             ax.legend()
             ax.grid(True)
-            
+            # Incliner les dates sur l'axe X
+            # Inclinaison des étiquettes de l'axe des X
+            plt.xticks(rotation=45)  # Rotation des dates
             st.pyplot(fig, use_container_width=False)
 
             # Vérifier que la colonne "Prédictions" existe
