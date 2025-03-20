@@ -294,16 +294,14 @@ if uploaded_file is not None:
                     axes[idx].set_ylabel(col)
                     axes[idx].legend()
                     axes[idx].grid(True)
-                    axes[idx].tick_params(axis="x", rotation=45)
-                    # Formatage de l'axe des dates
                     axes[idx].xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M"))  # Date + Heure
                     axes[idx].tick_params(axis="x", rotation=45)  # Rotation des dates
                 else:
                     st.warning("⚠️ Aucune variable sélectionnée à afficher.")
 
-                # Ajustement de la mise en page pour éviter le chevauchement
-                plt.tight_layout()
-                st.pyplot(fig, use_container_width=True)
+            # Ajustement de la mise en page pour éviter le chevauchement
+            plt.tight_layout()
+            st.pyplot(fig, use_container_width=True)
 
             
             #st.header("📊 Bilan & Résultats")
