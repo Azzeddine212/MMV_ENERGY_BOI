@@ -48,6 +48,30 @@ def convert_df_to_excel(df):
     output.seek(0)
     return output.read()
 
+def load_and_process_data(xls):
+    """
+    Charge les données depuis un fichier Excel, les concatène en un seul DataFrame,
+    supprime les doublons par date, et remplit les valeurs manquantes.
+    Paramètres:
+    - file_path : str : chemin vers le fichier Excel à charger
+    Retour:
+    - DataFrame : DataFrame avec les données traitées
+    """
+
+    # Concaténer toutes les feuilles en un seul DataFrame
+    df_all_cb24 = pd.concat(
+        [pd.read_excel(xls, sheet_name=sheet, parse_dates=['Date']).set_index('Date') for sheet in xls.sheet_names],
+        axis=1
+    )
+
+    # Supprimer les doublons sur l'index 'Date'
+    df_all_cb24 = df_all_cb24[~df_all_cb24.index.duplicated(keep='first')]
+
+    # Remplir les valeurs manquantes
+    df_all_cb24 = df_all_cb24.fillna(method='ffill').fillna(method='bfill')
+
+    return df_all_cb24
+
 # Traitement des données de Boiry
 def process_boiry_data(df_boiry):
     def moyenne_pondérée(valeur_1, valeur_2, poid_1, poid_2):
@@ -145,9 +169,11 @@ if uploaded_file is not None:
     }, index=["min", "max"])
     
     #data_boiry = pd.read_excel(uploaded_file, index_col='Date')
-    data_boiry = pd.read_excel(uploaded_file)
-    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
+    data_boiry_raw = pd.read_excel(uploaded_file)
+    data_boiry = load_and_process_data(file_path)
     st.sidebar.success("✅ Fichier chargé avec succès !")
+    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
+    
     st.sidebar.success("✅ Exploration et traitement des données effectués avec succès !")
     
     # Input pour définir l'objectif
