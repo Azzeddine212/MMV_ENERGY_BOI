@@ -70,6 +70,9 @@ def load_and_process_data(xls):
     # Remplir les valeurs manquantes
     df_all = df_all.fillna(method='ffill').fillna(method='bfill')
 
+    # Remettre l'index 'Date' en colonne
+    df_all= df_all.reset_index(
+
     return df_all
 
 # Traitement des données de Boiry
