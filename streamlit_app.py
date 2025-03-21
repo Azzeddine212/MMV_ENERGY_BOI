@@ -69,7 +69,7 @@ def load_and_process_data(xls):
 
     # Remplir les valeurs manquantes
     df_all = df_all.fillna(method='ffill').fillna(method='bfill')
-    df_all.columns = df_all.columns.str.replace(r"^\d+\s*-*\s*", "", regex=True)
+    df_all.columns = df_all.columns.str.split(" - ", n=1).str[-1]
 
     # Remettre l'index 'Date' en colonne
     df_all= df_all.reset_index()
