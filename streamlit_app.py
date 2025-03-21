@@ -160,7 +160,7 @@ if uploaded_file is not None:
 
     model_path = "xgb_model_cb22-23-24_10_param.joblib"
     scaler_path = "scaler_cb22-23-24_10_param.pkl"
-    target_column = "Conso NRJ Usine (kwh/tcossette)"
+    #target_column = "Conso NRJ Usine (kwh/tcossette)"
 
     df_lim = pd.DataFrame({
         "Tonnage": [500, 900], "Température": [-2, 50],
@@ -183,7 +183,7 @@ if uploaded_file is not None:
     # Afficher un aperçu des données traitées
     st.sidebar.success("✅ Fichier chargé avec succès !")
     
-    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
+    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path)
     
     st.sidebar.success("✅ Exploration et traitement des données effectués avec succès !")
     
