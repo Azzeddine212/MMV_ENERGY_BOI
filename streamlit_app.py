@@ -177,7 +177,7 @@ if uploaded_file is not None:
 
     # Extraire les données
     data_boiry = load_and_process_data(xls)
-
+    st.dataframe(data_boiry)
     # traitement des données
     data_boiry = process_boiry_data(data_boiry)
 
