@@ -59,18 +59,18 @@ def load_and_process_data(xls):
     """
 
     # Concaténer toutes les feuilles en un seul DataFrame
-    df_all_cb24 = pd.concat(
+    df_all = pd.concat(
         [pd.read_excel(xls, sheet_name=sheet, parse_dates=['Date']).set_index('Date') for sheet in xls.sheet_names],
         axis=1
     )
 
     # Supprimer les doublons sur l'index 'Date'
-    df_all_cb24 = df_all_cb24[~df_all_cb24.index.duplicated(keep='first')]
+    df_all= df_all[~df_all.index.duplicated(keep='first')]
 
     # Remplir les valeurs manquantes
-    df_all_cb24 = df_all_cb24.fillna(method='ffill').fillna(method='bfill')
+    df_all = df_all.fillna(method='ffill').fillna(method='bfill')
 
-    return df_all_cb24
+    return df_all
 
 # Traitement des données de Boiry
 def process_boiry_data(df_boiry):
@@ -107,7 +107,7 @@ def process_boiry_data(df_boiry):
     return df_boiry
 
 # Chargement du modèle et prédiction
-def process_and_predict(input_data, df_lim, model_path, scaler_path, target_column):
+def process_and_predict(input_data, df_lim, model_path, scaler_path):
     model = joblib.load(model_path)
     with open(scaler_path, "rb") as f:
         scaler = pickle.load(f)
@@ -129,11 +129,7 @@ def process_and_predict(input_data, df_lim, model_path, scaler_path, target_colu
         if col in df_lim.columns:
             data_test = data_test[(data_test[col] >= df_lim.loc['min', col]) & (data_test[col] <= df_lim.loc['max', col])]
     
-    if target_column not in data_test.columns:
-        st.error(f"La colonne cible '{target_column}' est absente après filtrage.")
-        return None
-    
-    variables = data_test.drop(columns=[target_column])
+    variables = data_test
     X_scaled = scaler.transform(variables)
     predictions = model.predict(X_scaled)
     df_pred = pd.DataFrame(predictions, columns=["Prédictions"], index= variables.index)
@@ -171,8 +167,11 @@ if uploaded_file is not None:
     # Charger l'instance ExcelFile
     xls = pd.ExcelFile(uploaded_file)
 
-    # Traiter les données
+    # Extraire les données
     data_boiry = load_and_process_data(xls)
+
+    # traitement des données
+    data_boiry = process_boiry_data(data_boiry)
 
     # Afficher un aperçu des données traitées
     st.sidebar.success("✅ Fichier chargé avec succès !")
