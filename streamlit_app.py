@@ -176,11 +176,11 @@ if uploaded_file is not None:
     xls = pd.ExcelFile(uploaded_file)
 
     # Extraire les données
-    data_boiry = load_and_process_data(xls)
+    df_boiry = load_and_process_data(xls)
     st.dataframe(data_boiry)
     # traitement des données
-    data_boiry = process_boiry_data(data_boiry)
-
+    data_boiry = process_boiry_data(df_boiry)
+    st.dataframe(data_boiry)
     # Afficher un aperçu des données traitées
     st.sidebar.success("✅ Fichier chargé avec succès !")
     
