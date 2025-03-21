@@ -73,7 +73,7 @@ def load_and_process_data(xls):
 
     # Remettre l'index 'Date' en colonne
     df_all= df_all.reset_index()
-
+    st.dataframe(df_all)
     return df_all
 
 # Traitement des données de Boiry
