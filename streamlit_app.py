@@ -95,8 +95,8 @@ def process_boiry_data(df_boiry):
        'SBP - Brix (g%g)', 'SBP instantané - Brix (g%g)',
        'Débit eau_tot', 'Débit vapeur_tot', 'Temp fumée_moy','Energie KWh 0°C']]
     
-    df_boiry['Energie kWh 0°C_pci'] = df_boiry['Energie KWh 0°C'] * 0.9
-    df_boiry['Conso NRJ Usine (kwh/tcossette)'] = df_boiry['Energie kWh 0°C_pci'] / df_boiry['Tonnage']
+    #df_boiry['Energie kWh 0°C_pci'] = df_boiry['Energie KWh 0°C'] * 0.9
+    #df_boiry['Conso NRJ Usine (kwh/tcossette)'] = df_boiry['Energie kWh 0°C_pci'] / df_boiry['Tonnage']
     
     df_boiry.reset_index(drop=True, inplace=True)
 
