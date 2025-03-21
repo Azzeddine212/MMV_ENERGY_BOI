@@ -81,6 +81,8 @@ def process_boiry_data(df_boiry):
     df_boiry['Temp entrée JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp entrée JAE A'], row['Temp entrée JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
     df_boiry['Temp sortie JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp sortie JAE A'], row['Temp sortie JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
     df_boiry['Débit JAE_tot'] = df_boiry['Débit JAE A'] + df_boiry['Débit JAE B']
+    df_boiry['Temp fumée_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temps fumées 140T'], row['Temp fumées 120T'], row['Débit gaz 140T'], row['Débit gaz 120T']), axis=1)
+    df_boiry['Débit eau_tot'] = df_boiry['Débit eau 140T'] + df_boiry['Débit eau 120T']
     df_boiry['Débit vapeur_tot'] = df_boiry['Débit vapeur 140T'] + df_boiry['Débit vapeur 120T']
     
     # Sélection des colonnes moyennées
@@ -93,16 +95,18 @@ def process_boiry_data(df_boiry):
        'JAE - Brix poids (g%g)', 'Sirop sortie évapo-Brix poids (g%g)',
        'LS1 - Brix poids (g%g)', 'LS1 concentrée - Brix poids (g%g)',
        'SBP - Brix (g%g)', 'SBP instantané - Brix (g%g)',
-       'Débit eau_tot', 'Débit vapeur_tot', 'Temp fumée_moy','Energie KWh 0°C']]
+       'Débit eau_tot', 'Débit vapeur_tot', 'Temp fumée_moy']]
+
+    df_boiry['Temp fumée_moy'] = df_boiry['Temp fumée_moy']
     
     #df_boiry['Energie kWh 0°C_pci'] = df_boiry['Energie KWh 0°C'] * 0.9
     #df_boiry['Conso NRJ Usine (kwh/tcossette)'] = df_boiry['Energie kWh 0°C_pci'] / df_boiry['Tonnage']
     
-    df_boiry.reset_index(drop=True, inplace=True)
+    #df_boiry.reset_index(drop=True, inplace=True)
 
     # Ajout des données de la chaufferie
-    df_boiry['Temp fumée_moy'] = df_boiry['Temp fumée_moy']
-    df_boiry.reset_index(drop=True, inplace=True)
+    #df_boiry['Temp fumée_moy'] = df_boiry['Temp fumée_moy']
+    #df_boiry.reset_index(drop=True, inplace=True)
 
     return df_boiry
 
