@@ -168,10 +168,20 @@ if uploaded_file is not None:
         "Conso NRJ Usine (kwh/tcossette)": [125, 205]
     }, index=["min", "max"])
     
-    #data_boiry = pd.read_excel(uploaded_file, index_col='Date')
-    data_boiry_raw = pd.read_excel(uploaded_file)
-    data_boiry = load_and_process_data(data_boiry_raw)
-    st.sidebar.success("✅ Fichier chargé avec succès !")
+    # Téléchargement du fichier Excel via Streamlit
+    uploaded_file = st.sidebar.file_uploader("📂 Téléchargez votre fichier Excel", type=["xlsx"])
+    
+    if uploaded_file is not None:
+        # Charger l'instance ExcelFile
+        xls = pd.ExcelFile(uploaded_file)
+    
+        # Traiter les données
+        data_boiry = load_and_process_data(xls)
+    
+        # Afficher un aperçu des données traitées
+        st.sidebar.success("✅ Fichier chargé avec succès !")
+
+    
     df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
     
     st.sidebar.success("✅ Exploration et traitement des données effectués avec succès !")
