@@ -170,7 +170,7 @@ if uploaded_file is not None:
     
     #data_boiry = pd.read_excel(uploaded_file, index_col='Date')
     data_boiry_raw = pd.read_excel(uploaded_file)
-    data_boiry = load_and_process_data(file_path)
+    data_boiry = load_and_process_data(data_boiry_raw)
     st.sidebar.success("✅ Fichier chargé avec succès !")
     df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
     
