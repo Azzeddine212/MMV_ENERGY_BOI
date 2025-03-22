@@ -82,10 +82,19 @@ def process_boiry_data(df_boiry):
         return (valeur_1 * poid_1 + valeur_2 * poid_2) / (poid_1 + poid_2)
 
     # Vérification et création des nouvelles colonnes
-    colonnes_attendues = ["Soutirage 9m", "Soutirage 11m", "Temp entrée JAE A", "Temp entrée JAE B",
-                           "Débit JAE A", "Débit JAE B", "Temp sortie JAE A", "Temp sortie JAE B",
-                           "Temps fumées 140T", "Temp fumées 120T", "Débit gaz 140T", "Débit gaz 120T",
-                           "Débit eau 140T", "Débit eau 120T", "Débit vapeur 140T", "Débit vapeur 120T"]
+    colonnes_attendues = [#"Soutirage 9m", 
+                          #"Soutirage 11m", 
+                          #"Temp entrée JAE A", 
+                          #"Temp entrée JAE B",
+                          #"Débit JAE A", 
+                          #"Débit JAE B", 
+                          #"Temp sortie JAE A", 
+                          #"Temp sortie JAE B",
+                          "Temps fumées 140T", 
+                          "Temp fumées 120T", 
+                          #"Débit gaz 140T", 
+                          #"Débit gaz 120T",
+                          "Débit eau 140T", "Débit eau 120T", "Débit vapeur 140T", "Débit vapeur 120T"]
 
     # Vérifier la présence des colonnes
     #colonnes_manquantes = [col for col in colonnes_attendues if col not in df_boiry.columns]
@@ -93,7 +102,7 @@ def process_boiry_data(df_boiry):
         #st.warning(f"⚠️ Colonnes manquantes dans le fichier : {', '.join(colonnes_manquantes)}")
 
     # Ajout des colonnes calculées
-    if "Soutirage 9m" in df_boiry.columns and "Soutirage 11m" in df_boiry.columns:
+    #if "Soutirage 9m" in df_boiry.columns and "Soutirage 11m" in df_boiry.columns:
         df_boiry['Soutirage_tot'] = df_boiry["Soutirage 9m"] + df_boiry["Soutirage 11m"]
 
     if all(col in df_boiry.columns for col in ["Temp entrée JAE A", "Temp entrée JAE B", "Débit JAE A", "Débit JAE B"]):
@@ -116,16 +125,18 @@ def process_boiry_data(df_boiry):
 
     #st.dataframe(df_boiry)
     # Sélection des colonnes moyennées
-    data_boiry= df_boiry[['Date','Tonnage', 'Température', 'Soutirage_tot', 'Temp jus TEJC',
-       'Débit jus chaulé', 'Temp jus chaulé', 'Débit JC1', 'Temp JC1 ech 1',
-       'Temp JC1 ech 2', '% condenseur', 'Temp entrée JAE_moy',
-       'Temp sortie JAE_moy', 'Débit JAE_tot', 'Débit sirop 5C',
-       'Débit sirop stocké', 'Pression VE', 'Débit SBP', 'Débit refonte',
-       'Débit sucre', 'Richesse cossettes - BOI & ART (g%g)',
-       'JAE - Brix poids (g%g)', 'Sirop sortie évapo-Brix poids (g%g)',
-       'LS1 - Brix poids (g%g)', 'LS1 concentrée - Brix poids (g%g)',
-       'SBP - Brix (g%g)', 'SBP instantané - Brix (g%g)',
-       'Débit eau_tot', 'Débit vapeur_tot', 'Temp fumée_moy']]
+    data_boiry= df_boiry[['Date','Tonnage', 'Température','Débit JC1','Pression VE','Débit sucre', 'Richesse cossettes - BOI & ART (g%g)','JAE - Brix poids (g%g)','Sirop sortie évapo-Brix poids (g%g)', 'Débit vapeur_tot', 'Temp fumée_moy']]
+
+    #data_boiry= df_boiry[['Date','Tonnage', 'Température', 'Soutirage_tot', 'Temp jus TEJC',
+       #'Débit jus chaulé', 'Temp jus chaulé', 'Débit JC1', 'Temp JC1 ech 1',
+       #'Temp JC1 ech 2', '% condenseur', 'Temp entrée JAE_moy',
+       #'Temp sortie JAE_moy', 'Débit JAE_tot', 'Débit sirop 5C',
+       #'Débit sirop stocké', 'Pression VE', 'Débit SBP', 'Débit refonte',
+       #'Débit sucre', 'Richesse cossettes - BOI & ART (g%g)',
+       #'JAE - Brix poids (g%g)', 'Sirop sortie évapo-Brix poids (g%g)',
+       #'LS1 - Brix poids (g%g)', 'LS1 concentrée - Brix poids (g%g)',
+       #'SBP - Brix (g%g)', 'SBP instantané - Brix (g%g)',
+       #'Débit eau_tot', 'Débit vapeur_tot', 'Temp fumée_moy']]
 
     #df_boiry['Temp fumée_moy'] = df_boiry['Temp fumée_moy']
     
