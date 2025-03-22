@@ -243,6 +243,7 @@ if uploaded_file is not None:
         ( df_results["Date_only"] >= start_date) & ( df_results["Date_only"] <= end_date) &
         ( df_results["Date"].dt.time >= start_time) & ( df_results["Date"].dt.time <= end_time)
     ]
+    st.daframe(df_results)
     df_results = df_results.drop(columns=["Date_only", "Heure"])
     st.sidebar.success(f"📈 Données filtrées du **{start_date} {start_time}** au **{end_date} {end_time}**")
     
