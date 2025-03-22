@@ -90,7 +90,7 @@ def process_boiry_data(df_boiry):
     df_boiry['Débit vapeur_tot'] = df_boiry['Débit vapeur 140T'] + df_boiry['Débit vapeur 120T']
     
     # Sélection des colonnes moyennées
-    df_boiry= df_boiry[['Date','Tonnage', 'Température', 'Soutirage_tot', 'Temp jus TEJC',
+    data_boiry= df_boiry[['Date','Tonnage', 'Température', 'Soutirage_tot', 'Temp jus TEJC',
        'Débit jus chaulé', 'Temp jus chaulé', 'Débit JC1', 'Temp JC1 ech 1',
        'Temp JC1 ech 2', '% condenseur', 'Temp entrée JAE_moy',
        'Temp sortie JAE_moy', 'Débit JAE_tot', 'Débit sirop 5C',
@@ -112,7 +112,7 @@ def process_boiry_data(df_boiry):
     #df_boiry['Temp fumée_moy'] = df_boiry['Temp fumée_moy']
     #df_boiry.reset_index(drop=True, inplace=True)
 
-    return df_boiry
+    return data_boiry
 
 # Chargement du modèle et prédiction
 def process_and_predict(input_data, df_lim, model_path, scaler_path):
