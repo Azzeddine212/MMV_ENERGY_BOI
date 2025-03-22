@@ -230,7 +230,7 @@ if uploaded_file is not None:
     df_filtered = df_boiry[(df_boiry["Date"] >= pd.to_datetime(start_date)) & (df_boiry["Date"] <= pd.to_datetime(end_date))]
 
     # Affichage des données filtrées
-    st.write(f"📈 Données filtrées du **{start_date}** au **{end_date}**")
+    #st.write(f"📈 Données filtrées du **{start_date}** au **{end_date}**")
     #st.dataframe(df_filtered)
 
     st.sidebar.success("✅ Fichier chargé et filtré avec succès !")
