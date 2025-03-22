@@ -114,7 +114,7 @@ def process_boiry_data(df_boiry):
     if "Débit vapeur 140T" in df_boiry.columns and "Débit vapeur 120T" in df_boiry.columns:
         df_boiry['Débit vapeur_tot'] = df_boiry['Débit vapeur 140T'] + df_boiry['Débit vapeur 120T']
 
-    st.dataframe(df_boiry)
+    #st.dataframe(df_boiry)
     # Sélection des colonnes moyennées
     data_boiry= df_boiry[['Date','Tonnage', 'Température', 'Soutirage_tot', 'Temp jus TEJC',
        'Débit jus chaulé', 'Temp jus chaulé', 'Débit JC1', 'Temp JC1 ech 1',
