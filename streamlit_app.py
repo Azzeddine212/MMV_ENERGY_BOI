@@ -219,7 +219,7 @@ if uploaded_file is not None:
     #st.dataframe(data_boiry)
     
     df_results, variables = process_and_predict(df_boiry, df_lim, model_path, scaler_path)
-    
+    df_results.index = pd.to_datetime(df_results.index, errors='coerce')
     st.sidebar.success("✅ Exploration et traitement des données effectués avec succès !")
 
     # Extraction de la date et de l'heure
