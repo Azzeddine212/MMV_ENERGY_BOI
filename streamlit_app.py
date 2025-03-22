@@ -222,22 +222,34 @@ if uploaded_file is not None:
     
     st.sidebar.success("✅ Exploration et traitement des données effectués avec succès !")
 
-    # Sélection de la période
-    min_date = df_results["Date"].min()
-    max_date = df_results["Date"].max()
+    # Extraction de la date et de l'heure
+    df_results.reset_index(inplace=True)  # Réintégrer "DateHeure" en colonne
+    df_results["Date"] =  df_results["DateHeure"].dt.date
+    df_results["Heure"] =  df_results["DateHeure"].dt.strftime("%H:%M")
 
-    start_date = st.sidebar.date_input("📅 Sélectionnez la date de début", min_value=min_date, max_value=max_date, value=min_date)
-    end_date = st.sidebar.date_input("📅 Sélectionnez la date de fin", min_value=min_date, max_value=max_date, value=max_date)
+    # Sélection de la période (jours et heures)
+    min_date =  df_results["Date"].min()
+    max_date =  df_results["Date"].max()
 
-    # Filtrer les données en fonction des dates sélectionnées
-    df_results = df_results[(df_results["Date"] >= pd.to_datetime(start_date)) & (df_results["Date"] <= pd.to_datetime(end_date))]
+    start_date = st.sidebar.date_input("📅 Date de début", min_value=min_date, max_value=max_date, value=min_date)
+    end_date = st.sidebar.date_input("📅 Date de fin", min_value=min_date, max_value=max_date, value=max_date)
 
-    st.sidebar.success(f"📈 Données filtrées du **{start_date}** au **{end_date}**")
+    # Sélection de l'heure de début et fin
+    start_time = st.sidebar.time_input("⏰ Heure de début", value=pd.to_datetime("00:00").time())
+    end_time = st.sidebar.time_input("⏰ Heure de fin", value=pd.to_datetime("23:59").time())
+
+    # Filtrer les données en fonction des dates et heures sélectionnées
+     df_results =  df_results[
+        ( df_results["Date"] >= start_date) & ( df_results["Date"] <= end_date) &
+        ( df_results["DateHeure"].dt.time >= start_time) & ( df_results["DateHeure"].dt.time <= end_time)
+    ]
+
+    st.sidebar.success(f"📈 Données filtrées du **{start_date} {start_time}** au **{end_date} {end_time}**")
     
     # Input pour définir l'objectif
     objectif = st.sidebar.number_input("🔢 Entrez l'objectif de consommation énergétique (kWh)", min_value=100, max_value=250)
     prix_gn = st.sidebar.number_input("🔢 Entrez l'objectif le prix du Mwh Gaz Naturel (€/MWh)", min_value=0, max_value=250)
-    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path)
+    #df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path)
     if st.sidebar.button("🚀 Lancer la prédiction"):
         with st.spinner("📊 Calcul en cours..."):
                  
@@ -279,16 +291,16 @@ if uploaded_file is not None:
             ax.axhline(y=objectif, color="red", linestyle="-", linewidth=4, label=f'Objectif : {objectif} kWh')
             
             # Tracer les points en rouge s'ils sont au-dessus de l'objectif
-            ax.scatter(df_results.index[au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
+            ax.scatter(df_results["DateHeure"][au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
 
             # Tracer les points en rouge s'ils sont en-dessous de l'objectif
-            ax.scatter(df_results.index[en_dessous], df_results["Prédictions"][en_dessous], color="green", label="En-dessous de l'objectif", zorder=3)
+            ax.scatter(df_results["DateHeure"][en_dessous], df_results["Prédictions"][en_dessous], color="green", label="En-dessous de l'objectif", zorder=3)
             
             # Tracer les lignes horizontales des limites
             ax.axhline(upper_limit, color="red", linestyle="dashed", linewidth=2, label=f"Mean + 2σ = {upper_limit:.2f}")
             ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=2, label=f"Mean - 2σ = {lower_limit:.2f}")
             
-            ax.plot(df_results.index, df_results["Prédictions"], color="blue", alpha=1)
+            ax.plot(df_results["DateHeure"], df_results["Prédictions"], color="blue", alpha=1)
             
             ax.set_title("Prédiction CB24")
             ax.set_xlabel("Date")
@@ -370,7 +382,7 @@ if uploaded_file is not None:
                     upper_limit = mean + 2 * std_dev
                     lower_limit = mean - 2 * std_dev
             
-                    axes[idx].plot(df_results.index, df_results[col], color="blue", alpha=0.6, label=col)
+                    axes[idx].plot(df_results["DateHeure"], df_results[col], color="blue", alpha=0.6, label=col)
                     axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                     axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
                     axes[idx].set_title(f"Tendance : {col}")
