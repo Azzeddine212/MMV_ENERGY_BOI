@@ -217,8 +217,23 @@ if uploaded_file is not None:
     # traitement des données
     data_boiry = process_boiry_data(df_boiry)
     #st.dataframe(data_boiry)
-    # Afficher un aperçu des données traitées
-    st.sidebar.success("✅ Fichier chargé avec succès !")
+
+
+    # Sélection de la période
+    min_date = df_boiry["Date"].min()
+    max_date = df_boiry["Date"].max()
+
+    start_date = st.sidebar.date_input("📅 Sélectionnez la date de début", min_value=min_date, max_value=max_date, value=min_date)
+    end_date = st.sidebar.date_input("📅 Sélectionnez la date de fin", min_value=min_date, max_value=max_date, value=max_date)
+
+    # Filtrer les données en fonction des dates sélectionnées
+    df_filtered = df_boiry[(df_boiry["Date"] >= pd.to_datetime(start_date)) & (df_boiry["Date"] <= pd.to_datetime(end_date))]
+
+    # Affichage des données filtrées
+    st.write(f"📈 Données filtrées du **{start_date}** au **{end_date}**")
+    st.dataframe(df_filtered)
+
+    st.sidebar.success("✅ Fichier chargé et filtré avec succès !")
     
     df_results, variables = process_and_predict(df_boiry, df_lim, model_path, scaler_path)
     
