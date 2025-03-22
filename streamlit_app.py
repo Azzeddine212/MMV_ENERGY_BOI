@@ -102,6 +102,9 @@ def process_boiry_data(df_boiry):
     if all(col in df_boiry.columns for col in ["Temp sortie JAE A", "Temp sortie JAE B", "Débit JAE A", "Débit JAE B"]):
         df_boiry['Temp sortie JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp sortie JAE A'], row['Temp sortie JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
 
+    if all(col in df_boiry.columns for col in ["Débit JAE A", "Débit JAE B"]):
+        df_boiry['Débit JAE_tot'] = df_boiry['Débit JAE A'] + df_boiry['Débit JAE B']
+
     if all(col in df_boiry.columns for col in ["Temps fumées 140T", "Temp fumées 120T", "Débit gaz 140T", "Débit gaz 120T"]):
         df_boiry['Temp fumée_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temps fumées 140T'], row['Temp fumées 120T'], row['Débit gaz 140T'], row['Débit gaz 120T']), axis=1)
 
