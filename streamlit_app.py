@@ -239,7 +239,7 @@ if uploaded_file is not None:
     end_time = st.sidebar.time_input("⏰ Heure de fin", value=pd.to_datetime("23:59").time())
 
     # Filtrer les données en fonction des dates et heures sélectionnées
-     df_results =  df_results[
+    df_results =  df_results[
         ( df_results["Date"] >= start_date) & ( df_results["Date"] <= end_date) &
         ( df_results["DateHeure"].dt.time >= start_time) & ( df_results["DateHeure"].dt.time <= end_time)
     ]
