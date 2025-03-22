@@ -224,12 +224,9 @@ if uploaded_file is not None:
     
     # Extraction de la date et de l'heure
     df_results.reset_index(inplace=True)  # Réintégrer "DateHeure" en colonne
-    st.dataframe(df_results)
-    st.write(df_results.dtypes)
     df_results["Date"] = pd.to_datetime(df_results["Date"], errors='coerce')
     df_results["Date_only"] =  df_results["Date"].dt.date
     df_results["Heure"] = df_results["Date"].dt.strftime("%H:%M")
-    st.dataframe(df_results)
     # Sélection de la période (jours et heures)
     min_date =  df_results["Date_only"].min()
     max_date =  df_results["Date_only"].max()
