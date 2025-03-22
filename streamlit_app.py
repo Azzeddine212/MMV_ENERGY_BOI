@@ -81,14 +81,13 @@ def process_boiry_data(df_boiry):
     def moyenne_pondérée(valeur_1, valeur_2, poid_1, poid_2):
         return (valeur_1 * poid_1 + valeur_2 * poid_2) / (poid_1 + poid_2)
 
-    
+    df_boiry['Soutirage_tot'] = df_boiry["Soutirage 9m"] + df_boiry["Soutirage 11m"]
     df_boiry['Temp entrée JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp entrée JAE A'], row['Temp entrée JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
     df_boiry['Temp sortie JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp sortie JAE A'], row['Temp sortie JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
     df_boiry['Débit JAE_tot'] = df_boiry['Débit JAE A'] + df_boiry['Débit JAE B']
     df_boiry['Temp fumée_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temps fumées 140T'], row['Temp fumées 120T'], row['Débit gaz 140T'], row['Débit gaz 120T']), axis=1)
     df_boiry['Débit eau_tot'] = df_boiry['Débit eau 140T'] + df_boiry['Débit eau 120T']
     df_boiry['Débit vapeur_tot'] = df_boiry['Débit vapeur 140T'] + df_boiry['Débit vapeur 120T']
-    df_boiry['Soutirage_tot'] = df_boiry["Soutirage 9m"] + df_boiry["Soutirage 11m"]
     
     # Sélection des colonnes moyennées
     df_boiry= df_boiry[['Date','Tonnage', 'Température', 'Soutirage_tot', 'Temp jus TEJC',
@@ -102,7 +101,7 @@ def process_boiry_data(df_boiry):
        'SBP - Brix (g%g)', 'SBP instantané - Brix (g%g)',
        'Débit eau_tot', 'Débit vapeur_tot', 'Temp fumée_moy']]
 
-    df_boiry['Temp fumée_moy'] = df_boiry['Temp fumée_moy']
+    #df_boiry['Temp fumée_moy'] = df_boiry['Temp fumée_moy']
     
     #df_boiry['Energie kWh 0°C_pci'] = df_boiry['Energie KWh 0°C'] * 0.9
     #df_boiry['Conso NRJ Usine (kwh/tcossette)'] = df_boiry['Energie kWh 0°C_pci'] / df_boiry['Tonnage']
@@ -169,8 +168,7 @@ if uploaded_file is not None:
         "Richesse cossettes - BOI & ART (g%g)": [14, 20], "Débit JC1": [650, 1250],
         "Pression VE": [2, 3.4], "JAE - Brix poids (g%g)": [11, 20],
         "Sirop sortie évapo-Brix poids (g%g)": [60, 80], "Débit sucre": [40, 136],
-        "Débit vapeur_tot": [140, 200], "Temp fumée_moy": [80, 174],
-        "Conso NRJ Usine (kwh/tcossette)": [125, 205]
+        "Débit vapeur_tot": [140, 200], "Temp fumée_moy": [80, 174]
     }, index=["min", "max"])
     
     # Charger l'instance ExcelFile
