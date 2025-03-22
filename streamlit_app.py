@@ -329,7 +329,7 @@ if uploaded_file is not None:
                 fig, ax = plt.subplots(figsize=(20, 10))
                 sns.histplot(df_results["Prédictions"], bins=25, kde=True, color='blue', ax=ax)
                 # Fixer l'échelle de l'axe X
-                plt.xlim(0, 300)  # Modifier selon la plage de ton axe X
+                plt.xlim(100, 300)  # Modifier selon la plage de ton axe X
                 
                 # Ajouter les statistiques sur le graphique
                 ax.axvline(moyenne, color='red', linestyle='--', label=f'Moyenne: {moyenne:.2f} kWh')
