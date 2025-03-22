@@ -231,7 +231,7 @@ if uploaded_file is not None:
 
     # Affichage des données filtrées
     st.write(f"📈 Données filtrées du **{start_date}** au **{end_date}**")
-    st.dataframe(df_filtered)
+    #st.dataframe(df_filtered)
 
     st.sidebar.success("✅ Fichier chargé et filtré avec succès !")
     
