@@ -216,7 +216,7 @@ if uploaded_file is not None:
     # Input pour définir l'objectif
     objectif = st.sidebar.number_input("🔢 Entrez l'objectif de consommation énergétique (kWh)", min_value=100, max_value=250)
     prix_gn = st.sidebar.number_input("🔢 Entrez l'objectif le prix du Mwh Gaz Naturel (€/MWh)", min_value=0, max_value=250)
-    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path, target_column)
+    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path)
     if st.sidebar.button("🚀 Lancer la prédiction"):
         with st.spinner("📊 Calcul en cours..."):
                  
