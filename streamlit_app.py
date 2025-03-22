@@ -81,13 +81,36 @@ def process_boiry_data(df_boiry):
     def moyenne_pondérée(valeur_1, valeur_2, poid_1, poid_2):
         return (valeur_1 * poid_1 + valeur_2 * poid_2) / (poid_1 + poid_2)
 
-    df_boiry['Soutirage_tot'] = df_boiry["Soutirage 9m"] + df_boiry["Soutirage 11m"]
-    df_boiry['Temp entrée JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp entrée JAE A'], row['Temp entrée JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
-    df_boiry['Temp sortie JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp sortie JAE A'], row['Temp sortie JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
-    df_boiry['Débit JAE_tot'] = df_boiry['Débit JAE A'] + df_boiry['Débit JAE B']
-    df_boiry['Temp fumée_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temps fumées 140T'], row['Temp fumées 120T'], row['Débit gaz 140T'], row['Débit gaz 120T']), axis=1)
-    df_boiry['Débit eau_tot'] = df_boiry['Débit eau 140T'] + df_boiry['Débit eau 120T']
-    df_boiry['Débit vapeur_tot'] = df_boiry['Débit vapeur 140T'] + df_boiry['Débit vapeur 120T']
+    # Vérification et création des nouvelles colonnes
+    colonnes_attendues = ["Soutirage 9m", "Soutirage 11m", "Temp entrée JAE A", "Temp entrée JAE B",
+                           "Débit JAE A", "Débit JAE B", "Temp sortie JAE A", "Temp sortie JAE B",
+                           "Temps fumées 140T", "Temp fumées 120T", "Débit gaz 140T", "Débit gaz 120T",
+                           "Débit eau 140T", "Débit eau 120T", "Débit vapeur 140T", "Débit vapeur 120T"]
+
+    # Vérifier la présence des colonnes
+    colonnes_manquantes = [col for col in colonnes_attendues if col not in df_boiry.columns]
+    if colonnes_manquantes:
+        st.warning(f"⚠️ Colonnes manquantes dans le fichier : {', '.join(colonnes_manquantes)}")
+
+    # Ajout des colonnes calculées
+    if "Soutirage 9m" in df_boiry.columns and "Soutirage 11m" in df_boiry.columns:
+        df_boiry['Soutirage_tot'] = df_boiry["Soutirage 9m"] + df_boiry["Soutirage 11m"]
+
+    if all(col in df_boiry.columns for col in ["Temp entrée JAE A", "Temp entrée JAE B", "Débit JAE A", "Débit JAE B"]):
+        df_boiry['Temp entrée JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp entrée JAE A'], row['Temp entrée JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
+
+    if all(col in df_boiry.columns for col in ["Temp sortie JAE A", "Temp sortie JAE B", "Débit JAE A", "Débit JAE B"]):
+        df_boiry['Temp sortie JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp sortie JAE A'], row['Temp sortie JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
+
+    if all(col in df_boiry.columns for col in ["Temps fumées 140T", "Temp fumées 120T", "Débit gaz 140T", "Débit gaz 120T"]):
+        df_boiry['Temp fumée_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temps fumées 140T'], row['Temp fumées 120T'], row['Débit gaz 140T'], row['Débit gaz 120T']), axis=1)
+
+    if "Débit eau 140T" in df_boiry.columns and "Débit eau 120T" in df_boiry.columns:
+        df_boiry['Débit eau_tot'] = df_boiry['Débit eau 140T'] + df_boiry['Débit eau 120T']
+
+    if "Débit vapeur 140T" in df_boiry.columns and "Débit vapeur 120T" in df_boiry.columns:
+        df_boiry['Débit vapeur_tot'] = df_boiry['Débit vapeur 140T'] + df_boiry['Débit vapeur 120T']
+
     st.dataframe(df_boiry)
     # Sélection des colonnes moyennées
     data_boiry= df_boiry[['Date','Tonnage', 'Température', 'Soutirage_tot', 'Temp jus TEJC',
