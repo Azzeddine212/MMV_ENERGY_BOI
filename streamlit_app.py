@@ -221,7 +221,8 @@ if uploaded_file is not None:
     df_results, variables = process_and_predict(df_boiry, df_lim, model_path, scaler_path)
     df_results.index = pd.to_datetime(df_results.index, errors='coerce')
     st.sidebar.success("✅ Exploration et traitement des données effectués avec succès !")
-    st.dataframe(df_results.infos())
+    st.dataframe(df_results)
+    st.write(df_results.info())
     # Extraction de la date et de l'heure
     df_results.reset_index(inplace=True)  # Réintégrer "DateHeure" en colonne
     df_results["Date"] =  df_results["Date"].dt.date
