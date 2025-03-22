@@ -81,13 +81,14 @@ def process_boiry_data(df_boiry):
     def moyenne_pondérée(valeur_1, valeur_2, poid_1, poid_2):
         return (valeur_1 * poid_1 + valeur_2 * poid_2) / (poid_1 + poid_2)
 
-    df_boiry['Soutirage_tot'] = df_boiry["Soutirage 9m"] + df_boiry["Soutirage 11m"]
+    
     df_boiry['Temp entrée JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp entrée JAE A'], row['Temp entrée JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
     df_boiry['Temp sortie JAE_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temp sortie JAE A'], row['Temp sortie JAE B'], row['Débit JAE A'], row['Débit JAE B']), axis=1)
     df_boiry['Débit JAE_tot'] = df_boiry['Débit JAE A'] + df_boiry['Débit JAE B']
     df_boiry['Temp fumée_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temps fumées 140T'], row['Temp fumées 120T'], row['Débit gaz 140T'], row['Débit gaz 120T']), axis=1)
     df_boiry['Débit eau_tot'] = df_boiry['Débit eau 140T'] + df_boiry['Débit eau 120T']
     df_boiry['Débit vapeur_tot'] = df_boiry['Débit vapeur 140T'] + df_boiry['Débit vapeur 120T']
+    df_boiry['Soutirage_tot'] = df_boiry["Soutirage 9m"] + df_boiry["Soutirage 11m"]
     
     # Sélection des colonnes moyennées
     df_boiry= df_boiry[['Date','Tonnage', 'Température', 'Soutirage_tot', 'Temp jus TEJC',
