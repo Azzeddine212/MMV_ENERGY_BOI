@@ -243,11 +243,11 @@ if uploaded_file is not None:
     end_datetime = pd.to_datetime(f"{end_date} {end_time}")
     
     # Filtrer les données sur la base des dates et heures
-    df_df_results = df_results[
+    df_results = df_results[
         (df_results["Date"] >= start_datetime) & 
         (df_results["Date"] <= end_datetime)
     ]
-    st.dataframe(df_results)
+    #st.dataframe(df_results)
     df_results = df_results.drop(columns=["Date_only", "Heure"])
     st.sidebar.success(f"📈 Données filtrées du **{start_date} {start_time}** au **{end_date} {end_time}**")
     
