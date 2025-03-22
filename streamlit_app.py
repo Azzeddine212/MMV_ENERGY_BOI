@@ -368,7 +368,7 @@ if uploaded_file is not None:
             st.markdown("<h1 style='text-align: center; color: #003366; font-size: 28px;'>📈 Tendances des Variables</h1>", unsafe_allow_html=True)
             
             # Définir 'available_vars' comme étant les colonnes du DataFrame df_results
-            available_vars = df_results.columns.tolist()
+            available_vars = df_results.columns[1:].tolist()
         
             # Sélection de 2 variables via sidebar
             st.sidebar.header("🔧 Sélection des Variables")
