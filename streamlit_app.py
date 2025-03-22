@@ -88,7 +88,7 @@ def process_boiry_data(df_boiry):
     df_boiry['Temp fumée_moy'] = df_boiry.apply(lambda row: moyenne_pondérée(row['Temps fumées 140T'], row['Temp fumées 120T'], row['Débit gaz 140T'], row['Débit gaz 120T']), axis=1)
     df_boiry['Débit eau_tot'] = df_boiry['Débit eau 140T'] + df_boiry['Débit eau 120T']
     df_boiry['Débit vapeur_tot'] = df_boiry['Débit vapeur 140T'] + df_boiry['Débit vapeur 120T']
-    
+    st.dataframe(df_boiry)
     # Sélection des colonnes moyennées
     data_boiry= df_boiry[['Date','Tonnage', 'Température', 'Soutirage_tot', 'Temp jus TEJC',
        'Débit jus chaulé', 'Temp jus chaulé', 'Débit JC1', 'Temp JC1 ech 1',
@@ -100,6 +100,8 @@ def process_boiry_data(df_boiry):
        'LS1 - Brix poids (g%g)', 'LS1 concentrée - Brix poids (g%g)',
        'SBP - Brix (g%g)', 'SBP instantané - Brix (g%g)',
        'Débit eau_tot', 'Débit vapeur_tot', 'Temp fumée_moy']]
+
+    
 
     #df_boiry['Temp fumée_moy'] = df_boiry['Temp fumée_moy']
     
@@ -179,7 +181,7 @@ if uploaded_file is not None:
     st.dataframe(df_boiry)
     # traitement des données
     data_boiry = process_boiry_data(df_boiry)
-    st.dataframe(data_boiry)
+    #st.dataframe(data_boiry)
     # Afficher un aperçu des données traitées
     st.sidebar.success("✅ Fichier chargé avec succès !")
     
