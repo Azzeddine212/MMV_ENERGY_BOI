@@ -224,8 +224,8 @@ if uploaded_file is not None:
 
     # Extraction de la date et de l'heure
     df_results.reset_index(inplace=True)  # Réintégrer "DateHeure" en colonne
-    df_results["Date"] =  df_results["DateHeure"].dt.date
-    df_results["Heure"] =  df_results["DateHeure"].dt.strftime("%H:%M")
+    df_results["Date"] =  df_results["Date"].dt.date
+    df_results["Heure"] =  df_results["Date"].dt.strftime("%H:%M")
 
     # Sélection de la période (jours et heures)
     min_date =  df_results["Date"].min()
