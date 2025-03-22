@@ -227,12 +227,12 @@ if uploaded_file is not None:
     st.dataframe(df_results)
     st.write(df_results.dtypes)
     df_results["Date"] = pd.to_datetime(df_results["Date"], errors='coerce')
-    df_results["Date"] =  df_results["Date"].dt.date
-    df_results["Heure"] =  df_results["Date"].dt.strftime("%H:%M")
+    df_results["Date_only"] =  df_results["Date"].dt.date
+    df_results["Heure"] = df_results["Date"].dt.strftime("%H:%M")
     st.dataframe(df_results)
     # Sélection de la période (jours et heures)
-    min_date =  df_results["Date"].min()
-    max_date =  df_results["Date"].max()
+    min_date =  df_results["Date_only"].min()
+    max_date =  df_results["Date_only"].max()
 
     start_date = st.sidebar.date_input("📅 Date de début", min_value=min_date, max_value=max_date, value=min_date)
     end_date = st.sidebar.date_input("📅 Date de fin", min_value=min_date, max_value=max_date, value=max_date)
@@ -243,8 +243,8 @@ if uploaded_file is not None:
 
     # Filtrer les données en fonction des dates et heures sélectionnées
     df_results =  df_results[
-        ( df_results["Date"] >= start_date) & ( df_results["Date"] <= end_date) &
-        ( df_results["DateHeure"].dt.time >= start_time) & ( df_results["DateHeure"].dt.time <= end_time)
+        ( df_results["Date_only"] >= start_date) & ( df_results["Date_only"] <= end_date) &
+        ( df_results["Date"].dt.time >= start_time) & ( df_results["Date"].dt.time <= end_time)
     ]
 
     st.sidebar.success(f"📈 Données filtrées du **{start_date} {start_time}** au **{end_date} {end_time}**")
@@ -294,16 +294,16 @@ if uploaded_file is not None:
             ax.axhline(y=objectif, color="red", linestyle="-", linewidth=4, label=f'Objectif : {objectif} kWh')
             
             # Tracer les points en rouge s'ils sont au-dessus de l'objectif
-            ax.scatter(df_results["DateHeure"][au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
+            ax.scatter(df_results["Date"][au_dessus], df_results["Prédictions"][au_dessus], color="red", label="Au-dessus de l'objectif", zorder=3)
 
             # Tracer les points en rouge s'ils sont en-dessous de l'objectif
-            ax.scatter(df_results["DateHeure"][en_dessous], df_results["Prédictions"][en_dessous], color="green", label="En-dessous de l'objectif", zorder=3)
+            ax.scatter(df_results["Date"][en_dessous], df_results["Prédictions"][en_dessous], color="green", label="En-dessous de l'objectif", zorder=3)
             
             # Tracer les lignes horizontales des limites
             ax.axhline(upper_limit, color="red", linestyle="dashed", linewidth=2, label=f"Mean + 2σ = {upper_limit:.2f}")
             ax.axhline(lower_limit, color="green", linestyle="dashed", linewidth=2, label=f"Mean - 2σ = {lower_limit:.2f}")
             
-            ax.plot(df_results["DateHeure"], df_results["Prédictions"], color="blue", alpha=1)
+            ax.plot(df_results["Date"], df_results["Prédictions"], color="blue", alpha=1)
             
             ax.set_title("Prédiction CB24")
             ax.set_xlabel("Date")
@@ -385,7 +385,7 @@ if uploaded_file is not None:
                     upper_limit = mean + 2 * std_dev
                     lower_limit = mean - 2 * std_dev
             
-                    axes[idx].plot(df_results["DateHeure"], df_results[col], color="blue", alpha=0.6, label=col)
+                    axes[idx].plot(df_results["Date"], df_results[col], color="blue", alpha=0.6, label=col)
                     axes[idx].axhline(upper_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean + 3σ = {upper_limit:.2f}")
                     axes[idx].axhline(lower_limit, color="red", linestyle="dashed", linewidth=1, label=f"Mean - 3σ = {lower_limit:.2f}")
                     axes[idx].set_title(f"Tendance : {col}")
