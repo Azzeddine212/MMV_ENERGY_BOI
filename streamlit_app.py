@@ -73,7 +73,7 @@ def load_and_process_data(xls):
 
     # Remettre l'index 'Date' en colonne
     df_all= df_all.reset_index()
-    st.dataframe(df_all)
+    #st.dataframe(df_all)
     return df_all
 
 # Traitement des données de Boiry
@@ -88,9 +88,9 @@ def process_boiry_data(df_boiry):
                            "Débit eau 140T", "Débit eau 120T", "Débit vapeur 140T", "Débit vapeur 120T"]
 
     # Vérifier la présence des colonnes
-    colonnes_manquantes = [col for col in colonnes_attendues if col not in df_boiry.columns]
-    if colonnes_manquantes:
-        st.warning(f"⚠️ Colonnes manquantes dans le fichier : {', '.join(colonnes_manquantes)}")
+    #colonnes_manquantes = [col for col in colonnes_attendues if col not in df_boiry.columns]
+    #if colonnes_manquantes:
+        #st.warning(f"⚠️ Colonnes manquantes dans le fichier : {', '.join(colonnes_manquantes)}")
 
     # Ajout des colonnes calculées
     if "Soutirage 9m" in df_boiry.columns and "Soutirage 11m" in df_boiry.columns:
@@ -202,7 +202,7 @@ if uploaded_file is not None:
 
     # Extraire les données
     df_boiry = load_and_process_data(xls)
-    st.dataframe(df_boiry)
+    #st.dataframe(df_boiry)
     # traitement des données
     data_boiry = process_boiry_data(df_boiry)
     #st.dataframe(data_boiry)
