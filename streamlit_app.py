@@ -124,8 +124,6 @@ def process_boiry_data(df_boiry):
        'SBP - Brix (g%g)', 'SBP instantané - Brix (g%g)',
        'Débit eau_tot', 'Débit vapeur_tot', 'Temp fumée_moy']]
 
-    
-
     #df_boiry['Temp fumée_moy'] = df_boiry['Temp fumée_moy']
     
     #df_boiry['Energie kWh 0°C_pci'] = df_boiry['Energie KWh 0°C'] * 0.9
@@ -208,7 +206,7 @@ if uploaded_file is not None:
     # Afficher un aperçu des données traitées
     st.sidebar.success("✅ Fichier chargé avec succès !")
     
-    df_results, variables = process_and_predict(data_boiry, df_lim, model_path, scaler_path)
+    df_results, variables = process_and_predict(df_boiry, df_lim, model_path, scaler_path)
     
     st.sidebar.success("✅ Exploration et traitement des données effectués avec succès !")
     
